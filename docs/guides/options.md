@@ -27,20 +27,24 @@
   * [inactivityTimeout](#inactivitytimeout)
   * [language](#language)
   * [languages](#languages)
+  * [liveui](#liveui)
   * [nativeControlsForTouch](#nativecontrolsfortouch)
   * [notSupportedMessage](#notsupportedmessage)
+  * [fullscreen](#fullscreen)
+    * [options](#options)
   * [playbackRates](#playbackrates)
   * [plugins](#plugins)
   * [responsive](#responsive)
   * [sources](#sources)
+  * [suppressNotSupportedError](#suppressnotsupportederror)
   * [techCanOverridePoster](#techcanoverrideposter)
   * [techOrder](#techorder)
   * [userActions](#useractions)
-  * [userActions.doubleClick](#useractions.doubleclick)
-  * [userActions.hotkeys](#useractions.hotkeys)
-  * [userActions.hotkeys.fullscreenKey](#useractions.hotkeys.fullscreenkey)
-  * [userActions.hotkeys.muteKey](#useractions.hotkeys.mutekey)
-  * [userActions.hotkeys.playPauseKey](#useractions.hotkeys.playpausekey)
+  * [userActions.doubleClick](#useractionsdoubleclick)
+  * [userActions.hotkeys](#useractionshotkeys)
+  * [userActions.hotkeys.fullscreenKey](#useractionshotkeysfullscreenkey)
+  * [userActions.hotkeys.muteKey](#useractionshotkeysmutekey)
+  * [userActions.hotkeys.playPauseKey](#useractionshotkeysplaypausekey)
   * [vtt.js](#vttjs)
 * [Component Options](#component-options)
   * [children](#children-1)
@@ -259,6 +263,7 @@ Learn more about [languages in Video.js][languages]
 > Default: `false`
 
 Allows the player to use the new live ui that includes:
+
 * A progress bar for seeking within the live window
 * A button that can be clicked to seek to the live edge with a circle indicating if you are at the live edge or not.
 
@@ -276,6 +281,20 @@ Explicitly set a default value for [the associated tech option](#nativecontrolsf
 > Type: `string`
 
 Allows overriding the default message that is displayed when Video.js cannot play back a media source.
+
+### `fullscreen`
+
+> Type: `Object`
+> Default: `{options: {navigationUI: 'hide'}`
+
+`fullscreen.options` can be set to pass in specific fullscreen options. At some point, it will be augmented with `element` and `handler` for more functionality.
+
+#### `options`
+
+> Type: `Object`
+> Default: `{navigationUI: 'hide'}`
+
+See [The Fullscreen API Spec](https://fullscreen.spec.whatwg.org/#dictdef-fullscreenoptions) for more details.
 
 ### `playbackRates`
 
@@ -358,6 +377,12 @@ Using `<source>` elements will have the same effect:
 </video>
 ```
 
+### `suppressNotSupportedError`
+
+> Type: `boolean`
+
+If set to true, then the no compatible source error will not be triggered immediately and instead will occur on the first user interaction. This is useful for Google's "mobile friendly" test tool, which can't play video but where you might not want to see an error displayed.
+
 ### `techCanOverridePoster`
 
 > Type: `boolean`
@@ -426,15 +451,14 @@ var player = videojs('my-player', {
 
 Default hotkey handling is:
 
-| Key | Action | Enabled by |
-| :-: | ------ | ---------- |
-| `f` | toggle fullscreen | only enabled if a Fullscreen button is present in the Control Bar
-| `m` | toggle mute | always enabled, even if no Control Bar is present
-| `k` | toggle play/pause | always enabled, even if no Control Bar is present
-| `Space` | toggle play/pause | always enabled, even if no Control Bar is present
+|   Key   | Action            | Enabled by                                                        |
+| :-----: | ----------------- | ----------------------------------------------------------------- |
+|   `f`   | toggle fullscreen | only enabled if a Fullscreen button is present in the Control Bar |
+|   `m`   | toggle mute       | always enabled, even if no Control Bar is present                 |
+|   `k`   | toggle play/pause | always enabled, even if no Control Bar is present                 |
+| `Space` | toggle play/pause | always enabled, even if no Control Bar is present                 |
 
-Note that the `Space` key activates controls such as buttons and menus if that control has keyboard focus. The other hotkeys work regardless of which
-control in the player has focus.
+Hotkeys require player focus first. Note that the `Space` key activates controls such as buttons and menus if that control has keyboard focus. The other hotkeys work regardless of which control in the player has focus.
 
 ### `userActions.hotkeys.fullscreenKey`
 

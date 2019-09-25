@@ -108,6 +108,8 @@ class TechFaker extends Tech {
     }
     return 'movie.mp4';
   }
+  load() {
+  }
   currentSrc() {
     return 'movie.mp4';
   }
@@ -148,6 +150,9 @@ class TechFaker extends Tech {
     return 0;
   }
   controls() {
+    return false;
+  }
+  ended() {
     return false;
   }
 

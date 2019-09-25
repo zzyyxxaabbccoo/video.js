@@ -50,8 +50,12 @@ Creation:
 ```js
 // adding a button to the player
 var player = videojs('some-video-id');
-var Component = videojs.getComponent('Component');
-var button = new Component(player);
+var Button = videojs.getComponent('Button');
+var button = new Button(player, {
+  clickHandler: function(event) {
+    videojs.log('Clicked');
+  }
+});
 
 console.log(button.el());
 ```
@@ -312,6 +316,7 @@ Player
 │ ├── SubtitlesButton (hidden, unless there are relevant tracks)
 │ ├── CaptionsButton (hidden, unless there are relevant tracks)
 │ ├── AudioTrackButton (hidden, unless there are relevant tracks)
+│ └── PictureInPictureToggle
 │ └── FullscreenToggle
 ├── ErrorDisplay (hidden, until there is an error)
 ├── TextTrackSettings

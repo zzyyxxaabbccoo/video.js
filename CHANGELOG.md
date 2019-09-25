@@ -1,3 +1,239 @@
+<a name="7.6.4"></a>
+## [7.6.4](https://github.com/videojs/video.js/compare/v7.6.3...v7.6.4) (2019-08-28)
+
+### Bug Fixes
+
+* adds space between vjs-live-display and vjs-volume-control controls. ([#6200](https://github.com/videojs/video.js/issues/6200)) ([3c1dd8f](https://github.com/videojs/video.js/commit/3c1dd8f)), closes [#5815](https://github.com/videojs/video.js/issues/5815)
+* make live UI button more consistent ([#6201](https://github.com/videojs/video.js/issues/6201)) ([714aba0](https://github.com/videojs/video.js/commit/714aba0))
+
+### Chores
+
+* **package:** update http-streaming to 1.10.6 ([#6205](https://github.com/videojs/video.js/issues/6205)) ([f47939c](https://github.com/videojs/video.js/commit/f47939c)), closes [videojs/http-streaming#312](https://github.com/videojs/http-streaming/issues/312)
+
+<a name="7.6.3"></a>
+## [7.6.3](https://github.com/videojs/video.js/compare/v7.6.2...v7.6.3) (2019-08-22)
+
+### Bug Fixes
+
+* do not handle hotkeys in contenteditable elements ([#6182](https://github.com/videojs/video.js/issues/6182)) ([51b9861](https://github.com/videojs/video.js/commit/51b9861))
+* make 'Esc' works for a vertical volume bar and menus ([#6046](https://github.com/videojs/video.js/issues/6046)) ([62465b8](https://github.com/videojs/video.js/commit/62465b8)), closes [#6004](https://github.com/videojs/video.js/issues/6004)
+* remove deprecated tsml dependency ([#6174](https://github.com/videojs/video.js/issues/6174)) ([549552e](https://github.com/videojs/video.js/commit/549552e))
+
+<a name="7.6.2"></a>
+## [7.6.2](https://github.com/videojs/video.js/compare/v7.6.1...v7.6.2) (2019-08-07)
+
+### Bug Fixes
+
+* **lang:** Add missing strings for Chinese (Simplified) and Chinese (Traditional) ([#6149](https://github.com/videojs/video.js/issues/6149)) ([bd51e9e](https://github.com/videojs/video.js/commit/bd51e9e))
+* **lang:** update Spanish translations ([#6065](https://github.com/videojs/video.js/issues/6065)) ([1d2b206](https://github.com/videojs/video.js/commit/1d2b206))
+
+### Chores
+
+* fix lang watch loop caused by zh-* copy ([#6147](https://github.com/videojs/video.js/issues/6147)) ([4b325ea](https://github.com/videojs/video.js/commit/4b325ea))
+
+### Performance Improvements
+
+* Do not add/remove listeners for each timer ([#6144](https://github.com/videojs/video.js/issues/6144)) ([5ee2477](https://github.com/videojs/video.js/commit/5ee2477))
+* Improve performance of toTitleCase, register with lower and TitleCase ([#6148](https://github.com/videojs/video.js/issues/6148)) ([266cb15](https://github.com/videojs/video.js/commit/266cb15))
+* Use WeakMap for dom data ([#6103](https://github.com/videojs/video.js/issues/6103)) ([8610f99](https://github.com/videojs/video.js/commit/8610f99))
+
+### Tests
+
+* silence test logs ([#6165](https://github.com/videojs/video.js/issues/6165)) ([9d2e5f3](https://github.com/videojs/video.js/commit/9d2e5f3))
+
+<a name="7.6.1"></a>
+## [7.6.1](https://github.com/videojs/video.js/compare/v7.6.0...v7.6.1) (2019-07-30)
+
+### Bug Fixes
+
+* Improves isSingleLeftClick() to handle mousemove ([#6138](https://github.com/videojs/video.js/issues/6138)) ([f2aedb7](https://github.com/videojs/video.js/commit/f2aedb7)), closes [#6132](https://github.com/videojs/video.js/issues/6132)
+* **component:** use safe computedStyle in currentDimension ([#6073](https://github.com/videojs/video.js/issues/6073)) ([20cae21](https://github.com/videojs/video.js/commit/20cae21)), closes [#3664](https://github.com/videojs/video.js/issues/3664)
+* **pip:** hide PiP button in browsers not support the WICG spec ([#6131](https://github.com/videojs/video.js/issues/6131)) ([3afa7d1](https://github.com/videojs/video.js/commit/3afa7d1))
+
+### Chores
+
+* switch from deprecated `jsnext`, `main` options to mainFields ([#6075](https://github.com/videojs/video.js/issues/6075)) ([2e69448](https://github.com/videojs/video.js/commit/2e69448))
+* update videojs-generate-karma-config to ~5.2.1 and remove patches ([#6104](https://github.com/videojs/video.js/issues/6104)) ([b9fbd0b](https://github.com/videojs/video.js/commit/b9fbd0b))
+
+### Code Refactoring
+
+* use the new `any` event function ([#6080](https://github.com/videojs/video.js/issues/6080)) ([3c932c5](https://github.com/videojs/video.js/commit/3c932c5))
+
+### Performance Improvements
+
+* save ~10ms on `player.src` call ([#6141](https://github.com/videojs/video.js/issues/6141)) ([2e495dd](https://github.com/videojs/video.js/commit/2e495dd))
+* throttle more timers and use native bind ([#6142](https://github.com/videojs/video.js/issues/6142)) ([6a93c8a](https://github.com/videojs/video.js/commit/6a93c8a))
+
+### Reverts
+
+* "fix(play-toggle): call event.stopPropagation in the click handler ([#5803](https://github.com/videojs/video.js/issues/5803))" ([#6128](https://github.com/videojs/video.js/issues/6128)) ([15ff8f7](https://github.com/videojs/video.js/commit/15ff8f7)), closes [#5624](https://github.com/videojs/video.js/issues/5624) [#6092](https://github.com/videojs/video.js/issues/6092)
+
+<a name="7.6.0"></a>
+# [7.6.0](https://github.com/videojs/video.js/compare/v7.5.4...v7.6.0) (2019-06-20)
+
+### Features
+
+* add 'audio/mp4' mimetype for m4a files ([#5982](https://github.com/videojs/video.js/issues/5982)) ([0f501f9](https://github.com/videojs/video.js/commit/0f501f9))
+* **events:** add any function ([#5977](https://github.com/videojs/video.js/issues/5977)) ([2878c1d](https://github.com/videojs/video.js/commit/2878c1d))
+* **fs:** support FullscreenOptions ([#5856](https://github.com/videojs/video.js/issues/5856)) ([631ac3b](https://github.com/videojs/video.js/commit/631ac3b))
+* **lang:** add Scottish Gaelic (gd.json) translation ([#5972](https://github.com/videojs/video.js/issues/5972)) ([fc21475](https://github.com/videojs/video.js/commit/fc21475))
+* **middleware:** allow middleware to handle volume setter and getter ([#5906](https://github.com/videojs/video.js/issues/5906)) ([322dae4](https://github.com/videojs/video.js/commit/322dae4))
+* add built-in Picture-in-Picture button ([#6002](https://github.com/videojs/video.js/issues/6002)) ([116d84a](https://github.com/videojs/video.js/commit/116d84a)), closes [videojs/font#41](https://github.com/videojs/font/issues/41) [#5824](https://github.com/videojs/video.js/issues/5824)
+* add option to suppress initial error for non-playable sources ([#6057](https://github.com/videojs/video.js/issues/6057)) ([5a538c3](https://github.com/videojs/video.js/commit/5a538c3))
+* add Picture-in-Picture API methods ([#6001](https://github.com/videojs/video.js/issues/6001)) ([83541dc](https://github.com/videojs/video.js/commit/83541dc)), closes [#5824](https://github.com/videojs/video.js/issues/5824)
+* add write method to time tooltips ([#6021](https://github.com/videojs/video.js/issues/6021)) ([204ff46](https://github.com/videojs/video.js/commit/204ff46))
+* allow displaying of multiple text tracks at once ([#5817](https://github.com/videojs/video.js/issues/5817)) ([c61f3d3](https://github.com/videojs/video.js/commit/c61f3d3)), closes [#5798](https://github.com/videojs/video.js/issues/5798)
+
+### Bug Fixes
+
+* always pass event object to click handler ([#6059](https://github.com/videojs/video.js/issues/6059)) ([ca7b633](https://github.com/videojs/video.js/commit/ca7b633))
+* change 'mousedown' to the 'mouseup' event in the player ([#5992](https://github.com/videojs/video.js/issues/5992)) ([075a504](https://github.com/videojs/video.js/commit/075a504))
+* group subtitles and captions when switching tracks ([#6008](https://github.com/videojs/video.js/issues/6008)) ([5a7fe48](https://github.com/videojs/video.js/commit/5a7fe48)), closes [#5741](https://github.com/videojs/video.js/issues/5741)
+* handle esc key properly inside of the CloseButton ([#6050](https://github.com/videojs/video.js/issues/6050)) ([f5fd94f](https://github.com/videojs/video.js/commit/f5fd94f))
+* make sure hotkeys are not triggered outside the player or in form fields within the player ([#5969](https://github.com/videojs/video.js/issues/5969)) ([79eadac](https://github.com/videojs/video.js/commit/79eadac))
+* undeprecate options() ([#6056](https://github.com/videojs/video.js/issues/6056)) ([9d941c0](https://github.com/videojs/video.js/commit/9d941c0)), closes [#6048](https://github.com/videojs/video.js/issues/6048)
+* use performance.now() when possible ([#5870](https://github.com/videojs/video.js/issues/5870)) ([629594e](https://github.com/videojs/video.js/commit/629594e))
+* **fs:** feature detect el.matches() for IE11 ([#6007](https://github.com/videojs/video.js/issues/6007)) ([fded30f](https://github.com/videojs/video.js/commit/fded30f))
+* **lang:** update German translations ([#6058](https://github.com/videojs/video.js/issues/6058)) ([97b66a9](https://github.com/videojs/video.js/commit/97b66a9))
+* **liveui:** do not seek to live on first seek when autoplaying a live stream ([#6062](https://github.com/videojs/video.js/issues/6062)) ([70ba84e](https://github.com/videojs/video.js/commit/70ba84e))
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.10.2 🚀 ([#5991](https://github.com/videojs/video.js/issues/5991)) ([d41794c](https://github.com/videojs/video.js/commit/d41794c))
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.10.3 🚀 ([#6019](https://github.com/videojs/video.js/issues/6019)) ([ef49a9b](https://github.com/videojs/video.js/commit/ef49a9b))
+* **play-toggle:** call event.stopPropagation in the click handler ([#5803](https://github.com/videojs/video.js/issues/5803)) ([2c7644f](https://github.com/videojs/video.js/commit/2c7644f)), closes [#5624](https://github.com/videojs/video.js/issues/5624)
+* **player:** silence rejected fullscreen promise ([#5970](https://github.com/videojs/video.js/issues/5970)) ([4585c08](https://github.com/videojs/video.js/commit/4585c08)), closes [#5918](https://github.com/videojs/video.js/issues/5918)
+
+### Chores
+
+* add a sandbox page for testing autoplay values. ([#5933](https://github.com/videojs/video.js/issues/5933)) ([1eb47f0](https://github.com/videojs/video.js/commit/1eb47f0))
+* add Affects: a11y and switch to outdated label ([#6015](https://github.com/videojs/video.js/issues/6015)) ([1cd9be7](https://github.com/videojs/video.js/commit/1cd9be7))
+* change rollup config so that npm run watch works ([#5966](https://github.com/videojs/video.js/issues/5966)) ([45d1ca9](https://github.com/videojs/video.js/commit/45d1ca9))
+* don't log karma config ([#5955](https://github.com/videojs/video.js/issues/5955)) ([4d626b0](https://github.com/videojs/video.js/commit/4d626b0))
+* **package:** update rollup to version 1.15.1 ([#6042](https://github.com/videojs/video.js/issues/6042)) ([74fde94](https://github.com/videojs/video.js/commit/74fde94)), closes [#6041](https://github.com/videojs/video.js/issues/6041)
+* **package:** update videojs-generate-karma-config to version 5.2.0 🚀 ([#5935](https://github.com/videojs/video.js/issues/5935)) ([7e8c2ee](https://github.com/videojs/video.js/commit/7e8c2ee))
+* **test:** upgrade to latest sinon ([#5954](https://github.com/videojs/video.js/issues/5954)) ([c59ba5f](https://github.com/videojs/video.js/commit/c59ba5f)), closes [#5953](https://github.com/videojs/video.js/issues/5953)
+* fixup merge issue with [#6001](https://github.com/videojs/video.js/issues/6001) ([#6053](https://github.com/videojs/video.js/issues/6053)) ([c2bea31](https://github.com/videojs/video.js/commit/c2bea31))
+* switch to dart-sass ([#6055](https://github.com/videojs/video.js/issues/6055)) ([3e10571](https://github.com/videojs/video.js/commit/3e10571)), closes [#5841](https://github.com/videojs/video.js/issues/5841) [#5841](https://github.com/videojs/video.js/issues/5841) [#5826](https://github.com/videojs/video.js/issues/5826)
+* update dependencies ([#6036](https://github.com/videojs/video.js/issues/6036)) ([882432e](https://github.com/videojs/video.js/commit/882432e)), closes [#6033](https://github.com/videojs/video.js/issues/6033)
+
+### Code Refactoring
+
+* switch to fullscreen.options ([#6054](https://github.com/videojs/video.js/issues/6054)) ([2977d52](https://github.com/videojs/video.js/commit/2977d52))
+* **pip:** rely only on WICG spec events ([#6064](https://github.com/videojs/video.js/issues/6064)) ([10ed08a](https://github.com/videojs/video.js/commit/10ed08a))
+
+### Documentation
+
+* emphasize src object and video-js element ([#5960](https://github.com/videojs/video.js/issues/5960)) ([e1afa3e](https://github.com/videojs/video.js/commit/e1afa3e))
+* update guides markdown ([#6063](https://github.com/videojs/video.js/issues/6063)) ([cf6e0e8](https://github.com/videojs/video.js/commit/cf6e0e8))
+
+### Tests
+
+* restore prototype modifications and fix flaky tests ([#5964](https://github.com/videojs/video.js/issues/5964)) ([a55c51f](https://github.com/videojs/video.js/commit/a55c51f))
+
+<a name="7.5.6"></a>
+## [7.5.6](https://github.com/videojs/video.js/compare/v7.5.5...v7.5.6) (2019-06-20)
+
+### Bug Fixes
+
+* **liveui:** do not seek to live on first seek when autoplaying a live stream ([#6062](https://github.com/videojs/video.js/issues/6062)) ([8777c89](https://github.com/videojs/video.js/commit/8777c89))
+
+<a name="7.5.5"></a>
+## [7.5.5](https://github.com/videojs/video.js/compare/v7.5.4...v7.5.5) (2019-05-30)
+
+### Bug Fixes
+
+* **fs:** feature detect el.matches() for IE11 ([#6007](https://github.com/videojs/video.js/issues/6007)) ([9954470](https://github.com/videojs/video.js/commit/9954470))
+* group subtitles and captions when switching tracks ([#6008](https://github.com/videojs/video.js/issues/6008)) ([cd6be5b](https://github.com/videojs/video.js/commit/cd6be5b)), closes [#5741](https://github.com/videojs/video.js/issues/5741)
+* **fs:** fix isFullscreen check for spec-api ([#6009](https://github.com/videojs/video.js/issues/6009)) ([47d60ae](https://github.com/videojs/video.js/commit/47d60ae)), closes [#5814](https://github.com/videojs/video.js/issues/5814)
+* make sure hotkeys are not triggered outside the player or in form fields within the player ([#5969](https://github.com/videojs/video.js/issues/5969)) ([d251e97](https://github.com/videojs/video.js/commit/d251e97))
+
+<a name="7.5.4"></a>
+## [7.5.4](https://github.com/videojs/video.js/compare/v7.5.3...v7.5.4) (2019-04-12)
+
+### Bug Fixes
+
+* always show the mute button by default in responsive mode ([#5914](https://github.com/videojs/video.js/issues/5914)) ([c85bc00](https://github.com/videojs/video.js/commit/c85bc00))
+* call reset if we are paused or no promises, otherwise wait for play promise to resolve ([#5876](https://github.com/videojs/video.js/issues/5876)) ([5973a62](https://github.com/videojs/video.js/commit/5973a62)), closes [#5875](https://github.com/videojs/video.js/issues/5875)
+* correctly resolve play promise when terminated via middleware ([#5895](https://github.com/videojs/video.js/issues/5895)) ([ad53b80](https://github.com/videojs/video.js/commit/ad53b80))
+* explicitly remove all document-level listeners on player dispose ([#5929](https://github.com/videojs/video.js/issues/5929)) ([458a5ea](https://github.com/videojs/video.js/commit/458a5ea))
+* fix bug preventing control bar from hiding on mobile ([#5836](https://github.com/videojs/video.js/issues/5836)) ([1844482](https://github.com/videojs/video.js/commit/1844482))
+* fix fullscreen detection when player is nested within document fullscreen ([#5912](https://github.com/videojs/video.js/issues/5912)) ([22d0514](https://github.com/videojs/video.js/commit/22d0514))
+* hide the progress control and show the subs-caps button when using Live UI at extra small size ([#5915](https://github.com/videojs/video.js/issues/5915)) ([55b3752](https://github.com/videojs/video.js/commit/55b3752))
+
+### Documentation
+
+* **ModalDialog:** add missing documentation for pauseOnOpen ([#5908](https://github.com/videojs/video.js/issues/5908)) ([b2eae7b](https://github.com/videojs/video.js/commit/b2eae7b))
+
+<a name="7.5.3"></a>
+## [7.5.3](https://github.com/videojs/video.js/compare/v7.5.2...v7.5.3) (2019-03-29)
+
+### Chores
+
+* add a sandbox for HLS ([#5897](https://github.com/videojs/video.js/issues/5897)) ([8e43cff](https://github.com/videojs/video.js/commit/8e43cff))
+
+### Documentation
+
+* **live:** minor spelling/grammar corrections ([#5894](https://github.com/videojs/video.js/issues/5894)) ([6c644fe](https://github.com/videojs/video.js/commit/6c644fe))
+* add an example Vue integration.md ([#5899](https://github.com/videojs/video.js/issues/5899)) ([4c277fd](https://github.com/videojs/video.js/commit/4c277fd))
+
+### Performance Improvements
+
+* **live-tracker:** disable live tracker on IE11 when document is hidden ([#5896](https://github.com/videojs/video.js/issues/5896)) ([511f729](https://github.com/videojs/video.js/commit/511f729)), closes [#5879](https://github.com/videojs/video.js/issues/5879)
+
+<a name="7.5.2"></a>
+## [7.5.2](https://github.com/videojs/video.js/compare/v7.5.1...v7.5.2) (2019-03-25)
+
+### Bug Fixes
+
+* fix audio and video track selection ([#5890](https://github.com/videojs/video.js/issues/5890)) ([3dc6fbf](https://github.com/videojs/video.js/commit/3dc6fbf)), closes [#5887](https://github.com/videojs/video.js/issues/5887)
+
+<a name="7.5.1"></a>
+## [7.5.1](https://github.com/videojs/video.js/compare/v7.5.0...v7.5.1) (2019-03-22)
+
+### Bug Fixes
+
+* add inactivityTimeout to reset cache method ([#5788](https://github.com/videojs/video.js/issues/5788)) ([a72d861](https://github.com/videojs/video.js/commit/a72d861))
+* change max height of menus based on responsive classes. ([#5806](https://github.com/videojs/video.js/issues/5806)) ([d5a3234](https://github.com/videojs/video.js/commit/d5a3234)), closes [#5524](https://github.com/videojs/video.js/issues/5524)
+* do a null check for tech when checking if we can toggle mute ([#5857](https://github.com/videojs/video.js/issues/5857)) ([d07f97d](https://github.com/videojs/video.js/commit/d07f97d))
+* ensure that durationDisplay and remainingTimeDisplay exist before calling their 'updateContent' method during reset() ([#5839](https://github.com/videojs/video.js/issues/5839)) ([e248286](https://github.com/videojs/video.js/commit/e248286)), closes [#5838](https://github.com/videojs/video.js/issues/5838)
+* if play is delayed till loadstart, call load ([#5822](https://github.com/videojs/video.js/issues/5822)) ([f8b7dd4](https://github.com/videojs/video.js/commit/f8b7dd4))
+* update fullscreen detection when player is nested within another fullscreen element ([#5830](https://github.com/videojs/video.js/issues/5830)) ([3fbc4f5](https://github.com/videojs/video.js/commit/3fbc4f5))
+* **lang:** improve Chinese translations ([#5834](https://github.com/videojs/video.js/issues/5834)) ([8532182](https://github.com/videojs/video.js/commit/8532182))
+* **lang:** update and correct occitan translations ([#5829](https://github.com/videojs/video.js/issues/5829)) ([ea8c426](https://github.com/videojs/video.js/commit/ea8c426))
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.9.1 🚀 ([#5840](https://github.com/videojs/video.js/issues/5840)) ([ae378c6](https://github.com/videojs/video.js/commit/ae378c6))
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.9.2 🚀 ([#5865](https://github.com/videojs/video.js/issues/5865)) ([32a43d1](https://github.com/videojs/video.js/commit/32a43d1))
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.9.3 🚀 ([#5883](https://github.com/videojs/video.js/issues/5883)) ([cd6ac9d](https://github.com/videojs/video.js/commit/cd6ac9d)), closes [#5823](https://github.com/videojs/video.js/issues/5823)
+* **resize-manager:** call super.dispose() in dispose method ([#5853](https://github.com/videojs/video.js/issues/5853)) ([6eb9fd3](https://github.com/videojs/video.js/commit/6eb9fd3))
+* use ownerDocument.body.contains for IE11 ([#5872](https://github.com/videojs/video.js/issues/5872)) ([4169ddd](https://github.com/videojs/video.js/commit/4169ddd)), closes [#5831](https://github.com/videojs/video.js/issues/5831)
+* warn on element not in DOM even when from another document ([#5831](https://github.com/videojs/video.js/issues/5831)) ([237b68b](https://github.com/videojs/video.js/commit/237b68b))
+
+### Chores
+
+* **package:** update [@videojs](https://github.com/videojs)/http-streaming to version 1.9.0 🚀 ([#5784](https://github.com/videojs/video.js/issues/5784)) ([3400dc6](https://github.com/videojs/video.js/commit/3400dc6))
+* pin to firefox 64 ([#5793](https://github.com/videojs/video.js/issues/5793)) ([b64ecde](https://github.com/videojs/video.js/commit/b64ecde))
+* **package:** update patch-package to version 6.0.2 ([#5792](https://github.com/videojs/video.js/issues/5792)) ([de9fb58](https://github.com/videojs/video.js/commit/de9fb58)), closes [#5769](https://github.com/videojs/video.js/issues/5769)
+* **package:** update videojs-generate-karma-config to version 5.1.0 🚀 ([#5843](https://github.com/videojs/video.js/issues/5843)) ([d7379f0](https://github.com/videojs/video.js/commit/d7379f0))
+* **text-track:** fix it's/its typo ([#5868](https://github.com/videojs/video.js/issues/5868)) ([92c66ad](https://github.com/videojs/video.js/commit/92c66ad))
+
+### Documentation
+
+* fixes the return value type of the loop method. ([#5789](https://github.com/videojs/video.js/issues/5789)) ([65beb5a](https://github.com/videojs/video.js/commit/65beb5a))
+* Update format information ([#5783](https://github.com/videojs/video.js/issues/5783)) ([76cc310](https://github.com/videojs/video.js/commit/76cc310))
+* **audiotracks:** correct typo ([#5816](https://github.com/videojs/video.js/issues/5816)) ([e612056](https://github.com/videojs/video.js/commit/e612056))
+* **hotkeys:** hotkeys require player focus ([#5859](https://github.com/videojs/video.js/issues/5859)) ([a271eca](https://github.com/videojs/video.js/commit/a271eca)), closes [#5832](https://github.com/videojs/video.js/issues/5832)
+
+### Performance Improvements
+
+* fix an event target memory leak ([#5855](https://github.com/videojs/video.js/issues/5855)) ([20bf42d](https://github.com/videojs/video.js/commit/20bf42d))
+* **player:** turn off all track list listeners on dispose ([#5867](https://github.com/videojs/video.js/issues/5867)) ([c632b24](https://github.com/videojs/video.js/commit/c632b24))
+* **seek-bar:** don't update play progress when document is hidden ([#5879](https://github.com/videojs/video.js/issues/5879)) ([894dd9e](https://github.com/videojs/video.js/commit/894dd9e)), closes [#5575](https://github.com/videojs/video.js/issues/5575)
+* Fix memory leaks in safari, edge, and ie ([#5880](https://github.com/videojs/video.js/issues/5880)) ([142cc67](https://github.com/videojs/video.js/commit/142cc67)), closes [#5878](https://github.com/videojs/video.js/issues/5878)
+* fix more memory leaks ([#5860](https://github.com/videojs/video.js/issues/5860)) ([f01d6f4](https://github.com/videojs/video.js/commit/f01d6f4))
+* Remove `playerEvent` and extra `timeupdate` handler in SeekBar ([#5852](https://github.com/videojs/video.js/issues/5852)) ([a2431ce](https://github.com/videojs/video.js/commit/a2431ce))
+
+### Tests
+
+* check dom-data to verify we aren't leaking memory and event handlers ([#5862](https://github.com/videojs/video.js/issues/5862)) ([6e173b0](https://github.com/videojs/video.js/commit/6e173b0))
+* memory leak fixes in tests ([#5861](https://github.com/videojs/video.js/issues/5861)) ([23a36f3](https://github.com/videojs/video.js/commit/23a36f3))
+
 <a name="7.5.0"></a>
 # [7.5.0](https://github.com/videojs/video.js/compare/v7.4.1...v7.5.0) (2019-01-25)
 

@@ -8,7 +8,7 @@ import log from '../utils/log.js';
 import window from 'global/window';
 import Track from './track.js';
 import { isCrossOrigin } from '../utils/url.js';
-import XHR from 'xhr';
+import XHR from '@videojs/xhr';
 import merge from '../utils/merge-options';
 
 /**
@@ -91,14 +91,15 @@ const loadTrack = function(src, track) {
     // NOTE: this is only used for the alt/video.novtt.js build
     if (typeof window.WebVTT !== 'function') {
       if (track.tech_) {
-        const loadHandler = () => parseCues(responseBody, track);
-
-        track.tech_.on('vttjsloaded', loadHandler);
-        track.tech_.on('vttjserror', () => {
-          log.error(`vttjs failed to load, stopping trying to process ${track.src}`);
-          track.tech_.off('vttjsloaded', loadHandler);
+        // to prevent use before define eslint error, we define loadHandler
+        // as a let here
+        track.tech_.any(['vttjsloaded', 'vttjserror'], (event) => {
+          if (event.type === 'vttjserror') {
+            log.error(`vttjs failed to load, stopping trying to process ${track.src}`);
+            return;
+          }
+          return parseCues(responseBody, track);
         });
-
       }
     } else {
       parseCues(responseBody, track);
@@ -177,7 +178,7 @@ class TextTrack extends Track {
     const timeupdateHandler = Fn.bind(this, function() {
 
       // Accessing this.activeCues for the side-effects of updating itself
-      // due to it's nature as a getter function. Do not remove or cues will
+      // due to its nature as a getter function. Do not remove or cues will
       // stop updating!
       // Use the setter to prevent deletion from uglify (pure_getters rule)
       this.activeCues = this.activeCues;
