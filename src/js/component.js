@@ -100,9 +100,38 @@ class Component {
     this.childIndex_ = {};
     this.childNameIndex_ = {};
 
-    this.setTimeoutIds_ = new Set();
-    this.setIntervalIds_ = new Set();
-    this.rafIds_ = new Set();
+    let SetSham;
+
+    if (!window.Set) {
+      SetSham = class {
+        constructor() {
+          this.set_ = {};
+        }
+        has(key) {
+          return key in this.set_;
+        }
+        delete(key) {
+          const has = this.has(key);
+
+          delete this.set_[key];
+
+          return has;
+        }
+        add(key) {
+          this.set_[key] = 1;
+          return this;
+        }
+        forEach(callback, thisArg) {
+          for (const key in this.set_) {
+            callback.call(thisArg, key, key, this);
+          }
+        }
+      };
+    }
+
+    this.setTimeoutIds_ = window.Set ? new Set() : new SetSham();
+    this.setIntervalIds_ = window.Set ? new Set() : new SetSham();
+    this.rafIds_ = window.Set ? new Set() : new SetSham();
     this.clearingTimersOnDispose_ = false;
 
     // Add any child components in options
@@ -463,8 +492,12 @@ class Component {
     // Add the UI object's element to the container div (box)
     // Having an element is not required
     if (typeof component.el === 'function' && component.el()) {
-      const childNodes = this.contentEl().children;
-      const refNode = childNodes[index] || null;
+      // If inserting before a component, insert before that component's element
+      let refNode = null;
+
+      if (this.children_[index + 1] && this.children_[index + 1].el_) {
+        refNode = this.children_[index + 1].el_;
+      }
 
       this.contentEl().insertBefore(component.el(), refNode);
     }

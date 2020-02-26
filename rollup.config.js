@@ -111,7 +111,6 @@ export default cliargs => [
       format: 'umd',
       file: 'dist/video.js',
       name: 'videojs',
-      strict: false,
       banner,
       globals: globals.browser
     },
@@ -136,13 +135,11 @@ export default cliargs => [
       {
         format: 'es',
         file: 'dist/video.es.js',
-        strict: false,
         banner,
         globals: globals.module
       }, {
         format: 'cjs',
         file: 'dist/video.cjs.js',
-        strict: false,
         banner,
         globals: globals.module
       }
@@ -167,7 +164,6 @@ export default cliargs => [
       format: 'umd',
       file: 'dist/alt/video.novtt.js',
       name: 'videojs',
-      strict: false,
       banner: compiledLicense(Object.assign({includesVtt: true}, bannerData)),
       globals: globals.browser
     },
@@ -186,16 +182,22 @@ export default cliargs => [
     onwarn,
     watch
   },
-  // core
+  // core cjs, es
   {
     input: 'src/js/video.js',
-    output: {
-      format: 'cjs',
-      file: 'core.js',
-      strict: false,
-      banner,
-      globals: globals.module
-    },
+    output: [
+      {
+        format: 'es',
+        file: 'core.es.js',
+        banner,
+        globals: globals.module
+      }, {
+        format: 'cjs',
+        file: 'core.js',
+        banner,
+        globals: globals.module
+      }
+    ],
     external: externals.module,
     plugins: [
       json(),
@@ -212,7 +214,6 @@ export default cliargs => [
       format: 'umd',
       name: 'videojs',
       file: 'dist/alt/video.core.js',
-      strict: false,
       banner,
       globals: globals.browser
     },
@@ -234,7 +235,6 @@ export default cliargs => [
       format: 'umd',
       name: 'videojs',
       file: 'dist/alt/video.core.novtt.js',
-      strict: false,
       banner: compiledLicense(Object.assign({includesVtt: true}, bannerData)),
       globals: globals.browser
     },

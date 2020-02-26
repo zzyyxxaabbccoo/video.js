@@ -21,9 +21,6 @@ const STEP_SECONDS = 10;
 // The multiplier of STEP_SECONDS that PgUp/PgDown move the timeline.
 const PAGE_KEY_MULTIPLIER = 12;
 
-// The interval at which the bar should update as it progresses.
-const UPDATE_REFRESH_INTERVAL = 30;
-
 /**
  * Seek bar and container for the progress bars. Uses {@link PlayProgressBar}
  * as its `bar`.
@@ -52,7 +49,8 @@ class SeekBar extends Slider {
    * @private
    */
   setEventHandlers_() {
-    this.update = Fn.throttle(Fn.bind(this, this.update), UPDATE_REFRESH_INTERVAL);
+    this.update_ = Fn.bind(this, this.update);
+    this.update = Fn.throttle(this.update_, Fn.UPDATE_REFRESH_INTERVAL);
 
     this.on(this.player_, ['ended', 'durationchange', 'timeupdate'], this.update);
     if (this.player_.liveTracker) {
@@ -90,7 +88,7 @@ class SeekBar extends Slider {
       return;
 
     }
-    this.updateInterval = this.setInterval(this.update, UPDATE_REFRESH_INTERVAL);
+    this.updateInterval = this.setInterval(this.update, Fn.UPDATE_REFRESH_INTERVAL);
   }
 
   disableInterval_(e) {
@@ -165,6 +163,11 @@ class SeekBar extends Slider {
 
         this.currentTime_ = currentTime;
         this.duration_ = duration;
+      }
+
+      // update the progress bar time tooltip with the current time
+      if (this.bar) {
+        this.bar.update(Dom.getBoundingClientRect(this.el()), this.getProgress());
       }
     });
 
@@ -335,6 +338,10 @@ class SeekBar extends Slider {
     this.player_.trigger({ type: 'timeupdate', target: this, manuallyTriggered: true });
     if (this.videoWasPlaying) {
       silencePromise(this.player_.play());
+    } else {
+      // We're done seeking and the time has changed.
+      // If the player is paused, make sure we display the correct time on the seek bar.
+      this.update_();
     }
   }
 
