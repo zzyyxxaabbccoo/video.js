@@ -37,3 +37,4 @@ core.js
 
 # Ignore Chinese clones for now.
 lang/zh-Han*.json
+release

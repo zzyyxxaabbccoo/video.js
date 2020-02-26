@@ -3,7 +3,8 @@
  */
 import MenuButton from '../../menu/menu-button.js';
 import Menu from '../../menu/menu.js';
-import PlaybackRateMenuItem from './playback-rate-menu-item.js';
+import SetupMenuItemAutoNext from '../setup-menu/setup-menu-item-autonext.js';
+import SetupMenuItemLoop from '../setup-menu/setup-menu-item-loop.js';
 import Component from '../../component.js';
 import * as Dom from '../../utils/dom.js';
 
@@ -12,7 +13,7 @@ import * as Dom from '../../utils/dom.js';
  *
  * @extends MenuButton
  */
-class PlaybackRateMenuButton extends MenuButton {
+class SetupMenuButton extends MenuButton {
 
   /**
    * Creates an instance of this class.
@@ -26,11 +27,11 @@ class PlaybackRateMenuButton extends MenuButton {
   constructor(player, options) {
     super(player, options);
 
-    this.updateVisibility();
-    this.updateLabel();
+    // this.updateVisibility();
+    // this.updateLabel();
 
-    this.on(player, 'loadstart', this.updateVisibility);
-    this.on(player, 'ratechange', this.updateLabel);
+    // this.on(player, 'loadstart', this.updateVisibility);
+    // this.on(player, 'ratechange', this.updateLabel);
   }
 
   /**
@@ -42,24 +43,11 @@ class PlaybackRateMenuButton extends MenuButton {
   createEl() {
     const el = super.createEl();
 
-    if (this.player().language() === 'en') {
-      this.labelEl_ = Dom.createEl('div', {
-        className: 'vjs-playback-rate-value',
-        innerHTML: '1x'
-      });
-    } else if (this.player().language() === 'zh-cn') {
-      this.labelEl_ = Dom.createEl('div', {
-        className: 'vjs-playback-rate-value',
-        innerHTML: '倍速'
-        // innerHTML: '倍速1x'
-      });
-    } else {
-      this.labelEl_ = Dom.createEl('div', {
-        className: 'vjs-playback-rate-value',
-        innerHTML: '倍速'
-        // innerHTML: '倍速1x'
-      });
-    }
+    this.labelEl_ = Dom.createEl('div', {
+      className: 'vjs-setup-value',
+      innerHTML: ''
+      // innerHTML: '倍速1x'
+    });
 
     el.appendChild(this.labelEl_);
 
@@ -79,11 +67,11 @@ class PlaybackRateMenuButton extends MenuButton {
    *         The DOM `className` for this object.
    */
   buildCSSClass() {
-    return `vjs-playback-rate ${super.buildCSSClass()}`;
+    return `vjs-setup ${super.buildCSSClass()}`;
   }
 
   buildWrapperCSSClass() {
-    return `vjs-playback-rate ${super.buildWrapperCSSClass()}`;
+    return `vjs-setup ${super.buildWrapperCSSClass()}`;
   }
 
   /**
@@ -94,13 +82,11 @@ class PlaybackRateMenuButton extends MenuButton {
    */
   createMenu() {
     const menu = new Menu(this.player());
-    const rates = this.playbackRates();
 
-    if (rates) {
-      for (let i = rates.length - 1; i >= 0; i--) {
-        menu.addChild(new PlaybackRateMenuItem(this.player(), {rate: rates[i] + 'x'}));
-      }
-    }
+    menu.addChild(new SetupMenuItemAutoNext(this.player(), {content: 'Auto Next'}));
+    menu.addChild(new SetupMenuItemLoop(this.player(), {content: 'Loop'}));
+    // menu.addChild(new SetupMenuItemAutoNext(this.player()));
+    // menu.addChild(new SetupMenuItemLoop(this.player()));
 
     return menu;
   }
@@ -110,7 +96,7 @@ class PlaybackRateMenuButton extends MenuButton {
    */
   updateARIAAttributes() {
     // Current playback rate
-    this.el().setAttribute('aria-valuenow', this.player().playbackRate());
+    // this.el().setAttribute('aria-valuenow', this.player().playbackRate());
   }
 
   /**
@@ -148,9 +134,9 @@ class PlaybackRateMenuButton extends MenuButton {
    * @return {Array}
    *         All possible playback rates
    */
-  playbackRates() {
-    return this.options_.playbackRates || (this.options_.playerOptions && this.options_.playerOptions.playbackRates);
-  }
+  // playbackRates() {
+  //   return this.options_.playbackRates || (this.options_.playerOptions && this.options_.playerOptions.playbackRates);
+  // }
 
   /**
    * Get whether playback rates is supported by the tech
@@ -159,13 +145,13 @@ class PlaybackRateMenuButton extends MenuButton {
    * @return {boolean}
    *         Whether changing playback rate is supported
    */
-  playbackRateSupported() {
-    return this.player().tech_ &&
-      this.player().tech_.featuresPlaybackRate &&
-      this.playbackRates() &&
-      this.playbackRates().length > 0
-    ;
-  }
+  // playbackRateSupported() {
+  //   return this.player().tech_ &&
+  //     this.player().tech_.featuresPlaybackRate &&
+  //     this.playbackRates() &&
+  //     this.playbackRates().length > 0
+  //   ;
+  // }
 
   /**
    * Hide playback rate controls when they're no playback rate options to select
@@ -175,13 +161,13 @@ class PlaybackRateMenuButton extends MenuButton {
    *
    * @listens Player#loadstart
    */
-  updateVisibility(event) {
-    if (this.playbackRateSupported()) {
-      this.removeClass('vjs-hidden');
-    } else {
-      this.addClass('vjs-hidden');
-    }
-  }
+  // updateVisibility(event) {
+  //   if (this.playbackRateSupported()) {
+  //     this.removeClass('vjs-hidden');
+  //   } else {
+  //     this.addClass('vjs-hidden');
+  //   }
+  // }
 
   /**
    * Update button label when rate changed
@@ -191,17 +177,13 @@ class PlaybackRateMenuButton extends MenuButton {
    *
    * @listens Player#ratechange
    */
-  updateLabel(event) {
-    if (this.playbackRateSupported()) {
-      // this.labelEl_.innerHTML = '倍速' + this.player().playbackRate() + 'x';
-      if (this.player().language() === 'en') {
-        this.labelEl_.innerHTML = '' + this.player().playbackRate() + 'x';
-      } else {
-        this.labelEl_.innerHTML = '倍速';
-      }
-    }
-    // videojs.log('updateLabel');
-  }
+  // updateLabel(event) {
+  // if (this.playbackRateSupported()) {
+  // this.labelEl_.innerHTML = '倍速' + this.player().playbackRate() + 'x';
+  // this.labelEl_.innerHTML = '';
+  // }
+  // videojs.log('updateLabel');
+  // }
 
 }
 
@@ -211,7 +193,7 @@ class PlaybackRateMenuButton extends MenuButton {
  * @type {string}
  * @private
  */
-PlaybackRateMenuButton.prototype.controlText_ = 'Playback Rate';
+SetupMenuButton.prototype.controlText_ = 'Setup';
 
-Component.registerComponent('PlaybackRateMenuButton', PlaybackRateMenuButton);
-export default PlaybackRateMenuButton;
+Component.registerComponent('SetupMenuButton', SetupMenuButton);
+export default SetupMenuButton;

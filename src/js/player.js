@@ -28,6 +28,8 @@ import mergeOptions from './utils/merge-options.js';
 import {silencePromise, isPromise} from './utils/promise';
 import textTrackConverter from './tracks/text-track-list-converter.js';
 import ModalDialog from './modal-dialog';
+import './control-bar/time-controls/skip-ad-display.js';
+import './control-bar/adLabel.js';
 import Tech from './tech/tech.js';
 import * as middleware from './tech/middleware.js';
 import {ALL as TRACK_TYPES} from './tracks/track-types';
@@ -39,10 +41,13 @@ import keycode from 'keycode';
 // are always included in the video.js package. Importing the modules will
 // execute them and they will register themselves with video.js.
 import './tech/loader.js';
+import './tracks/debug-dialog.js';
 import './poster-image.js';
 import './tracks/text-track-display.js';
 import './loading-spinner.js';
 import './big-play-button.js';
+import './control-bar/play-toggle-mini.js';
+// import './test-1-button.js';
 import './close-button.js';
 import './control-bar/control-bar.js';
 import './error-display.js';
@@ -277,6 +282,42 @@ const DEFAULT_BREAKPOINTS = {
   huge: Infinity
 };
 
+// quality divide
+// bigger
+const DEFAULT_QUALITIES_DIVIDE = [
+  // // 极低 预留不播放
+  // sld: 0, 204800
+  // ld: 250, 460800
+  // std: 500, 870400
+  // hd: 1000, 1228800
+  // sd: 1500, 2048000
+  // // 超高清
+  // shd: 2300,
+  // // 预留
+  // hi1: 4000,
+  // // 预留
+  // hi2: 6000
+  0,
+  250000,
+  500000,
+  1000000,
+  1500000,
+  2300000,
+  4000000,
+  6000000
+];
+
+const DEFAULT_QUALITIES = [
+  'SLD',
+  'LD',
+  'STD',
+  'HD',
+  'SD',
+  'SHD',
+  'HI1',
+  'HI2'
+];
+
 /**
  * An instance of the `Player` class is created when any of the Video.js setup methods
  * are used to initialize a video.
@@ -413,8 +454,18 @@ class Player extends Component {
     // Set poster
     this.poster_ = options.poster || '';
 
+    // set quality
+    if (options.playbackQualities) {
+      // options.playbackQualities[0] = DEFAULT_QUALITIES[3];
+    }
+
     // Set controls
     this.controls_ = !!options.controls;
+
+    // Set miniPlayer
+    this.mini_ = !!options.mini;
+
+    // this.log('mini:' + this.mini_);
 
     // Original tag settings stored in options
     // now remove immediately so native controls don't flash.
@@ -538,7 +589,6 @@ class Player extends Component {
 
     this.breakpoints(this.options_.breakpoints);
     this.responsive(this.options_.responsive);
-
   }
 
   /**
@@ -757,6 +807,10 @@ class Player extends Component {
     // Breaks iPhone, fixed in HTML5 setup.
     Dom.prependTo(tag, el);
     this.children_.unshift(tag);
+
+    tag.oncontextmenu = function() {
+      return false;
+    };
 
     // Set lang attr on player to ensure CSS :lang() in consistent with player
     // if it's been set to something different to the doc
@@ -1072,6 +1126,7 @@ class Player extends Component {
       'playsinline': this.options_.playsinline,
       'preload': this.options_.preload,
       'loop': this.options_.loop,
+      'autoNext': this.options_.autoNext,
       'muted': this.options_.muted,
       'poster': this.poster(),
       'language': this.language(),
@@ -1149,6 +1204,7 @@ class Player extends Component {
     this.on(this.tech_, 'posterchange', this.handleTechPosterChange_);
     this.on(this.tech_, 'textdata', this.handleTechTextData_);
     this.on(this.tech_, 'ratechange', this.handleTechRateChange_);
+    this.on(this.tech_, 'qualitychange', this.handleTechQualityChange_);
 
     this.usingNativeControls(this.techGet_('controls'));
 
@@ -1633,6 +1689,32 @@ class Player extends Component {
   }
 
   /**
+   * Retrigger the `qualitychange` event that was triggered by the {@link Tech}.
+   *
+   * If there were any events queued while the playback rate was zero, fire
+   * those events now.
+   *
+   * @private
+   * @method Player#handleTechQualityChange_
+   * @fires Player#qualitychange
+   * @listens Tech#qualitychange
+   */
+  handleTechQualityChange_() {
+    // if (this.tech_.playbackQuality() > 0 && this.cache_.lastPlaybackQuality === 0) {
+    //   this.queuedCallbacks_.forEach((queued) => queued.callback(queued.event));
+    //   this.queuedCallbacks_ = [];
+    // }
+    this.cache_.lastPlaybackQuality = this.tech_.playbackQuality();
+    /**
+     * Fires when the playing quality of the audio/video is changed
+     *
+     * @event Player#qualitychange
+     * @type {event}
+     */
+    this.trigger('qualitychange');
+  }
+
+  /**
    * Retrigger the `waiting` event that was triggered by the {@link Tech}.
    *
    * @fires Player#waiting
@@ -1816,6 +1898,8 @@ class Player extends Component {
     if (this.options_.loop) {
       this.currentTime(0);
       this.play();
+    } else if (this.options_.autoNext) {
+      log('自动下一集');
     } else if (!this.paused()) {
       this.pause();
     }
@@ -1850,12 +1934,19 @@ class Player extends Component {
    */
   handleTechClick_(event) {
     if (!Dom.isSingleLeftClick(event)) {
+      if (event.button === 2) {
+        // videojs.log('right click: ' + event.clientX + ',' + event.clientY);
+      }
       return;
     }
 
     // When controls are disabled a click should not toggle playback because
     // the click is considered a control
     if (!this.controls_) {
+      return;
+    }
+
+    if (this.mini_) {
       return;
     }
 
@@ -1877,6 +1968,9 @@ class Player extends Component {
    */
   handleTechDoubleClick_(event) {
     if (!this.controls_) {
+      return;
+    }
+    if (this.mini_) {
       return;
     }
 
@@ -2147,6 +2241,7 @@ class Player extends Component {
       duration: NaN,
       lastVolume: 1,
       lastPlaybackRate: this.defaultPlaybackRate(),
+      lastPlaybackQuality: this.defaultPlaybackQuality(),
       media: null,
       src: '',
       source: {},
@@ -2992,6 +3087,8 @@ class Player extends Component {
 
     // set fullscreenKey, muteKey, playPauseKey from `hotkeys`, use defaults if not set
     const {
+      stepForward = keydownEvent => keycode.isEventKey(keydownEvent, 'right'),
+      stepBack = keydownEvent => keycode.isEventKey(keydownEvent, 'left'),
       fullscreenKey = keydownEvent => keycode.isEventKey(keydownEvent, 'f'),
       muteKey = keydownEvent => keycode.isEventKey(keydownEvent, 'm'),
       playPauseKey = keydownEvent => (keycode.isEventKey(keydownEvent, 'k') || keycode.isEventKey(keydownEvent, 'Space'))
@@ -3022,6 +3119,16 @@ class Player extends Component {
       const PlayToggle = Component.getComponent('PlayToggle');
 
       PlayToggle.prototype.handleClick.call(this, event);
+    } else if (stepBack.call(this, event)) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.player_.currentTime(this.player_.currentTime() - 20);
+    } else if (stepForward.call(this, event)) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.player_.currentTime(this.player_.currentTime() + 20);
     }
   }
 
@@ -3308,6 +3415,7 @@ class Player extends Component {
   resetControlBarUI_() {
     this.resetProgressBar_();
     this.resetPlaybackRate_();
+    this.resetPlaybackQuality_();
     this.resetVolumeBar_();
   }
 
@@ -3334,6 +3442,14 @@ class Player extends Component {
   resetPlaybackRate_() {
     this.playbackRate(this.defaultPlaybackRate());
     this.handleTechRateChange_();
+  }
+
+  /**
+   * Reset Playback quality
+   */
+  resetPlaybackQuality_() {
+    this.playbackQuality(this.defaultPlaybackQuality());
+    this.handleTechQualityChange_();
   }
 
   /**
@@ -3504,9 +3620,17 @@ class Player extends Component {
     if (value !== undefined) {
       this.techCall_('setLoop', value);
       this.options_.loop = value;
-      return;
+      this.trigger('loopchange');
     }
     return this.techGet_('loop');
+  }
+
+  autoNext(value) {
+    if (value !== undefined) {
+      this.options_.autoNext = value;
+      this.trigger('autonextchange');
+    }
+    return this.options_.autoNext;
   }
 
   /**
@@ -3631,6 +3755,30 @@ class Player extends Component {
       if (!this.usingNativeControls()) {
         this.removeTechControlsListeners_();
       }
+    }
+  }
+
+  // 
+  miniPlayer(bool) {
+    if (bool === undefined) {
+      return !!this.mini_;
+    }
+
+    bool = !!bool;
+    
+    // Don't trigger a change event unless it actually changed
+    if (this.mini_ === bool) {
+      return;
+    }
+
+    this.mini_ = bool;
+
+    if (this.mini_) {
+      this.addClass('mini-controls');
+      this.controls(false);
+    } else {
+      this.removeClass('mini-controls');
+      this.controls(true);
     }
   }
 
@@ -3960,6 +4108,92 @@ class Player extends Component {
   }
 
   /**
+   * Gets or sets the current playback quality.
+   * quality index
+   *
+   * @param {number} [quality]
+   *       New playback quality index to set.
+   *
+   * @return {number}
+   *         The current playback quality index when getting
+   */
+  playbackQuality(quality) {
+    if (quality !== undefined) {
+      // NOTE: this.cache_.lastPlaybackRate is set from the tech handler
+      // that is registered above
+      this.techCall_('setPlaybackQuality', quality);
+      return;
+    }
+
+    if (this.tech_ && this.tech_.featuresPlaybackQuality) {
+      return this.cache_.lastPlaybackQuality || this.techGet_('playbackQuality');
+    }
+    return 1;
+  }
+
+  clearPlaybackQualityLevel() {
+    Player.prototype.options_.playbackQualities.length = 0;
+    Player.prototype.options_.playbackQualityIndex.length = 0;
+  }
+
+  addPlaybackQualityLevel(qualityLevel, index) {
+    if (Player.prototype.options_.playbackQualities[Player.prototype.options_.playbackQualities.length - 1] === 'ST') {
+      Player.prototype.options_.playbackQualities.pop();
+    }
+    let qualityLabel;
+
+    if (qualityLevel.bitrate < DEFAULT_QUALITIES_DIVIDE[1]) {
+      qualityLevel.enabled = false;
+    } else if (qualityLevel.bitrate <= DEFAULT_QUALITIES_DIVIDE[2]) {
+      qualityLevel.enabled = true;
+      qualityLabel = DEFAULT_QUALITIES[1];
+    } else if (qualityLevel.bitrate <= DEFAULT_QUALITIES_DIVIDE[3]) {
+      qualityLevel.enabled = true;
+      qualityLabel = DEFAULT_QUALITIES[2];
+    } else if (qualityLevel.bitrate <= DEFAULT_QUALITIES_DIVIDE[4]) {
+      qualityLevel.enabled = true;
+      qualityLabel = DEFAULT_QUALITIES[3];
+    } else if (qualityLevel.bitrate <= DEFAULT_QUALITIES_DIVIDE[5]) {
+      qualityLevel.enabled = true;
+      qualityLabel = DEFAULT_QUALITIES[4];
+    } else if (qualityLevel.bitrate <= DEFAULT_QUALITIES_DIVIDE[6]) {
+      qualityLevel.enabled = true;
+      qualityLabel = DEFAULT_QUALITIES[5];
+    } else {
+      qualityLevel.enabled = false;
+    }
+    if (qualityLabel) {
+      Player.prototype.options_.playbackQualities.push(qualityLabel);
+      Player.prototype.options_.playbackQualityIndex.push(index);
+      // videojs.log('[player.js] addPlayebackQualityLevel()'+qualityLabel+' enabled:'+qualityLevel.enabled,' index:'+index);
+    }
+  }
+
+  switchQuality(label) {
+    // videojs.log('[player.js] switchQuality()' + label);
+    const qualities = this.options_.playbackQualities;
+    const indexs = this.options_.playbackQualityIndex;
+
+    const currentIndexInlevels = indexs[qualities.indexOf(label)];
+    const qualityLevelsLength = this.player_.qualityLevels().length;
+
+    for (let i = 0; i < qualityLevelsLength; i++) {
+      if (currentIndexInlevels === i) {
+        this.player_.qualityLevels()[i].enabled = true;
+      } else {
+        this.player_.qualityLevels()[i].enabled = false;
+      }
+    }
+  }
+
+  getCurentQuality() {
+    const qualities = this.options_.playbackQualities || (this.options_.playerOptions && this.options_.playerOptions.playbackQualities);
+    const indexs = this.options_.playbackQualityIndex || (this.options_.playerOptions && this.options_.playerOptions.playbackQualityIndex);
+
+    return qualities[indexs.indexOf(this.qualityLevels().selectedIndex)];
+  }
+
+  /**
    * Gets or sets the current default playback rate. A default playback rate of
    * 1.0 represents normal speed and 0.5 would indicate half-speed playback, for instance.
    * defaultPlaybackRate will only represent what the initial playbackRate of a video was, not
@@ -3983,6 +4217,29 @@ class Player extends Component {
       return this.techGet_('defaultPlaybackRate');
     }
     return 1.0;
+  }
+
+  /**
+   * Gets or sets the current default playback quality.
+   * defaultPlaybackQuality will only represent what the initial playbackQuality of a video was, not
+   * not the current playbackQuality.
+   *
+   * @param {number} [quality]
+   *       New default playback quality to set.
+   *
+   * @return {number|Player}
+   *         - The default playback quality when getting or 1.0
+   *         - the player when setting
+   */
+  defaultPlaybackQuality(quality) {
+    if (quality !== undefined) {
+      return this.techCall_('setDefaultPlaybackQuality', quality);
+    }
+
+    if (this.tech_ && this.tech_.featuresPlaybackQuality) {
+      return this.techGet_('defaultPlaybackQuality');
+    }
+    return 1;
   }
 
   /**
@@ -4500,6 +4757,20 @@ class Player extends Component {
     return mergeOptions(this.cache_.media);
   }
 
+  setAdsLabel(adIndex, clickUrl) {
+    // this.log('=:' + adIndex);
+    // this.log('==--:' + this.getChild('skipADDisplay').name());
+
+    // this.videojs.vol
+
+    if (adIndex === undefined) {
+      this.getChild('adLabel').hide();
+      this.getChild('skipADDisplay').hide();
+    } else {
+      this.getChild('adLabel').updateTextNode(adIndex, clickUrl);
+    }
+  }
+
   /**
    * Gets tag settings
    *
@@ -4666,28 +4937,43 @@ const navigator = window.navigator;
  * @private
  */
 Player.prototype.options_ = {
+  // nextImageUrl: 'https://p2.img.cctvpic.com/apple3g/www/upload/image/20191224/1577173114282005386.jpg',
+  // nextTitle: '中国冷极根河有多冷？这趟穿越大兴安岭的火车自带冰柜',
   // Default order of fallback technology
+  
   techOrder: Tech.defaultTechOrder_,
 
   html5: {},
   flash: {},
 
-  // default inactivity timeout
-  inactivityTimeout: 2000,
+  // default inactivity timeout, 2000
+  inactivityTimeout: 1000,
 
   // default playback rates
   playbackRates: [],
   // Add playback rate selection by adding rates
   // 'playbackRates': [0.5, 1, 1.5, 2],
+
+  // default playback qualities
+  playbackQualities: ['ST'],
+
+  // default playback qualities index
+  playbackQualityIndex: [],
+
   liveui: false,
 
   // Included control sets
   children: [
     'mediaLoader',
+    'debugDialog',
+    'adLabel',
+    'skipADDisplay',
     'posterImage',
     'textTrackDisplay',
     'loadingSpinner',
+    'playToggleMini',
     'bigPlayButton',
+    'test1Button',
     'liveTracker',
     'controlBar',
     'errorDisplay',
@@ -4712,6 +4998,11 @@ Player.prototype.options_ = {
   breakpoints: {},
   responsive: false
 };
+
+/* pic in pic toggle */
+if ('exitPictureInPicture' in document) {
+  Player.prototype.options_.children.push('pictureInPictureToggle');
+}
 
 [
   /**

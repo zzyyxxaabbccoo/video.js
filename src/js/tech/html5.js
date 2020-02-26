@@ -1110,6 +1110,7 @@ Html5.Events = [
   'play',
   'pause',
   'ratechange',
+  'qualitychange',
   'resize',
   'volumechange'
 ];
@@ -1165,6 +1166,7 @@ Html5.Events = [
   ['featuresVolumeControl', 'canControlVolume'],
   ['featuresMuteControl', 'canMuteVolume'],
   ['featuresPlaybackRate', 'canControlPlaybackRate'],
+  // ['featuresPlaybackQuality', 'canControlPlaybackQuality'],
   ['featuresSourceset', 'canOverrideAttributes'],
   ['featuresNativeTextTracks', 'supportsNativeTextTracks'],
   ['featuresNativeVideoTracks', 'supportsNativeVideoTracks'],
@@ -1646,6 +1648,8 @@ Html5.resetMediaElement = function(el) {
    */
   'playbackRate',
 
+  'playbackQuality',
+
   /**
    * Get the value of `defaultPlaybackRate` from the media element. `defaultPlaybackRate` indicates
    * the rate at which the media is currently playing back. This value will not indicate the current
@@ -1663,6 +1667,8 @@ Html5.resetMediaElement = function(el) {
    * @see [Spec]{@link https://www.w3.org/TR/html5/embedded-content-0.html#dom-media-playbackrate}
    */
   'defaultPlaybackRate',
+
+  'defaultPlaybackQuality',
 
   /**
    * Get the value of `played` from the media element. `played` returns a `TimeRange`
@@ -1821,6 +1827,8 @@ Html5.resetMediaElement = function(el) {
    */
   'playbackRate',
 
+  'playbackQuality',
+
   /**
    * Set the value of `defaultPlaybackRate` on the media element. `defaultPlaybackRate` indicates
    * the rate at which the media should play back upon initial startup. Changing this value
@@ -1837,7 +1845,9 @@ Html5.resetMediaElement = function(el) {
    *
    * @see [Spec]{@link https://www.w3.org/TR/html5/embedded-content-0.html#dom-media-defaultplaybackrate}
    */
-  'defaultPlaybackRate'
+  'defaultPlaybackRate',
+
+  'defaultPlaybackQuality'
 
 ].forEach(function(prop) {
   Html5.prototype['set' + toTitleCase(prop)] = function(v) {

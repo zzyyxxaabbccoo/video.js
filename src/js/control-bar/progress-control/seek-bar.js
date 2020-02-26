@@ -16,7 +16,7 @@ import './play-progress-bar.js';
 import './mouse-time-display.js';
 
 // The number of seconds the `step*` functions move the timeline.
-const STEP_SECONDS = 5;
+const STEP_SECONDS = 10;
 
 // The multiplier of STEP_SECONDS that PgUp/PgDown move the timeline.
 const PAGE_KEY_MULTIPLIER = 12;

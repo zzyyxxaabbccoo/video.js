@@ -1,0 +1,21 @@
+// TODO: I feel like this should be a generic menu. Research later.
+.vjs-playback-quality > .vjs-menu-button,
+.vjs-playback-quality .vjs-playback-quality-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vjs-playback-quality .vjs-playback-quality-value {
+  pointer-events: none;
+  font-size: 1.5em;
+  line-height: 2;
+  text-align: center;
+}
+
+.vjs-playback-quality .vjs-menu {
+  width: 4em;
+  left: 0em;
+}

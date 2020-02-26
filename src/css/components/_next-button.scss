@@ -1,0 +1,7 @@
+.video-js .vjs-next-control {
+  cursor: pointer;
+}
+.video-js .vjs-next-control .vjs-icon-placeholder {
+  @include flex(none);
+  @extend .vjs-icon-spinner;
+}

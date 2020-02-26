@@ -35,11 +35,29 @@ class Menu extends Component {
 
     this.focusedChild_ = -1;
 
-    this.on('keydown', this.handleKeyDown);
+    this.on('mouseover', this.handleMouseOver);
+    this.on('mouseout', this.handleMouseOut);
+
+    // delete keyboard operate
+    // this.on('keydown', this.handleKeyDown);
 
     // All the menu item instances share the same blur handler provided by the menu container.
     this.boundHandleBlur_ = Fn.bind(this, this.handleBlur);
     this.boundHandleTapClick_ = Fn.bind(this, this.handleTapClick);
+  }
+
+  handleMouseOver(event) {
+
+    if (this.parentComponent_ && this.parentComponent_.hasClass('vjs-menu-button-popup') && !this.hasClass('vjs-hover')) {
+      this.parentComponent_.addClass('vjs-hover');
+    }
+    // this.player().log('menu mouseover');
+  }
+  handleMouseOut(event) {
+    if (this.parentComponent_ && this.parentComponent_.hasClass('vjs-menu-button-popup') && !this.hasClass('vjs-hover')) {
+      this.parentComponent_.removeClass('vjs-hover');
+    }
+    // this.player().log('menu mouseout');
   }
 
   /**

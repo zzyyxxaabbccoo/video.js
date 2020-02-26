@@ -56,7 +56,7 @@
     "watch:css:cdn": "npm run build:css:cdn -- --watch",
     "assets": "node build/assets.js",
     "lint": "vjsstandard",
-    "lint-errors": "vjsstandard --errors",
+    "lint-errors": "vjsstandard --errors --fix",
     "karma-server": "karma start test/karma.conf.js --singleRun=false --auto-watch",
     "pretest": "npm run build-dev",
     "test": "npm-run-all -p test:*",
@@ -80,14 +80,17 @@
     "url": "https://github.com/videojs/video.js.git"
   },
   "dependencies": {
-    "@videojs/http-streaming": "1.10.6",
     "@babel/runtime": "^7.5.5",
+    "@videojs/http-streaming": "1.10.6",
+    "@videojs/xhr": "2.5.1",
+    "acorn": "^6.3.0",
     "global": "4.3.2",
     "keycode": "^2.2.0",
+    "repeat-string": "^1.6.1",
     "safe-json-parse": "4.0.0",
+    "videojs-contrib-quality-levels": "^2.0.9",
     "videojs-font": "3.2.0",
-    "videojs-vtt.js": "^0.14.1",
-    "@videojs/xhr": "2.5.1"
+    "videojs-vtt.js": "^0.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",

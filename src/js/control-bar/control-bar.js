@@ -6,6 +6,8 @@ import document from 'global/document';
 
 // Required children
 import './play-toggle.js';
+// import './next-button.js';
+import './next/next-panel.js';
 import './time-controls/current-time-display.js';
 import './time-controls/duration-display.js';
 import './time-controls/time-divider.js';
@@ -14,8 +16,11 @@ import './live-display.js';
 import './seek-to-live.js';
 import './progress-control/progress-control.js';
 import './picture-in-picture-toggle.js';
+import './webfullscreen-toggle.js';
 import './fullscreen-toggle.js';
 import './volume-panel.js';
+// import './setup-button.js';
+import './setup-menu/Setup-menubutton.js'
 import './text-track-controls/chapters-button.js';
 import './text-track-controls/descriptions-button.js';
 import './text-track-controls/subtitles-button.js';
@@ -23,6 +28,7 @@ import './text-track-controls/captions-button.js';
 import './text-track-controls/subs-caps-button.js';
 import './audio-track-controls/audio-track-button.js';
 import './playback-rate-menu/playback-rate-menu-button.js';
+import './playback-quality-menu/playback-quality-menu-button.js';
 import './spacer-controls/custom-control-spacer.js';
 
 /**
@@ -55,30 +61,37 @@ class ControlBar extends Component {
 ControlBar.prototype.options_ = {
   children: [
     'playToggle',
-    'volumePanel',
+    // 'nextButton',
+    'nextPanel',
+    // 'volumePanel',
     'currentTimeDisplay',
     'timeDivider',
     'durationDisplay',
-    'progressControl',
+    // 'progressControl',
     'liveDisplay',
     'seekToLive',
     'remainingTimeDisplay',
     'customControlSpacer',
     'playbackRateMenuButton',
+    'playbackQualityMenuButton',
     'chaptersButton',
     'descriptionsButton',
     'subsCapsButton',
     'audioTrackButton',
-    'fullscreenToggle'
+    'setupMenuButton',
+    'volumePanel',
+    'webfullscreenToggle',
+    'fullscreenToggle',
+    'progressControl'
   ]
 };
 
 if ('exitPictureInPicture' in document) {
-  ControlBar.prototype.options_.children.splice(
-    ControlBar.prototype.options_.children.length - 1,
-    0,
-    'pictureInPictureToggle'
-  );
+//   ControlBar.prototype.options_.children.splice(
+//     ControlBar.prototype.options_.children.length - 1,
+//     0,
+//     'pictureInPictureToggle'
+//   );
 }
 
 Component.registerComponent('ControlBar', ControlBar);

@@ -1060,6 +1060,14 @@ Tech.prototype.featuresFullscreenResize = false;
 Tech.prototype.featuresPlaybackRate = false;
 
 /**
+ * Boolean indicating whether the `Tech` supports changing video quality.
+ *
+ * @type {boolean}
+ * @default
+ */
+Tech.prototype.featuresPlaybackQuality = true;
+
+/**
  * Boolean indicating whether the `Tech` supports the `progress` event. This is currently
  * not triggered by video-js-swf. This will be used to determine if
  * {@link Tech#manualProgressOn} should be called.
