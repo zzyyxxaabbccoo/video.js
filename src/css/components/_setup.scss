@@ -1,0 +1,8 @@
+.video-js .vjs-setup-control {
+    cursor: pointer;
+    @include flex(none);
+  
+    & .vjs-icon-placeholder {
+      @extend .vjs-icon-cog;
+    }
+  }

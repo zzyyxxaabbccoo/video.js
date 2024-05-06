@@ -1,0 +1,12 @@
+.video-js .vjs-webfullscreen-control {
+  cursor: pointer;
+  @include flex(none);
+
+  & .vjs-icon-placeholder {
+    @extend .vjs-icon-webfullscreen-enter !optional;
+  }
+}
+// Switch to the exit icon when the player is in webfullscreen
+.video-js.vjs-webfullscreen .vjs-webfullscreen-control .vjs-icon-placeholder {
+  @extend .vjs-icon-webfullscreen-exit !optional;
+}

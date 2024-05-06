@@ -19,3 +19,17 @@
   display: none;
   line-height: 3em;
 }
+
+// 屏蔽广告时的时间显示
+.vjs-ad-skip-time {
+  display: none;
+}
+
+.vjs-ad-playing .vjs-ad-skip-time {
+  display: unset;
+  position: absolute ;
+  top: 10px;
+  right: 30px;
+  line-height: 48px;
+  height: 48px;
+}
