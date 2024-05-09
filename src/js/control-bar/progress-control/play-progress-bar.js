@@ -82,7 +82,7 @@ PlayProgressBar.prototype.options_ = {
 
 // Time tooltips should not be added to a player on mobile devices
 if (!IS_IOS && !IS_ANDROID) {
-  PlayProgressBar.prototype.options_.children.push('timeTooltip');
+  // PlayProgressBar.prototype.options_.children.push('timeTooltip');
 }
 
 Component.registerComponent('PlayProgressBar', PlayProgressBar);

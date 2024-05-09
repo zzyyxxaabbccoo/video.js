@@ -4,6 +4,7 @@
 import Button from './button.js';
 import Component from './component.js';
 import {isPromise, silencePromise} from './utils/promise';
+import * as Dom from './utils/dom.js';
 
 /**
  * The initial play button that shows before the video has played. The hiding of the
@@ -18,6 +19,16 @@ class BigPlayButton extends Button {
     this.mouseused_ = false;
 
     this.setIcon('play');
+    const delayShowBigButton = true;
+
+    if (delayShowBigButton) {
+      this.hide();
+      this.one(player, 'canplay', this.beforeShow);
+      this.one(player, 'canplaythrough', this.show);
+    }
+
+    // block context menu on touch devices
+    Dom.blockContextMenu(this.el());
 
     this.on('mousedown', (e) => this.handleMouseDown(e));
   }
@@ -30,6 +41,29 @@ class BigPlayButton extends Button {
    */
   buildCSSClass() {
     return 'vjs-big-play-button';
+  }
+
+  /**
+   * 显示
+   */
+  show() {
+    if (this.player().options().debug) {
+      this.player().log('show-bigplaybutton');
+    }
+    // if (videojs.browser.IS_SAFARI) {
+    //    this.player().log('super-bigplaybutton');
+    // }
+    super.show();
+  }
+
+  /**
+   * 延迟0.1秒后显示
+   */
+  beforeShow() {
+    // this.player().log('beforeShow');
+    this.setTimeout(function() {
+      this.show();
+    }, 100);
   }
 
   /**

@@ -118,6 +118,7 @@ class Button extends ClickableComponent {
     // prevent the event from propagating through the DOM and triggering Player
     // hotkeys. We do not preventDefault here because we _want_ the browser to
     // handle it.
+    // #todo 后续验证下是否需要屏蔽此段代码
     if (keycode.isEventKey(event, 'Space') || keycode.isEventKey(event, 'Enter')) {
       event.stopPropagation();
       return;

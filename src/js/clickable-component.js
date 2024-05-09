@@ -246,7 +246,8 @@ class ClickableComponent extends Component {
     if (keycode.isEventKey(event, 'Space') || keycode.isEventKey(event, 'Enter')) {
       event.preventDefault();
       event.stopPropagation();
-      this.trigger('click');
+      // 屏蔽键盘 空格/回车 产生的点击操作
+      // this.trigger('click');
     } else {
 
       // Pass keypress handling up for unsupported keys
