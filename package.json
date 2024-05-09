@@ -16,8 +16,8 @@
     "video",
     "videojs"
   ],
-  "playerversion": "3.1.0",
-  "updatedate": "24-4-29",
+  "playerversion": "3.10.0",
+  "updatedate": "24-5-9",
   "scripts": {
     "sandbox": "node build/sandbox.js",
     "prestart": "npm-run-all sandbox",
@@ -28,6 +28,7 @@
     "build": "npm-run-all build-dev minify copy zip h5vod",
     "build-ftp": "npm-run-all build-dev minify copy zip h5vod h5vod-ftp",
     "build-dev": "npm-run-all clean lint-errors build:js build:css build:lang build:test build:types",
+    "dev": "npm-run-all build-dev minify copy zip",
     "build:test": "npm-run-all build:test:*",
     "build:test:a11y": "shx cp sandbox/descriptions.html.example sandbox/descriptions.test-a11y.html",
     "build:test:browserify": "browserify test/require/browserify.js -o test/dist/browserify.js",
@@ -35,8 +36,8 @@
     "copy": "npm-run-all copy:*",
     "copy:fonts": "shx cp -R node_modules/videojs-font/fonts dist/font",
     "copy:examples": "shx cp -R docs/examples dist/",
-    "prebuild:css": "shx cp -R /Users/wh/git/vjs-font/font/scss/_icons.scss  src/css/_icons2.scss",
     "build:js": "rollup -c",
+    "prebuild:css": "shx cp -R /Users/wh/git/vjs-font/font/scss/_icons.scss  src/css/_icons2.scss",
     "build:css": "npm-run-all build:css:*",
     "build:css:cdn": "sass --load-path='./' --load-path='./node_modules/' --no-source-map src/css/vjs-cdn.scss dist/alt/video-js-cdn.css",
     "build:types": "tsc",
@@ -81,10 +82,12 @@
     "prepublishOnly": "run-p build",
     "version": "is-prerelease || npm run changelog && git add CHANGELOG.md",
     "zip": "cd dist && cross-env bestzip \"./video-js-${npm_package_version}.zip\" * && cd ..",
-    "h5vod": "npm-run-all h5vod-cvideo h5vod-cvideo2 h5vod-clang h5vod-cleancss-v3 h5vod-cleancss-ipanda h5vod-cleancss-standard h5vod-cleancss-cvp-cctv h5vod-cleancss-cvp-ipanda h5vod-cleancss-cvp",
-    "h5vod-cvideo": "shx cp dist/video.min.js /Library/WebServer/Documents/h5vod/video_novhs.min.js",
-    "h5vod-cvideo2": "shx cp dist/video.js /Library/WebServer/Documents/h5vod/video_novhs.js",
-    "h5vod-clang": "shx cp dist/lang/zh-CN.js /Library/WebServer/Documents/h5vod/zh-CN.js",
+    "h5vod": "npm-run-all h5vod-c-v h5vod-c-v-min h5vod-c-lang h5vod-cleancss-v3 h5vod-cleancss-ipanda h5vod-cleancss-standard h5vod-cleancss-cvp-cctv h5vod-cleancss-cvp-ipanda h5vod-cleancss-cvp",
+    "h5vod-c-video": "shx cp dist/video.js /Library/WebServer/Documents/h5vod/video_novhs.js",
+    "h5vod-c-video-min": "shx cp dist/video.min.js /Library/WebServer/Documents/h5vod/video_novhs.min.js",
+    "h5vod-c-v": "shx cp dist/video.js /Library/WebServer/Documents/h5vod/v-novhs.\"${npm_package_playerversion}\".js",
+    "h5vod-c-v-min": "shx cp dist/video.min.js /Library/WebServer/Documents/h5vod/v-novhs.\"${npm_package_playerversion}\".min.js",
+    "h5vod-c-lang": "shx cp dist/lang/zh-CN.js /Library/WebServer/Documents/h5vod/zh-CN.js",
     "h5vod-cleancss-v3": "cleancss dist/video-js.css src/css/whs/whs-v3.css -o /Library/WebServer/Documents/h5vod/css/vodh5player-v3.min.css",
     "h5vod-cleancss-ipanda": "cleancss dist/video-js.css src/css/whs/whs-ipanda.css -o /Library/WebServer/Documents/h5vod/css/vodh5player-ipanda.min.css",
     "h5vod-cleancss-standard": "cleancss dist/video-js.css src/css/whs/whs-standard.css -o /Library/WebServer/Documents/h5vod/css/vodh5player-standard.min.css",
@@ -94,11 +97,11 @@
     "h5vod-ftp": "exec /Library/WebServer/Documents/h5vod/cmd/putvjs.sh",
     "gitlab": "npm-run-all rm-comment:* copy-lab:*",
     "rm-comment:js": "grunt default",
-    "copy-lab:lang":"shx cp -R lang/zh* lang/en*  ../gitlab_vjs/lang/",
-    "copy-lab:test":"shx cp -R test ../gitlab_vjs/",
-    "copy-lab:build":"shx cp -R build ../gitlab_vjs/",
-    "copy-lab:sandbox":"shx cp -R sandbox ../gitlab_vjs/",
-    "copy-lab:others":"shx cp -R rollup.config.js postcss.config.js LICENSE  ../gitlab_vjs/"
+    "copy-lab:lang": "shx cp -R lang/zh* lang/en*  ../gitlab_vjs/lang/",
+    "copy-lab:test": "shx cp -R test ../gitlab_vjs/",
+    "copy-lab:build": "shx cp -R build ../gitlab_vjs/",
+    "copy-lab:sandbox": "shx cp -R sandbox ../gitlab_vjs/",
+    "copy-lab:others": "shx cp -R rollup.config.js postcss.config.js LICENSE  ../gitlab_vjs/"
   },
   "repository": {
     "type": "git",
@@ -116,12 +119,12 @@
     "mpd-parser": "^1.2.2",
     "mux.js": "^7.0.1",
     "safe-json-parse": "4.0.0",
+    "store": "^2.0.12",
+    "js-cookie": "^3.0.1",
+    "videojs-contrib-ads": "^7.3.5",
     "videojs-contrib-quality-levels": "4.0.0",
     "videojs-font": "4.1.0",
-    "videojs-vtt.js": "0.15.5",
-    "store": "^2.0.12",
-    "videojs-contrib-ads": "^7.3.5",
-    "js-cookie": "^3.0.1"
+    "videojs-vtt.js": "0.15.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -145,6 +148,10 @@
     "es6-shim": "^0.35.6",
     "filesize": "^4.1.2",
     "gh-release": "^6.0.4",
+    "grunt": "^1.6.1",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-shell": "^4.0.0",
     "humanize-duration": "^3.26.0",
     "husky": "^1.3.1",
     "is-ci": "^3.0.0",
@@ -191,11 +198,7 @@
     "videojs-generate-karma-config": "^8.0.1",
     "videojs-languages": "^2.0.0",
     "videojs-standard": "^9.0.1",
-    "webpack": "^1.15.0",
-    "grunt": "^1.6.1",
-    "grunt-contrib-uglify": "^5.2.2",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-shell": "^4.0.0"
+    "webpack": "^1.15.0"
   },
   "vjsstandard": {
     "ignore": [
