@@ -4,6 +4,7 @@
 import Component from '../component.js';
 
 // Required children
+import './control-bar-background.js';
 import './play-toggle.js';
 import './time-controls/current-time-display.js';
 import './time-controls/duration-display.js';
@@ -62,6 +63,7 @@ class ControlBar extends Component {
  */
 ControlBar.prototype.options_ = {
   children: [
+    'ControlBarBackground',
     'playToggle',
     'skipBackward',
     'skipForward',
@@ -80,9 +82,9 @@ ControlBar.prototype.options_ = {
     'descriptionsButton',
     'subsCapsButton',
     'audioTrackButton',
-    'pictureInPictureToggle',
-    'setupMenuButton',
+    // 'pictureInPictureToggle',
     'volumePanel',
+    'setupMenuButton',
     'webfullscreenToggle',
     'fullscreenToggle',
     'progressControl',

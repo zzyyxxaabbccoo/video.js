@@ -887,6 +887,48 @@ export function copyStyleSheetsToWindow(win) {
 }
 
 /**
+ * Check if an event was a single right click.
+ *
+ * @param  {EventTarget~Event} event
+ *         Event object.
+ *
+ * @return {boolean}
+ *         Will be `true` if a single right click, `false` otherwise.
+ */
+export function isSingleRightClick(event) {
+  if (event.button === undefined && event.buttons === undefined) {
+    // Why do we need `buttons` ?
+    // Because, middle mouse sometimes have this:
+    // e.button === 0 and e.buttons === 4
+    // Furthermore, we want to prevent combination click, something like
+    // HOLD middlemouse then left click, that would be
+    // e.button === 0, e.buttons === 5
+    // just `button` is not gonna work
+
+    // Alright, then what this block does ?
+    // this is for chrome `simulate mobile devices`
+    // I want to support this as well
+
+    return false;
+  }
+
+  if (event.button === 2 && event.buttons === undefined) {
+    // Touch screen, sometimes on some specific device, `buttons`
+    // doesn't have anything (safari on ios, blackberry...)
+
+    return true;
+  }
+
+  // `mouseup` event on a single left click has
+  // `button` and `buttons` equal to 0
+  if (event.type === 'mouseup' && event.button === 2 &&
+      event.buttons === 2) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * 屏蔽右键菜单
  */
 export function blockContextMenu(dom) {

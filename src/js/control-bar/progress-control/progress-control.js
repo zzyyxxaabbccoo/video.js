@@ -235,6 +235,20 @@ class ProgressControl extends Component {
 
     this.removeListenersAddedOnMousedownAndTouchstart();
   }
+
+  showCuePointPreview(index, guid, title, start) {
+    const cuePointPreview = this.getChild('cuePointPreview');
+
+    cuePointPreview.show();
+    cuePointPreview.updateCue(index, guid, title, start);
+  }
+
+  hideCuePointPreview() {
+    const cuePointPreview = this.getChild('cuePointPreview');
+
+    cuePointPreview.hide();
+  }
+
 }
 
 /**

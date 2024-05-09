@@ -564,7 +564,11 @@ class Component {
     const useEl = document.createElementNS(xmlnsURL, 'use');
 
     svgEl.appendChild(useEl);
-    useEl.setAttributeNS(null, 'href', `#vjs-icon-${iconName}`);
+    if (iconName.indexOf('cvp-icon-') === 0) {
+      useEl.setAttributeNS(null, 'href', `#${iconName}`);
+    } else {
+      useEl.setAttributeNS(null, 'href', `#vjs-icon-${iconName}`);
+    }
     iconContainer.appendChild(svgEl);
 
     // Replace a pre-existing icon if one exists.

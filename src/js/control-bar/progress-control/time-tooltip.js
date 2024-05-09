@@ -54,7 +54,7 @@ class TimeTooltip extends Component {
   update(seekBarRect, seekBarPoint, content) {
     const tooltipRect = Dom.findPosition(this.el_);
     const playerRect = Dom.getBoundingClientRect(this.player_.el());
-    const seekBarPointPx = seekBarRect.width * seekBarPoint;
+    // const seekBarPointPx = seekBarRect.width * seekBarPoint;
 
     // do nothing if either rect isn't available
     // for example, if the player isn't in the DOM for testing
@@ -66,14 +66,14 @@ class TimeTooltip extends Component {
     // of the player. We calculate any gap between the left edge of the player
     // and the left edge of the `SeekBar` and add the number of pixels in the
     // `SeekBar` before hitting the `seekBarPoint`
-    const spaceLeftOfPoint = (seekBarRect.left - playerRect.left) + seekBarPointPx;
+    // const spaceLeftOfPoint = (seekBarRect.left - playerRect.left) + seekBarPointPx;
 
     // This is the space right of the `seekBarPoint` available within the bounds
     // of the player. We calculate the number of pixels from the `seekBarPoint`
     // to the right edge of the `SeekBar` and add to that any gap between the
     // right edge of the `SeekBar` and the player.
-    const spaceRightOfPoint = (seekBarRect.width - seekBarPointPx) +
-      (playerRect.right - seekBarRect.right);
+    // const spaceRightOfPoint = (seekBarRect.width - seekBarPointPx) +
+    //   (playerRect.right - seekBarRect.right);
 
     // This is the number of pixels by which the tooltip will need to be pulled
     // further to the right to center it over the `seekBarPoint`.
@@ -81,11 +81,15 @@ class TimeTooltip extends Component {
 
     // Adjust the `pullTooltipBy` distance to the left or right depending on
     // the results of the space calculations above.
-    if (spaceLeftOfPoint < pullTooltipBy) {
-      pullTooltipBy += pullTooltipBy - spaceLeftOfPoint;
-    } else if (spaceRightOfPoint < pullTooltipBy) {
-      pullTooltipBy = spaceRightOfPoint;
-    }
+    // if (spaceLeftOfPoint < pullTooltipBy) {
+    //   pullTooltipBy += pullTooltipBy - spaceLeftOfPoint;
+    // } else if (spaceRightOfPoint < pullTooltipBy) {
+    //   pullTooltipBy = spaceRightOfPoint;
+    // }
+
+    // this.player().log('seekBarRect.left:' + seekBarRect.left, 'seekBarRect.right:' + seekBarRect.right, 'seekBarPoint:' + seekBarPoint, 'seekBarPointPx:' + seekBarPointPx);
+    // this.player().log('seekBarRect.width:' + seekBarRect.width, 'playerRect.left:' + playerRect.left, 'playerRect.right:' + playerRect.right);
+    // this.player().log('spaceLeftOfPoint:' + spaceLeftOfPoint, 'spaceRightOfPoint:' + spaceRightOfPoint);
 
     // Due to the imprecision of decimal/ratio based calculations and varying
     // rounding behaviors, there are cases where the spacing adjustment is off

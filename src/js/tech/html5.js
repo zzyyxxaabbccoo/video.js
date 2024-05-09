@@ -1212,6 +1212,7 @@ Html5.Events = [
   'play',
   'pause',
   'ratechange',
+  'qualitychange',
   'resize',
   'volumechange'
 ];
@@ -1743,6 +1744,15 @@ Html5.resetMediaElement = function(el) {
   'defaultPlaybackRate',
 
   /**
+   * 新增码率改变
+   */
+  'playbackQuality',
+  /**
+   * 新增默认码率
+   */
+  'defaultPlaybackQuality',
+
+  /**
    * Get the value of 'disablePictureInPicture' from the video element.
    *
    * @method Html5#disablePictureInPicture
@@ -1944,6 +1954,15 @@ Html5.resetMediaElement = function(el) {
    * @see [Spec]{@link https://www.w3.org/TR/html5/embedded-content-0.html#dom-media-defaultplaybackrate}
    */
   'defaultPlaybackRate',
+
+  /**
+   * 新增码率
+   */
+  'playbackQuality',
+  /**
+   * 新增加默认码率
+   */
+  'defaultPlaybackQuality',
 
   /**
    * Prevents the browser from suggesting a Picture-in-Picture context menu

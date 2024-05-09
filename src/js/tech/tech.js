@@ -1130,6 +1130,14 @@ TRACK_TYPES.ALL.names.forEach(function(name) {
  */
 
 /**
+ * Boolean indicating whether the `Tech` supports changing video quality.
+ *
+ * @type {boolean}
+ * @default
+ */
+Tech.prototype.featuresPlaybackQuality = true;
+
+/**
  * Boolean indicating whether the `Tech` supports volume control.
  *
  * @type {boolean}

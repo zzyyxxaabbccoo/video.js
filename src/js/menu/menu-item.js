@@ -41,6 +41,9 @@ class MenuItem extends ClickableComponent {
       }
     } else {
       this.el_.setAttribute('role', 'menuitem');
+
+      this.off('mouseover', this.handleMouseOver);
+      this.off('mouseout', this.handleMouseOut);
     }
   }
 

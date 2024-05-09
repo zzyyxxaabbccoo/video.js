@@ -23,6 +23,7 @@ class PlaybackRateMenuButton extends MenuButton {
    *        The key/value store of player options.
    */
   constructor(player, options) {
+    options.title = '播放速度';
     super(player, options);
 
     this.menuButton_.el_.setAttribute('aria-describedby', this.labelElId_);
@@ -57,15 +58,15 @@ class PlaybackRateMenuButton extends MenuButton {
       this.labelEl_ = Dom.createEl('div', {
         className: 'vjs-playback-rate-value',
         id: this.labelElId_,
-        innerHTML: '倍速'
-        // innerHTML: '倍速1x'
+        innerHTML: '播速'
+
       });
     } else {
       this.labelEl_ = Dom.createEl('div', {
         className: 'vjs-playback-rate-value',
         id: this.labelElId_,
         // textContent: '1x'
-        innerHTML: '倍速'
+        innerHTML: '播速'
       });
     }
 
@@ -173,9 +174,13 @@ class PlaybackRateMenuButton extends MenuButton {
     if (this.playbackRateSupported()) {
       // this.labelEl_.textContent = this.player().playbackRate() + 'x';
       if (this.player().language() === 'en') {
-        this.labelEl_.innerHTML = '' + this.player().playbackRate() + 'x';
+        if (this.player().playbackRate() === 1) {
+          this.labelEl_.innerHTML = this.localize('rate');
+        } else {
+          this.labelEl_.innerHTML = '' + this.player().playbackRate() + 'x';
+        }
       } else {
-        this.labelEl_.innerHTML = '倍速';
+        this.labelEl_.innerHTML = '播速';
       }
     }
   }
