@@ -5,6 +5,7 @@ import ClickableComponent from './clickable-component.js';
 import Component from './component.js';
 import * as Dom from './utils/dom.js';
 import {silencePromise} from './utils/promise';
+import videojs from './video.js';
 
 /**
  * A `ClickableComponent` that handles showing the poster image for the player.
@@ -25,10 +26,55 @@ class PosterImage extends ClickableComponent {
   constructor(player, options) {
     super(player, options);
 
+    // 解决safari 前置广告问题
+    // 如果浏览器是safari，只有在canplaythrough事件后才可以点击海报图
+    if (videojs.browser.IS_SAFARI) {
+      this.canplayStart(false);
+      this.on(player, 'canplaythrough', this.canplaythroughHandler);
+    } else {
+      this.canplayStart(true);
+    }
+
+    // 起播海报默认改为隐藏，延迟200ms后显示，解决图片有缓存是会立即显示导致闪现的问题
+    this.hide();
+
+    // block context menu on touch devices
+    Dom.blockContextMenu(this.el());
+
     this.update();
 
     this.update_ = (e) => this.update(e);
     player.on('posterchange', this.update_);
+  }
+
+  /**
+   * Handle `canplaythrough` events on the player and start the poster image
+   * fading in if the video is playing.
+   *
+   * @param {EventTarget~Event} event
+   *        The `canplaythrough` event that caused this to run.
+   *
+   * @listens Player#canplaythrough
+   */
+  canplaythroughHandler() {
+    this.canplayStart(true);
+  }
+
+  /**
+   * 是否允许播放
+   *
+   * @param {boolean} [value]
+   *        The value to set the canplayStart to.
+   *
+   * @return {boolean}
+   *         - The current canplayStart value of the `Player` when getting.
+   *         - undefined when setting
+   */
+  canplayStart(value) {
+    if (value !== undefined) {
+      this.canplay_ = value;
+    }
+    return this.canplay_;
   }
 
   /**
@@ -106,10 +152,16 @@ class PosterImage extends ClickableComponent {
     // If there's no poster source we should display:none on this component
     // so it's not still clickable or right-clickable
     if (url) {
-      this.show();
+      // this.show();
+      this.setTimeout(this.show, 200);
     } else {
       this.hide();
     }
+  }
+
+  show() {
+    // this.player().log('[postimage] show');
+    super.show();
   }
 
   /**
@@ -159,6 +211,11 @@ class PosterImage extends ClickableComponent {
    +        The `click`, `tap` or `keydown` event that caused this function to be called.
    */
   handleClick(event) {
+    // 如果canplay() 返回false 点击海报不开始播放
+    if (this.canplayStart() !== true) {
+      return;
+    }
+
     // We don't want a click to trigger playback when controls are disabled
     if (!this.player_.controls()) {
       return;

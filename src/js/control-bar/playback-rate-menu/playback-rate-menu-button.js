@@ -46,11 +46,28 @@ class PlaybackRateMenuButton extends MenuButton {
 
     this.labelElId_ = 'vjs-playback-rate-value-label-' + this.id_;
 
-    this.labelEl_ = Dom.createEl('div', {
-      className: 'vjs-playback-rate-value',
-      id: this.labelElId_,
-      textContent: '1x'
-    });
+    if (this.player().language() === 'en') {
+      this.labelEl_ = Dom.createEl('div', {
+        className: 'vjs-playback-rate-value',
+        id: this.labelElId_,
+        // textContent: '1x'
+        innerHTML: '1x'
+      });
+    } else if (this.player().language() === 'zh-cn') {
+      this.labelEl_ = Dom.createEl('div', {
+        className: 'vjs-playback-rate-value',
+        id: this.labelElId_,
+        innerHTML: '倍速'
+        // innerHTML: '倍速1x'
+      });
+    } else {
+      this.labelEl_ = Dom.createEl('div', {
+        className: 'vjs-playback-rate-value',
+        id: this.labelElId_,
+        // textContent: '1x'
+        innerHTML: '倍速'
+      });
+    }
 
     el.appendChild(this.labelEl_);
 
@@ -154,7 +171,12 @@ class PlaybackRateMenuButton extends MenuButton {
    */
   updateLabel(event) {
     if (this.playbackRateSupported()) {
-      this.labelEl_.textContent = this.player().playbackRate() + 'x';
+      // this.labelEl_.textContent = this.player().playbackRate() + 'x';
+      if (this.player().language() === 'en') {
+        this.labelEl_.innerHTML = '' + this.player().playbackRate() + 'x';
+      } else {
+        this.labelEl_.innerHTML = '倍速';
+      }
     }
   }
 

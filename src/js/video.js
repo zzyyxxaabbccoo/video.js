@@ -35,6 +35,11 @@ import * as browser from './utils/browser.js';
 import * as Url from './utils/url.js';
 import * as Obj from './utils/obj';
 import xhr from '@videojs/xhr';
+import {playerversion} from '../../package.json';
+import {updatedate} from '../../package.json';
+import StorePub from 'store/dist/store.modern';
+import CookiesPub from 'js-cookie';
+import { Parser as M3u8Parser } from 'm3u8-parser';
 
 // Include the built-in techs
 import Tech from './tech/tech.js';
@@ -188,6 +193,16 @@ function videojs(id, options, ready) {
 
   hooks('setup').forEach((hookFunction) => hookFunction(player));
 
+  if (options.debug === true) {
+    if (player.ads) {
+      player.log('ads plugin init, version:' + player.ads.VERSION);
+    }
+  }
+
+  if (player.ads) {
+    player.ads({debug: !!options.debug, timeout: 6000});
+  }
+
   return player;
 }
 
@@ -232,6 +247,16 @@ setup.autoSetupTimeout(1, videojs);
  * @type {string}
  */
 videojs.VERSION = version;
+
+/**
+ * vjs播放器版本
+ */
+videojs.PLAYER_VERSION = playerversion;
+
+/**
+ * vjs更新日期
+ */
+videojs.UPDATE_DATE = updatedate;
 
 /**
  * The global options object. These are the settings that take effect
@@ -554,6 +579,9 @@ videojs.xhr = xhr;
 videojs.TextTrack = TextTrack;
 videojs.AudioTrack = AudioTrack;
 videojs.VideoTrack = VideoTrack;
+videojs.storePub = StorePub;
+videojs.cookiesPub = CookiesPub;
+videojs.M3u8Parser = M3u8Parser;
 
 [
   'isEl',

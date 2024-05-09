@@ -14,6 +14,7 @@ import document from 'global/document';
 import './load-progress-bar.js';
 import './play-progress-bar.js';
 import './mouse-time-display.js';
+import CuePoint from './cue-point/cue-point.js';
 
 // The number of seconds the `step*` functions move the timeline.
 const STEP_SECONDS = 5;
@@ -41,6 +42,13 @@ class SeekBar extends Slider {
   constructor(player, options) {
     super(player, options);
     this.setEventHandlers_();
+    if (player.options_.cuePoints !== undefined && player.options_.cuePoints.length > 0) {
+      for (let i = 0; i < player.options_.cuePoints.length; i++) {
+        const cue = new CuePoint(player, options, i);
+
+        this.addChild(cue);
+      }
+    }
   }
 
   /**
@@ -512,7 +520,8 @@ SeekBar.prototype.options_ = {
 
 // MouseTimeDisplay tooltips should not be added to a player on mobile devices
 if (!IS_IOS && !IS_ANDROID) {
-  SeekBar.prototype.options_.children.splice(1, 0, 'mouseTimeDisplay');
+  // SeekBar.prototype.options_.children.splice(1, 0, 'mouseTimeDisplay');
+  SeekBar.prototype.options_.children.push('mouseTimeDisplay');
 }
 
 Component.registerComponent('SeekBar', SeekBar);

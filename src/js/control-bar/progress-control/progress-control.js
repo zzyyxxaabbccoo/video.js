@@ -8,6 +8,7 @@ import {bind_, throttle, UPDATE_REFRESH_INTERVAL} from '../../utils/fn.js';
 import {silencePromise} from '../../utils/promise';
 
 import './seek-bar.js';
+import './cue-point/cue-point-preview.js';
 
 /**
  * The Progress Control component contains the seek bar, load progress,
@@ -88,6 +89,11 @@ class ProgressControl extends Component {
       playProgressBar.update(seekBarRect, seekBar.getProgress());
     }
 
+    const cuePointPreview = this.getChild('cuePointPreview');
+
+    if (cuePointPreview) {
+      cuePointPreview.update(seekBarRect, seekBarPoint);
+    }
   }
 
   /**
@@ -239,7 +245,8 @@ class ProgressControl extends Component {
  */
 ProgressControl.prototype.options_ = {
   children: [
-    'seekBar'
+    'seekBar',
+    'cuePointPreview'
   ]
 };
 

@@ -25,6 +25,13 @@ import './text-track-controls/subs-caps-button.js';
 import './audio-track-controls/audio-track-button.js';
 import './playback-rate-menu/playback-rate-menu-button.js';
 import './spacer-controls/custom-control-spacer.js';
+import './next/next-panel.js';
+import './webfullscreen-toggle.js';
+import './setup-menu/setup-menubutton.js';
+import './choose-video/choose-video-button.js';
+import './audio-mode-controls/audio-mode-button.js';
+import './playback-quality-menu/playback-quality-menu-button.js';
+import './preview/preview-display.js';
 
 /**
  * Container of main controls.
@@ -58,22 +65,28 @@ ControlBar.prototype.options_ = {
     'playToggle',
     'skipBackward',
     'skipForward',
-    'volumePanel',
+    'nextPanel',
     'currentTimeDisplay',
     'timeDivider',
     'durationDisplay',
-    'progressControl',
     'liveDisplay',
     'seekToLive',
     'remainingTimeDisplay',
     'customControlSpacer',
+    'chooseVideoButton',
+    'audioModeButton',
     'playbackRateMenuButton',
-    'chaptersButton',
+    'playbackQualityMenuButton',
     'descriptionsButton',
     'subsCapsButton',
     'audioTrackButton',
     'pictureInPictureToggle',
-    'fullscreenToggle'
+    'setupMenuButton',
+    'volumePanel',
+    'webfullscreenToggle',
+    'fullscreenToggle',
+    'progressControl',
+    'previewDisplay'
   ]
 };
 

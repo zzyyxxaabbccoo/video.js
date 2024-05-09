@@ -885,3 +885,12 @@ export function copyStyleSheetsToWindow(win) {
     }
   });
 }
+
+/**
+ * 屏蔽右键菜单
+ */
+export function blockContextMenu(dom) {
+  dom.oncontextmenu = function() {
+    return false;
+  };
+}
