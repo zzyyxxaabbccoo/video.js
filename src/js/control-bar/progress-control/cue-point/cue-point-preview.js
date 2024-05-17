@@ -4,10 +4,13 @@
 import Component from '../../../component.js';
 import * as Fn from '../../../utils/fn.js';
 // import * as Dom from '../../utils/dom.js';
-import {formatTime} from '../../../utils/time.js';
+// import formatTime from '../../../utils/format-time.js';
 // import {isPlain} from '../../utils/obj';
 // import {throttle, bind, UPDATE_REFRESH_INTERVAL} from '../../utils/fn.js';
 // import './time-tooltip';
+import window from 'global/window';
+import XHR from '@videojs/xhr';
+import { isCrossOrigin } from '../../../utils/url.js';
 
 // Required children
 
@@ -31,27 +34,13 @@ class CuePointPreview extends Component {
     // options.vertical = true;
     super(player, options);
 
-    this.update = Fn.throttle(Fn.bind_(this, this.update), Fn.UPDATE_REFRESH_INTERVAL);
+    this.update = Fn.throttle(Fn.bind(this, this.update), Fn.UPDATE_REFRESH_INTERVAL);
 
     // this.throttledHandleMouseMove = throttle(bind(this, this.handleMouseMove), UPDATE_REFRESH_INTERVAL);
 
     this.on('mouseover', this.handlerMouseOver);
 
     this.on('click', this.handlerClick);
-
-    // this.player_.on('timeupdate', this.handleUpdate);
-
-    // this.on('mousedown', this.handleMouseDown);
-    // this.on('touchstart', this.handleMouseDown);
-
-    // var img = new Component(player,options);
-    // this.addChild(img);
-
-    // let spanTime = Dom.createEl('span',{
-    //   className: 'cue-point-preview-time',
-    //   innerHTML: `${'88:88'}`
-    // });
-    // this.addChild(spanTime);
   }
 
   /**
@@ -61,38 +50,48 @@ class CuePointPreview extends Component {
    *         The element that was created.
    */
   createEl() {
-    // const orientationClass = 'vjs-next-vertical';
-
-    // if (this.options_.vertical) {
-    //   orientationClass = 'vjs-volume-vertical';
-    // }
-
-    // https://p2.img.cctvpic.com/apple3g/www/upload/image/20191224/1577173114282005386.jpg
-    // 下集url
-    // <div class="next-title">${this.localize('Next')}</div>
-
     return super.createEl('div', {
       className: 'cue-point-preview vjs-hidden',
+      // ishttps
       // http://10.246.0.12:8080/api/getVideoSnap.do?guid=a982bb49fa7c4522b6a6b7839620782d&start_time=68
       // innerHTML: `<div class="cue-point-preview-image"><img src="${''}"/></div><div class="cue-point-preview-title">${'-'}</div><span class="cue-point-preview-time">${'88:88'}</span>`
       innerHTML: `<div class="cue-point-preview-image"></div><div class="cue-point-preview-title">${'-'}</div><span class="cue-point-preview-time">${'88:88'}</span>`
     });
   }
 
-  // handleUpdate(event) {
-  //   // this.player_.log('timeupdate:' + this.player_.currentTime());
-  // }
+  updateCue(index, videoGuid, title, time) {
+    const videoUrl = 'https://115.182.216.175/api/getHttpVideoInfo.do?pid=63d59610bf874255ac7e47ffc15f4810';
 
-  updateCue(index, imageGuid, title, time) {
-    // this.player_.log(':::'+this.player_.options_.videoSnapUrl);
-    const timeStr = formatTime(time, this.player_.duration());
-    const imgurl = this.player_.httpPre_ + this.player_.options_.videoSnapUrl;
+    const opts = {
+      uri: videoUrl
+    };
 
-    if (this.player_.options_.videoSnapUrl !== undefined && this.player_.options_.videoSnapUrl !== '' && this.player_.options_.videoSnapUrl !== ' ') {
-      this.el_.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl + imageGuid + '&start_time=' + time}"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
-    } else {
-      this.el_.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
+    const crossOrigin = isCrossOrigin(videoUrl);
+
+    if (crossOrigin) {
+      opts.cors = crossOrigin;
     }
+
+    // const timeStr = formatTime(time, this.player_.duration());
+
+    const viewEl = this.el_;
+
+    XHR(opts, function(err, response, responseBody) {
+      if (err) {
+        // return this.player_.warn.error(err, response);
+        return false;
+      }
+      window.console.log('loaded this:');
+      window.console.log(this);
+      window.console.log(response, JSON.parse(responseBody));
+      const imgurl = JSON.parse(responseBody).image;
+      // viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
+
+      viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div>`;
+    });
+
+    // this.el_.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
+    this.el_.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div>`;
   }
 
   /**
@@ -178,6 +177,7 @@ class CuePointPreview extends Component {
     this.el_.style.left = `${left}px`;
 
     // this.getChild('timeTooltip').updateTime(seekBarRect, seekBarPoint, time, () => {
+
     // });
 
   }

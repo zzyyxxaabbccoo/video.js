@@ -27,6 +27,18 @@ class ErrorDisplay extends ModalDialog {
       this.close();
       this.open(e);
     });
+
+    const player_ = player;
+
+    // 增加右键菜单
+    this.el().oncontextmenu = function(event) {
+      if (event.ctrlKey === true && event.altKey) {
+        player_.showContextMenu(event, true);
+      } else if (event.ctrlKey === true) {
+        player_.showContextMenu(event, false);
+      }
+      return false;
+    };
   }
 
   /**
@@ -50,7 +62,27 @@ class ErrorDisplay extends ModalDialog {
   content() {
     const error = this.player().error();
 
-    return error ? this.localize(error.message) : '';
+    // return error ? this.localize(error.message) : '';
+    // return 'error:' + (error ? error.code + ' ' + this.localize(error.message) : '无法继续播放');
+    return '' + (error ? '' + this.localize(error.message) : '无法继续播放');
+  }
+
+  fill() {
+    super.fill();
+    // let refresh = this.getChild('refreshButton');
+    // if(!refresh){
+    //   refresh = this.addChild('refreshButton', {controlText: 'Refresh Button'});
+    //   this.on(refresh, 'refresh', this.refresh);
+    // }
+  }
+
+  description() {
+    const desc = '';
+
+    // if (this.refreshable()) {
+    //   desc += ' ' + this.localize('Refresh page');
+    // }
+    return desc;
   }
 }
 
@@ -60,7 +92,7 @@ class ErrorDisplay extends ModalDialog {
  * @private
  */
 ErrorDisplay.prototype.options_ = Object.assign({}, ModalDialog.prototype.options_, {
-  pauseOnOpen: false,
+  pauseOnOpen: true,
   fillAlways: true,
   temporary: false,
   uncloseable: true

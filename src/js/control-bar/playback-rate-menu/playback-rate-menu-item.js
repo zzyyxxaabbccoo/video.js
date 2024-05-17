@@ -30,11 +30,14 @@ class PlaybackRateMenuItem extends MenuItem {
     options.selectable = true;
     options.multiSelectable = false;
 
-    if (rate === 1) {
+    if (options.label === '1x') {
       options.label = 'Normal';
     }
 
     super(player, options);
+
+    // this.player().log(this.player().options_.label);
+    // this.player().log(this.options_.label);
 
     this.label = label;
     this.rate = rate;

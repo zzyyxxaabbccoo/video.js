@@ -33,7 +33,7 @@ class CuePoint extends Component {
     this.guid_ = player.options_.cuePoints[index].guid;
     // player.log('start:' + player.options_.cuePoints[index]['start']);
     // player.log('title:' + player.options_.cuePoints[index]['title']);
-    // this.update = Fn.throttle(Fn.bind_(this, this.update), Fn.UPDATE_REFRESH_INTERVAL);
+    // this.update = Fn.throttle(Fn.bind(this, this.update), Fn.UPDATE_REFRESH_INTERVAL);
 
     // player.log('duration:' + player.duration());
 
@@ -87,15 +87,22 @@ class CuePoint extends Component {
 
   handleMouseOver(event) {
     // this.player_.log('[cue-point] mouseover' + this.getStart());
-    this.parentComponent_.parentComponent_.parentComponent_.showCuePointPreview(this.index_, this.guid_, this.title_, this.start_ / 1000);
-    // this.parentComponent_.parentComponent_.parentComponent_.getChild('cuePointPreview').updateCue(this.index_, this.guid_, this.title_, this.start_ / 1000);
-    this.parentComponent_.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').hide();
+    this.parentComponent_.parentComponent_.getChild('cuePointPreview').show();
+    this.parentComponent_.parentComponent_.getChild('cuePointPreview').updateCue(this.index_, this.guid_, this.title_, this.start_ / 1000);
+    this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').hide();
+
+    // this.player_.log(this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').addClass('tooltip-preview'));
+    // this.player_.log(''+this.parentComponent_.parentComponent_.getChild('cuePointPreview').show());
+    // this.player_.log('');
   }
 
   handleMouseOut(event) {
     // this.player_.log('[cue-point] mouseout' + this.getStart());
-    this.parentComponent_.parentComponent_.parentComponent_.hideCuePointPreview();
-    this.parentComponent_.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').show();
+    this.parentComponent_.parentComponent_.getChild('cuePointPreview').hide();
+    this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').show();
+
+    // this.player_.log(this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').removeClass('tooltip-preview'));
+    // this.player_.log(''+this.parentComponent_.parentComponent_.getChild('cuePointPreview').hide());
   }
 
   handleClick(event) {

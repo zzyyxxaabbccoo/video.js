@@ -3,6 +3,8 @@
  */
 // Subclasses Component
 import Component from './component.js';
+import {playerversion} from '../../package.json';
+import {updatedate} from '../../package.json';
 
 import {version} from '../../package.json';
 import document from 'global/document';
@@ -48,10 +50,23 @@ import './big-play-button.js';
 import './close-button.js';
 import './control-bar/control-bar.js';
 import './error-display.js';
-import './tracks/text-track-settings.js';
+// import './tracks/text-track-settings.js';
 import './resize-manager.js';
 import './live-tracker.js';
+
 import './title-bar.js';
+import './ads/ads-overlay.js';
+import './ads/pause-ad-overlay.js';
+import './ads/banner-ad-overlay.js';
+import './ads/vip-skip-ad-tip.js';
+import './control-bar/user-continue-tip.js';
+import store from 'store/dist/store.modern';
+import './debug/debug-dialog.js';
+import './barrage/barrage-layer.js';
+import './control-bar/choose-video/choose-video-panel.js';
+import './control-bar/play-toggle-mini.js';
+import './control-bar/context-menu/context-menu-button.js';
+import './control-bar/picture-in-picture-toggle.js';
 
 // Import Html5 tech, at least for disposing the original video tag.
 import './tech/html5.js';
@@ -280,6 +295,48 @@ const DEFAULT_BREAKPOINTS = {
   huge: Infinity
 };
 
+const DEFAULT_QUALITY_LABELS = [
+  'SLD',
+  'LD',
+  'STD',
+  'HD',
+  'SD',
+  'SHD',
+  // 4K
+  '720P',
+  // 4K
+  '1080P',
+  'HI3',
+  'HI4'
+];
+
+const CUSTOM_QUALITIES_DIVIDE = [
+  0,
+  250000,
+  500000,
+  1000000,
+  1500000,
+  2300000,
+  4000000,
+  6000000,
+  10000000
+];
+
+const CUSTOM_QUALITY_LABELS = [
+  'SLD',
+  'LD',
+  'STD',
+  'HD',
+  'SD',
+  'SHD',
+  // 4K
+  '720P',
+  '1080P',
+  //
+  'HI3',
+  'HI4'
+];
+
 /**
  * An instance of the `Player` class is created when any of the Video.js setup methods
  * are used to initialize a video.
@@ -362,6 +419,9 @@ class Player extends Component {
     // default isFullscreen_ to false
     this.isFullscreen_ = false;
 
+    // default isWebFullscreen_ to false
+    this.isWebFullscreen_ = false;
+
     // create logger
     this.log = createLogger(this.id_);
 
@@ -433,13 +493,58 @@ class Player extends Component {
 
     this.resetCache_();
 
+    // 载入音量
+    const storeLocalObj = store.get('h5vodlocaldata');
+
+    if (storeLocalObj !== undefined && storeLocalObj.lastVolume !== undefined) {
+      this.volume(Number(storeLocalObj.lastVolume));
+    }
+
     // Set poster
     /** @type string */
     this.poster_ = options.poster || '';
 
+    // 自定义清晰度标签
+    // if (this.options_.controlBar.playbackQualityLabels !== undefined && this.options_.controlBar.playbackQualityLabels.length >= 5 && this.options_.controlBar.playbackQualityLabels.length <= 10) {
+    //   for (let i = 0; i < this.options_.controlBar.playbackQualityLabels.length; i++) {
+    //     DEFAULT_QUALITY_LABELS[i] = this.options_.controlBar.playbackQualityLabels[i];
+    //   }
+    // }
+
+    // set quality
+
+    // default playback qualities 'HD'?
+    // 初始使用无用名称，解决初始为空时 看不到码率按钮的问题。当起播时，该列表还是空，无法显示。
+    //
+    // this.options_.playbackQualities = ['-'];
+
+    // default playback qualities index
+    // 清晰度标签对应的索引（真实m3u8内的索引）
+    // 后续可以精简掉该数组，靠playbackQualities的索引代替m3u8的索引值
+    // this.options_.playbackQualityIndex = [];
+
     // Set controls
     /** @type {boolean} */
     this.controls_ = !!options.controls;
+
+    // Set miniPlayer
+    this.mini_ = !!options.mini;
+
+    // 旧方式
+    if (options.isHttps !== undefined) {
+      if (options.isHttps === true) {
+        this.httpPre_ = 'https://';
+      } else {
+        this.httpPre_ = 'http://';
+      }
+    } else {
+      this.httpPre_ = 'https://';
+    }
+
+    // 新方式
+    if (options.protocol) {
+      this.httpPre_ = options.protocol + '//';
+    }
 
     // Original tag settings stored in options
     // now remove immediately so native controls don't flash.
@@ -539,6 +644,10 @@ class Player extends Component {
 
     this.initChildren();
 
+    // 移除旧逻辑的码率菜单
+    // 全部使用新逻辑，不再编译PlaybackQualityMenuButton3
+    // already delete
+
     // Set isAudio based on whether or not an audio tag was used
     this.isAudio(tag.nodeName.toLowerCase() === 'audio');
 
@@ -581,6 +690,12 @@ class Player extends Component {
     // Add a major version class to aid css in plugins
     const majorVersion = version.split('.')[0];
 
+    // 写入版本号
+    this.version = version;
+    this.playerversion = playerversion + '(' + this.player().version + ')' + (this.player().options_.drmLabel ? '.d' : '');
+
+    this.updatedate = updatedate;
+
     this.addClass(`vjs-v${majorVersion}`);
 
     // When the player is first initialized, trigger activity so components
@@ -603,6 +718,21 @@ class Player extends Component {
       this.audioPosterMode(this.options_.audioPosterMode);
       this.audioOnlyMode(this.options_.audioOnlyMode);
     });
+  }
+
+  /**
+   *
+   */
+  GET_DEFAULT_QUALITY_LABELS() {
+    return DEFAULT_QUALITY_LABELS;
+  }
+
+  GET_CUSTOM_QUALITY_LABELS() {
+    return CUSTOM_QUALITY_LABELS;
+  }
+
+  GET_CUSTOM_QUALITIES_DIVIDE() {
+    return CUSTOM_QUALITIES_DIVIDE;
   }
 
   /**
@@ -688,7 +818,8 @@ class Player extends Component {
     let tag = this.tag;
     let el;
     let playerElIngest = this.playerElIngest_ = tag.parentNode && tag.parentNode.hasAttribute && tag.parentNode.hasAttribute('data-vjs-player');
-    const divEmbed = this.tag.tagName.toLowerCase() === 'video-js';
+    // 'video-js' -> 'cvp'
+    const divEmbed = this.tag.tagName.toLowerCase() === 'cvp';
 
     if (playerElIngest) {
       el = this.el_ = tag.parentNode;
@@ -827,6 +958,17 @@ class Player extends Component {
     Dom.prependTo(tag, el);
     this.children_.unshift(tag);
 
+    const this_ = this;
+
+    tag.oncontextmenu = function(event) {
+      if (event.ctrlKey === true && event.altKey) {
+        this_.showContextMenu(event, true);
+      } else {
+        this_.showContextMenu(event, false);
+      }
+      return false;
+    };
+
     // Set lang attr on player to ensure CSS :lang() in consistent with player
     // if it's been set to something different to the doc
     this.el_.setAttribute('lang', this.language_);
@@ -870,6 +1012,45 @@ class Player extends Component {
     }
 
     return;
+  }
+
+  /**
+   * 显示右键菜单
+   */
+  showContextMenu(event, showDebug) {
+    this.getChild('contextMenuButton').moveAndShow(event, showDebug);
+  }
+
+  /**
+   * 获取debug信息
+   * 输入参数：
+   * URL地址：
+   * 当前信息：
+   */
+  getDebugInfo() {
+    let debugInfo = '';
+
+    debugInfo += 'WH DEBUG:';
+
+    const jsonData = JSON.parse('{"DEBUG_INFO":"aaa1"}');
+
+    let _key;
+
+    for (_key in this.options_) {
+      if (_key === 'playerOptions') {
+        continue;
+      }
+      jsonData[_key] = this.options_[_key];
+      // debugInfo += this.options_[_key];
+      // log('[player]' + _key + ':' + this.options_[_key]);
+    }
+    // 移除重复数据
+    delete jsonData.controlBar.playerOptions;
+
+    jsonData.tech = this.tech_.debugInfo;
+
+    debugInfo += JSON.stringify(jsonData);
+    return debugInfo;
   }
 
   /**
@@ -1183,6 +1364,7 @@ class Player extends Component {
       'playsinline': this.options_.playsinline,
       'preload': this.options_.preload,
       'loop': this.options_.loop,
+      'autoNext': this.options_.autoNext,
       'disablePictureInPicture': this.options_.disablePictureInPicture,
       'muted': this.options_.muted,
       'poster': this.poster(),
@@ -1260,6 +1442,15 @@ class Player extends Component {
     this.on(this.tech_, 'textdata', (e) => this.handleTechTextData_(e));
     this.on(this.tech_, 'ratechange', (e) => this.handleTechRateChange_(e));
     this.on(this.tech_, 'loadedmetadata', this.boundUpdateStyleEl_);
+    this.on(this.tech_, 'qualitychange', this.handleTechQualityChange_);
+
+    // 开始多次加载 media .m3u8 列表
+    // this.on(this.qualityLevels(), 'change', this.multyQualityLoadHandler);
+
+    // 8.9.0开始不再多次加载 media .m3u8 列表
+    this.on(this.qualityLevels(), 'change', this.firstQualityChangeHandler);
+
+    this.multyQualityLoadedArr = [];
 
     this.usingNativeControls(this.techGet_('controls'));
 
@@ -1271,6 +1462,25 @@ class Player extends Component {
     // Make sure to not insert the original video element if using Html5
     if (this.tech_.el().parentNode !== this.el() && (titleTechName !== 'Html5' || !this.tag)) {
       Dom.prependTo(this.tech_.el(), this.el());
+    }
+
+    // this will course preAds loop 此处会导致广告循环
+
+    // 兼容旧写法
+    if (this.options_.setupAutoNext !== undefined) {
+      this.autoNext(this.options_.setupAutoNext);
+    } else if (this.options_.setup_autoNext !== undefined) {
+      this.autoNext(this.options_.setup_autoNext);
+    } else {
+      this.autoNext(false);
+    }
+
+    if (this.options_.setupLoop !== undefined) {
+      this.loop2(this.options_.setupLoop);
+    } else if (this.options_.setup_loop !== undefined) {
+      this.loop2(this.options_.setup_loop);
+    } else {
+      this.loop2(false);
     }
 
     // Get rid of the original video tag reference after the first tech is loaded
@@ -1754,6 +1964,32 @@ class Player extends Component {
   }
 
   /**
+   * Retrigger the `qualitychange` event that was triggered by the {@link Tech}.
+   *
+   * If there were any events queued while the playback rate was zero, fire
+   * those events now.
+   *
+   * @private
+   * @method Player#handleTechQualityChange_
+   * @fires Player#qualitychange
+   * @listens Tech#qualitychange
+   */
+  handleTechQualityChange_() {
+    // if (this.tech_.playbackQuality() > 0 && this.cache_.lastPlaybackQuality === 0) {
+    //   this.queuedCallbacks_.forEach((queued) => queued.callback(queued.event));
+    //   this.queuedCallbacks_ = [];
+    // }
+    this.cache_.lastPlaybackQuality = this.tech_.playbackQuality();
+    /**
+     * Fires when the playing quality of the audio/video is changed
+     *
+     * @event Player#qualitychange
+     * @type {event}
+     */
+    this.trigger('qualitychange');
+  }
+
+  /**
    * Retrigger the `waiting` event that was triggered by the {@link Tech}.
    *
    * @fires Player#waiting
@@ -1895,6 +2131,13 @@ class Player extends Component {
   }
 
   /**
+   * 是否正在播放，使用class名确定 #TODO 非规范方法
+   */
+  isPlaying() {
+    return this.hasClass('vjs-playing');
+  }
+
+  /**
    * Retrigger the `ended` event that was triggered by the {@link Tech}.
    *
    * @fires Player#ended
@@ -1904,12 +2147,12 @@ class Player extends Component {
   handleTechEnded_() {
     this.addClass('vjs-ended');
     this.removeClass('vjs-waiting');
-    if (this.options_.loop) {
-      this.currentTime(0);
-      this.play();
-    } else if (!this.paused()) {
-      this.pause();
-    }
+    // if (this.options_.loop) {
+    //   this.currentTime(0);
+    //   this.play();
+    // } else if (!this.paused()) {
+    //   this.pause();
+    // }
 
     /**
      * Fired when the end of the media resource is reached (currentTime == duration)
@@ -1928,6 +2171,9 @@ class Player extends Component {
    */
   handleTechDurationChange_() {
     this.duration(this.techGet_('duration'));
+    if (this.mainContentDuration_ === undefined && !isNaN(this.duration()) && this.duration() !== 0) {
+      this.mainContentDuration_ = this.duration();
+    }
   }
 
   /**
@@ -1943,6 +2189,14 @@ class Player extends Component {
     // When controls are disabled a click should not toggle playback because
     // the click is considered a control
     if (!this.controls_) {
+      if (event.button === 2) {
+        // videojs.log('right click: ' + event.clientX + ',' + event.clientY);
+      }
+      return;
+    }
+
+    //
+    if (this.mini_) {
       return;
     }
 
@@ -1980,6 +2234,10 @@ class Player extends Component {
    */
   handleTechDoubleClick_(event) {
     if (!this.controls_) {
+      return;
+    }
+
+    if (this.mini_) {
       return;
     }
 
@@ -2080,6 +2338,17 @@ class Player extends Component {
       this.addClass('vjs-fullscreen');
     } else {
       this.removeClass('vjs-fullscreen');
+    }
+  }
+
+  /**
+   * @private
+   */
+  toggleWebFullscreenClass_() {
+    if (this.isWebFullscreen()) {
+      this.addClass('vjs-webfullscreen');
+    } else {
+      this.removeClass('vjs-webfullscreen');
     }
   }
 
@@ -2239,6 +2508,8 @@ class Player extends Component {
       duration: NaN,
       lastVolume: 1,
       lastPlaybackRate: this.defaultPlaybackRate(),
+      lastPlaybackQuality: this.defaultPlaybackQuality(),
+
       media: null,
       src: '',
       source: {},
@@ -2781,6 +3052,13 @@ class Player extends Component {
 
       if (vol > 0) {
         this.lastVolume_(vol);
+        const storeLocalObj = store.get('h5vodlocaldata');
+
+        if (storeLocalObj !== undefined) {
+          store.set('h5vodlocaldata', {lastQuality: storeLocalObj.lastQuality, lastVolume: this.lastVolume_()});
+        } else {
+          store.set('h5vodlocaldata', {lastQuality: null, lastVolume: this.lastVolume_()});
+        }
       }
 
       return;
@@ -2879,6 +3157,14 @@ class Player extends Component {
   }
 
   /**
+   * @return {boolean}
+   * 仿照 supportsFullScreen()的方法，格式化方法
+   */
+  supportsWebFullScreen() {
+    return true;
+  }
+
+  /**
    * Check if the player is in fullscreen mode or tell the player that it
    * is or is not in fullscreen mode.
    *
@@ -2915,6 +3201,36 @@ class Player extends Component {
       return;
     }
     return this.isFullscreen_;
+  }
+
+  /**
+   * 检查是否页面全屏
+   * Check if the player is in web fullscreen mode or tell the player that it
+   * is or is not in web fullscreen mode.
+   *
+   * @param  {boolean} [isWFS]
+   *         Set the players current web fullscreen state
+   *
+   * @return {boolean}
+   *         - true if web fullscreen is on and getting
+   *         - false if web fullscreen is off and getting
+   */
+  isWebFullscreen(isWFS) {
+    if (isWFS !== undefined) {
+      const oldValue = this.isWebFullscreen_;
+
+      this.isWebFullscreen_ = Boolean(isWFS);
+
+      if (this.isWebFullscreen_ !== oldValue) {
+
+        this.trigger('webfullscreenchange');
+      }
+
+      this.toggleWebFullscreenClass_();
+      return;
+    }
+
+    return this.isWebFullscreen_;
   }
 
   /**
@@ -2976,6 +3292,11 @@ class Player extends Component {
       }
     }
 
+    // 增加退出页面全屏逻辑
+    if (this.isWebFullscreen()) {
+      this.exitFullWindow();
+    }
+
     // This method works as follows:
     // 1. if a fullscreen api is available, use it
     //   1. call requestFullscreen with potential options
@@ -3001,6 +3322,12 @@ class Player extends Component {
       // fill the viewport
       this.enterFullWindow();
     }
+  }
+
+  /**
+   *
+   */
+  requestFullWindow(fullscreenOptions) {
   }
 
   /**
@@ -3064,7 +3391,14 @@ class Player extends Component {
    * @fires Player#enterFullWindow
    */
   enterFullWindow() {
-    this.isFullscreen(true);
+    // this.isFullscreen(true);
+    // ##?? 此处有疑问
+    // 增加退出全屏逻辑
+    if (this.isFullscreen()) {
+      this.exitFullscreen();
+    }
+    this.isWebFullscreen(true);
+
     this.isFullWindow = true;
 
     // Storing original doc overflow value to return to when fullscreen is off
@@ -3077,7 +3411,8 @@ class Player extends Component {
     document.documentElement.style.overflow = 'hidden';
 
     // Apply fullscreen styles
-    Dom.addClass(document.body, 'vjs-full-window');
+    // Dom.addClass(document.body, 'vjs-full-window');
+    Dom.addClass(document.body, 'vjs-webfull-window');
 
     /**
      * @event Player#enterFullWindow
@@ -3101,6 +3436,10 @@ class Player extends Component {
         } else {
           this.exitFullWindow();
         }
+        // 增加退出页面全屏
+        if (this.isWebFullscreen() === true) {
+          this.exitFullWindow();
+        }
       }
     }
   }
@@ -3111,7 +3450,9 @@ class Player extends Component {
    * @fires Player#exitFullWindow
    */
   exitFullWindow() {
-    this.isFullscreen(false);
+    // this.isFullscreen(false);
+    this.isWebFullscreen(false);
+
     this.isFullWindow = false;
     Events.off(document, 'keydown', this.boundFullWindowOnEscKey_);
 
@@ -3119,7 +3460,8 @@ class Player extends Component {
     document.documentElement.style.overflow = this.docOrigOverflow;
 
     // Remove fullscreen styles
-    Dom.removeClass(document.body, 'vjs-full-window');
+    // Dom.removeClass(document.body, 'vjs-full-window');
+    Dom.removeClass(document.body, 'vjs-webfull-window');
 
     // Resize the box, controller, and poster to original sizes
     // this.positionAll();
@@ -3212,7 +3554,7 @@ class Player extends Component {
         pipWindow.document.body.classList.add('vjs-pip-window');
 
         this.player_.isInPictureInPicture(true);
-        this.player_.trigger('enterpictureinpicture');
+        this.player_.trigger({type: 'enterpictureinpicture', pipWindow});
 
         // Listen for the PiP closing event to move the video back.
         pipWindow.addEventListener('pagehide', (event) => {
@@ -3263,6 +3605,33 @@ class Player extends Component {
        * @type {Event}
        */
       return document.exitPictureInPicture();
+    }
+  }
+
+  /**
+   * 显示弹幕
+   */
+  showBarrage(message) {
+    const barrage = this.getChild('BarrageLayer');
+
+    if (barrage) {
+      barrage.showBarrage(message);
+    }
+  }
+
+  /**
+   * 开关弹幕
+   */
+  barrageToggle(value) {
+    const barrage = this.getChild('BarrageLayer');
+
+    if (barrage) {
+      if (value === true) {
+        barrage.show();
+      } else if (value === false) {
+        barrage.hide();
+      }
+      return !barrage.hasClass('vjs-hidden');
     }
   }
 
@@ -3344,6 +3713,9 @@ class Player extends Component {
 
     // set fullscreenKey, muteKey, playPauseKey from `hotkeys`, use defaults if not set
     const {
+      stepForward = keydownEvent => keycode.isEventKey(keydownEvent, 'right'),
+      stepBack = keydownEvent => keycode.isEventKey(keydownEvent, 'left'),
+
       fullscreenKey = keydownEvent => keycode.isEventKey(keydownEvent, 'f'),
       muteKey = keydownEvent => keycode.isEventKey(keydownEvent, 'm'),
       playPauseKey = keydownEvent => (keycode.isEventKey(keydownEvent, 'k') || keycode.isEventKey(keydownEvent, 'Space'))
@@ -3370,11 +3742,27 @@ class Player extends Component {
     } else if (playPauseKey.call(this, event)) {
       event.preventDefault();
       event.stopPropagation();
+      if (!this.ads || !this.ads.isInAdMode()) {
+        const PlayToggle = Component.getComponent('PlayToggle');
 
-      const PlayToggle = Component.getComponent('PlayToggle');
+        PlayToggle.prototype.handleClick.call(this, event);
+      }
+    } else if (stepBack.call(this, event)) {
+      event.preventDefault();
+      event.stopPropagation();
 
-      PlayToggle.prototype.handleClick.call(this, event);
+      if (!this.ads || !this.ads.isInAdMode()) {
+        this.player_.currentTime(this.player_.currentTime() - 20);
+      }
+    } else if (stepForward.call(this, event)) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!this.ads || !this.ads.isInAdMode()) {
+        this.player_.currentTime(this.player_.currentTime() + 20);
+      }
     }
+
   }
 
   /**
@@ -3736,6 +4124,8 @@ class Player extends Component {
   resetControlBarUI_() {
     this.resetProgressBar_();
     this.resetPlaybackRate_();
+    this.resetPlaybackQuality_();
+
     this.resetVolumeBar_();
   }
 
@@ -3780,6 +4170,14 @@ class Player extends Component {
   resetPlaybackRate_() {
     this.playbackRate(this.defaultPlaybackRate());
     this.handleTechRateChange_();
+  }
+
+  /**
+   * Reset Playback quality
+   */
+  resetPlaybackQuality_() {
+    this.playbackQuality(this.defaultPlaybackQuality());
+    this.handleTechQualityChange_();
   }
 
   /**
@@ -3950,10 +4348,34 @@ class Player extends Component {
   loop(value) {
     if (value !== undefined) {
       this.techCall_('setLoop', value);
-      this.options_.loop = value;
-      return;
+      if (this.options_.loop !== value) {
+        this.options_.loop = value;
+        this.trigger('loopchange');
+      }
     }
     return this.techGet_('loop');
+  }
+
+  loop2(value) {
+    // this.log('[player] loop2() ' + value);
+    if (value !== undefined) {
+      if (this.options_.loop2 !== value) {
+        this.options_.loop2 = value;
+        this.trigger('loop2change');
+      }
+    }
+    return this.options_.loop2;
+  }
+
+  autoNext(value) {
+    // this.log('[player] autoNext() ' + value);
+    if (value !== undefined) {
+      if (this.options_.autoNext !== value) {
+        this.options_.autoNext = value;
+        this.trigger('autonextchange');
+      }
+    }
+    return this.options_.autoNext;
   }
 
   /**
@@ -4080,6 +4502,32 @@ class Player extends Component {
       if (!this.usingNativeControls()) {
         this.removeTechControlsListeners_();
       }
+    }
+  }
+
+  /**
+   *
+   */
+  miniPlayer(bool) {
+    if (bool === undefined) {
+      return !!this.mini_;
+    }
+
+    bool = !!bool;
+
+    // Don't trigger a change event unless it actually changed
+    if (this.mini_ === bool) {
+      return;
+    }
+
+    this.mini_ = bool;
+
+    if (this.mini_) {
+      this.addClass('mini-controls');
+      this.controls(false);
+    } else {
+      this.removeClass('mini-controls');
+      this.controls(true);
     }
   }
 
@@ -4213,7 +4661,8 @@ class Player extends Component {
      * @event Player#error
      * @type {Event}
      */
-    this.trigger('error');
+    // this.trigger('error');
+    this.trigger('error', this.error_);
 
     // notify hooks of the per player error
     hooks('error').forEach((hookFunction) => hookFunction(this, this.error_));
@@ -4334,11 +4783,20 @@ class Player extends Component {
       this.clearInterval(mouseInProgress);
     };
 
+    const handleMouseLeave = function(event) {
+      // handleActivity();
+      // Stop the interval that maintains activity if the mouse/touch is down
+      this.clearInterval(mouseInProgress);
+
+      // 立即消失
+      this.userActive(false);
+    };
+
     // Any mouse movement will be considered user activity
     this.on('mousedown', handleMouseDown);
     this.on('mousemove', handleMouseMove);
     this.on('mouseup', handleMouseUpAndMouseLeave);
-    this.on('mouseleave', handleMouseUpAndMouseLeave);
+    this.on('mouseleave', handleMouseLeave);
 
     const controlBar = this.getChild('controlBar');
 
@@ -4356,6 +4814,7 @@ class Player extends Component {
       controlBar.on('mouseleave', function(event) {
         this.player().options_.inactivityTimeout = this.player().cache_.inactivityTimeout;
       });
+      Dom.blockContextMenu(controlBar.el());
 
     }
 
@@ -4438,6 +4897,403 @@ class Player extends Component {
   }
 
   /**
+   * Gets or sets the current playback quality.
+   * quality index
+   *
+   * @param {number} [quality]
+   *       New playback quality index to set.
+   *
+   * @return {number}
+   *         The current playback quality index when getting
+   */
+  playbackQuality(quality) {
+    if (quality !== undefined) {
+      // NOTE: this.cache_.lastPlaybackRate is set from the tech handler
+      // that is registered above
+      this.techCall_('setPlaybackQuality', quality);
+      return;
+    }
+
+    if (this.tech_ && this.tech_.featuresPlaybackQuality) {
+      return this.cache_.lastPlaybackQuality || this.techGet_('playbackQuality');
+    }
+    return 1;
+  }
+
+  // #TODO 不应该用原型
+  // 清除 this.options_.playbackQualities 、 this.options_.playbackQualityIndex 中保存的码率
+  // clearPlaybackQualityLevel() {
+  //   if (this.options().debug) {
+  //     this.log('[player] clearPlaybackQualityLevel()');
+  //   }
+  //   this.options_.playbackQualities.length = 0;
+  //   this.options_.playbackQualityIndex.length = 0;
+  // }
+
+  // 初始化 并起播
+  firstQualityChangeHandler() {
+    this.off(this.qualityLevels(), 'change', this.firstQualityChangeHandler);
+
+    this.log('[player] firstQualityChangeHandler, selectedIndex:' + this.qualityLevels().selectedIndex);
+
+    // this.log(this.options());
+
+    this.autoQuality(this.options().autoQuality);
+
+    if (this.autoQuality()) {
+      return;
+    }
+
+    const ql = this.qualityLevels();
+
+    // 移除初始空数组占位符
+    // if (this.options_.playbackQualities[this.options_.playbackQualities.length - 1] === '-') {
+    //   this.options_.playbackQualities.pop();
+    // }
+
+    // if (this.options().debug) {
+    //   this.log(this.options_.playbackQualities);
+    // }
+
+    // 清除已推入的码率，#todo 此方法步骤多余
+    // this.clearPlaybackQualityLevel();
+
+    // 外部传入的码率数组和起播码率
+    // const customQualityList = this.options_.customQualityList;
+
+    const startLevelIndex = this.options().customDefaultQualityIndex;
+
+    // this.log(customQualityList);
+
+    // 按传入数组遍历（#TODO？ 理论上传入的索引顺序应该与quelitylevels的索引顺序一致即 真实master顺序,后续可简化掉改 masterIndex 属性）
+    // 倒序，会决定同码率标签多个码率的选择顺序
+
+    let logStr = '';
+
+    if (startLevelIndex > -1) {
+      // ql[startLevelIndex].enabled = true;
+
+      for (let i = ql.length - 1; i >= 0; i--) {
+        // this.options_.playbackQualities.push(customQualityList[i].label);
+        // #todo，删除未来 masterIndex，由index直接替代
+        // this.options_.playbackQualityIndex.push(customQualityList[i].masterIndex);
+
+        // 此处注意，可用性和可播性不一样。 customQualityList的 enabled 代表的可用性（显示在可播列表中），qualityLevels的 enabled代表的可播性，表示当前是否正在播。
+        // 定位起播 index，这里需要注意有多个同码率的情况，外面应该处理好，不允许多个相同码率 enabled 也相同
+        // if (customQualityList[i].label === customDefaultQuality && customQualityList[i].enabled) {
+        //   this.qualityLevels()[i].enabled = true;
+        // } else {
+        //   this.qualityLevels()[i].enabled = false;
+        // }
+        if (i !== startLevelIndex) {
+          // ql[i].enabled = false;
+        }
+        // if (i === startLevelIndex) {
+        //   ql[i].enabled = true;
+        // } else {
+        //   ql[i].enabled = false;
+        // }
+
+        logStr += 'qualityLevels:' + i + ' enabled:' + ql[i].enabled + ' ';
+      }
+    }
+
+    this.log(logStr);
+
+    // const qualities = this.options_.playbackQualities;
+
+    // const indexs = this.options_.playbackQualityIndex;
+
+    if (this.options().debug) {
+      // this.log('ABR qualityLevels().selectedIndex:' + this.qualityLevels().selectedIndex);
+    }
+
+    // 起始触发 解决起播码率与自寻码率相同时 不触发change 不刷新ui的问题
+    this.trigger('initQualitychange');
+
+    // this.play();
+
+    // 发送P2P事件
+    this.trigger({
+      level: this.player_.qualityLevels()[startLevelIndex],
+      type: 'initHLSP2P'
+    });
+
+    if (this.options_.customDefaultQualityIndex > -1) {
+      const customDefaultQuality = this.options_.customQualityList[this.options_.customDefaultQualityIndex].label;
+
+      this.mainContentQuality_ = customDefaultQuality;
+    } else {
+      const customDefaultQuality = this.options_.customQualityList[this.qualityLevels().selectedIndex].label;
+
+      this.mainContentQuality_ = customDefaultQuality;
+    }
+  }
+
+  // 多次加载媒体列表，保证每条媒体都被加载过后终止
+  // multyQualityLoadHandler() {
+  //   if (this.options().debug) {
+  //     this.log('multyQualityLoadHandler this.qualityLevels().selectedIndex:' + this.qualityLevels().selectedIndex);
+  //   }
+
+  //   if (1) {
+  //     this.firstQualityChangeHandler();
+  //     return;
+  //   }
+
+  //   // 初始化标记数组
+  //   if (this.multyQualityLoadedArr.length === 0) {
+  //     for (let i = 0; i < this.qualityLevels().length; i++) {
+  //       if (this.qualityLevels().selectedIndex === i) {
+  //         this.multyQualityLoadedArr[i] = true;
+  //       } else {
+  //         this.multyQualityLoadedArr[i] = false;
+  //       }
+  //     }
+  //   } else {
+  //     // 已有标记数组
+  //     this.multyQualityLoadedArr[this.qualityLevels().selectedIndex] = true;
+  //   }
+
+  //   // 检查是否全部完成
+  //   if (this.multyQualityLoadedArr.length > 0) {
+  //     let allDone = true;
+
+  //     for (let j = 0; j < this.multyQualityLoadedArr.length; j++) {
+  //       if (!this.multyQualityLoadedArr[j]) {
+  //         for (let i = 0; i < this.qualityLevels().length; i++) {
+  //           if (i === j) {
+  //             this.qualityLevels()[i].enabled = true;
+  //           } else {
+  //             this.qualityLevels()[i].enabled = false;
+  //           }
+  //         }
+  //         allDone = false;
+  //         break;
+  //       }
+  //     }
+
+  //     if (allDone) {
+  //       // 结束循环加载，开始正片
+  //       this.off(this.qualityLevels(), 'change', this.multyQualityLoadHandler);
+  //       if (this.options().debug) {
+  //         this.log('multyQualityLoadHandler done');
+  //       }
+  //       this.firstQualityChangeHandler();
+  //     }
+  //   }
+
+  //   // else 没有码率
+  // }
+
+  // 返回正片记录的码率
+  getMainContentQuality() {
+    return this.mainContentQuality_;
+  }
+  // 返回正片记录的码率索引
+  getMainContentQuality() {
+    return this.mainContentQuality_;
+  }
+
+  // 变更视频
+  durationChange_() {
+    this.log('durationChange_');
+    if (this.ads) {
+      this.log(this.ads.isInAdMode());
+    }
+  }
+
+  /**
+   * 切换当前流的清晰度，
+   * 新配置方案使用，直接切换至新码率
+   * #del 待删除
+   */
+  // switchQualityDirect(label) {
+  //   if (this.options().debug) {
+  //     // this.log('[player]switchQualityDirect()' + this.getCurentQualityLabel() + ' switchQuality to:' + label);
+  //   }
+
+  //   const qualities = this.options_.playbackQualities;
+  //   const indexs = this.options_.playbackQualityIndex;
+
+  //   const newLevelIndex = indexs[qualities.lastIndexOf(label)];
+
+  //   if (newLevelIndex === this.qualityLevels().selectedIndex) {
+  //     if (this.options().debug) {
+  //       this.log('[player] switchQualityDirect() same quality index');
+  //     }
+  //     return;
+  //   }
+
+  //   const oldSelectedIndex = this.qualityLevels().selectedIndex;
+
+  //   if (this.options().debug) {
+  //     this.log('[player] switchQualityDirect() 原索引 lastLevelIndex:' + oldSelectedIndex + 'to false');
+  //   }
+
+  //   this.qualityLevels()[oldSelectedIndex].enabled = false;
+
+  //   if (this.options().debug) {
+  //     this.log('[player] switchQualityDirect() 新索引 newLevelIndex:' + newLevelIndex + 'to true');
+  //   }
+
+  //   this.qualityLevels()[newLevelIndex].enabled = true;
+
+  //   this.mainContentQuality_ = label;
+
+  //   // 发送P2P事件
+  //   this.trigger({
+  //     level: this.player_.qualityLevels()[newLevelIndex],
+  //     type: 'changeHLSP2P'
+  //   });
+
+  //   // 排除广告进度
+  //   if (!this.ads || !this.ads.isInAdMode()) {
+  //     store.set('h5vodlocaldata', {lastQuality: label, lastVolume: this.volume()});
+  //   }
+  // }
+
+  /**
+   * 允许播放的索引列表
+   *
+   * @param {Array} [targetLevel]
+   *        - -1 所有合法都可以播
+   *        - 1, 3, ... 启播的序列 不是列表的关闭
+   *
+   */
+  switchQualityLevel(targetLevel) {
+    this.log('[player] switchQualityLevel() targetLevel:' + targetLevel);
+
+    const showTargetQualityMenu = typeof this.options().showTargetQualityMenu === 'undefined' ? false : this.options().showTargetQualityMenu;
+
+    if (showTargetQualityMenu) {
+      this.trigger({
+        targetLevel,
+        type: 'targetLevelChange'
+      });
+    }
+
+    if (targetLevel === undefined) {
+      return;
+    }
+    // 0.1m
+    const minBandwidth = 0.1 * 1000 * 1000;
+
+    // 15m
+    const maxBandwidth = 10 * 1000 * 1000;
+
+    if (this.qualityLevels().length === 0) {
+      this.log('no quality level!');
+      return;
+    }
+
+    // 是否存在最终选中的码率
+    let _hasEnabledLevel = false;
+
+    // 自动码率下，所有 0.1m ～ 15m 范围内的、合法的都开启
+    if (targetLevel === -1) {
+      // 切换到自动码率
+      this.autoQuality(true);
+      for (let i = 0; i < this.qualityLevels().length; i++) {
+        const level = this.qualityLevels()[i];
+
+        if (level.bitrate < minBandwidth || level.bitrate > maxBandwidth) {
+          level.enabled = false;
+          continue;
+        }
+
+        level.enabled = true;
+        _hasEnabledLevel = true;
+      }
+    } else if (targetLevel !== this.qualityLevels().selectedIndex) {
+      // 切换到非自动码率，且目标码率与当前码率不同
+      this.autoQuality(false);
+      // 开启目标码率
+      this.qualityLevels()[targetLevel].enabled = true;
+      // 关闭非目标码率
+      for (let i = 0; i < this.qualityLevels().length; i++) {
+        if (targetLevel !== i) {
+          this.qualityLevels()[i].enabled = false;
+        }
+      }
+      _hasEnabledLevel = true;
+    } else if (targetLevel === this.qualityLevels().selectedIndex) {
+      // 切换到非自动码率，且目标码率与当前码率相同
+      this.autoQuality(false);
+      _hasEnabledLevel = true;
+    }
+
+    if (!_hasEnabledLevel) {
+      this.log('no available quality level!');
+      return;
+    }
+
+    // 发送P2P事件
+    if (targetLevel >= 0) {
+      this.trigger({
+        level: this.player_.qualityLevels()[targetLevel],
+        type: 'changeHLSP2P'
+      });
+    }
+
+    // 执行本地保存 （排除广告时）
+    if (!this.ads || !this.ads.isInAdMode()) {
+      store.set('h5vodlocaldata', {lastQuality: targetLevel < 0 ? 'AUTO' : this.options().customQualityList[targetLevel].label, lastVolume: this.volume()});
+    }
+  }
+
+  /**
+   * !!此方法 不准 有延迟
+   */
+  getCurentQuality() {
+    // const qualities = this.options_.playbackQualities || (this.options_.playerOptions && this.options_.playerOptions.playbackQualities);
+
+    // const indexs = this.options_.playbackQualityIndex || (this.options_.playerOptions && this.options_.playerOptions.playbackQualityIndex);
+
+    // return qualities[indexs.lastIndexOf(this.qualityLevels().selectedIndex)];
+  }
+
+  /**
+   * !!此方法 不准 有延迟
+   * 使用配置方案时，代替getCurentQuality()，逐步全部替代
+   */
+  getCurentQualityLabel() {
+    // const qualities = this.options_.playbackQualities;
+    // return qualities[this.qualityLevels().selectedIndex];
+  }
+
+  /**
+   * 选中一个码率
+   */
+  selectedQuality(quality) {
+    this.selectedQuality_ = quality;
+    if (quality !== null && this.selectedQuality_ !== quality) {
+      this.selectedQuality_ = quality;
+      // this.trigger('qualityselected');
+      this.trigger({type: 'qualityselected', quality});
+    }
+  }
+
+  /**
+   * 获取选中的码率
+   */
+  getSelectedQuality() {
+  }
+
+  /**
+   * 获取当前流的码率
+   */
+  getCurentBitrate() {
+  }
+
+  /**
+   * 获取当前流的码率
+   */
+  getQualityLevels() {
+
+  }
+
+  /**
    * Gets or sets the current default playback rate. A default playback rate of
    * 1.0 represents normal speed and 0.5 would indicate half-speed playback, for instance.
    * defaultPlaybackRate will only represent what the initial playbackRate of a video was, not
@@ -4461,6 +5317,55 @@ class Player extends Component {
       return this.techGet_('defaultPlaybackRate');
     }
     return 1.0;
+  }
+
+  /**
+   * Gets or sets the current default playback quality.
+   * defaultPlaybackQuality will only represent what the initial playbackQuality of a video was, not
+   * not the current playbackQuality.
+   *
+   * @param {number} [quality]
+   *       New default playback quality to set.
+   *
+   * @return {number|Player}
+   *         - The default playback quality when getting or 1.0
+   *         - the player when setting
+   */
+  defaultPlaybackQuality(quality) {
+    if (quality !== undefined) {
+      return this.techCall_('setDefaultPlaybackQuality', quality);
+    }
+
+    if (this.tech_ && this.tech_.featuresPlaybackQuality) {
+      return this.techGet_('defaultPlaybackQuality');
+    }
+    return 1;
+  }
+
+  /**
+   * 设置或者获取 自动码率标签
+   *
+   * @param {boolean} [bool]
+   *        - true 进入自动码率逻辑
+   *        - false 离开自动码率逻辑
+   * 55?
+   */
+  autoQuality(bool) {
+    if (bool !== undefined) {
+      if (this.isAutoQuality_ !== !!bool) {
+        this.isAutoQuality_ = !!bool;
+        this.trigger('autoQualityChange', 55);
+      }
+      return;
+    }
+    return !!this.isAutoQuality_;
+  }
+
+  /**
+   *
+   */
+  changeAudioMode(modeIndex) {
+    this.trigger({type: 'changeAudioMode', audioMode: modeIndex});
   }
 
   /**
@@ -5154,6 +6059,96 @@ class Player extends Component {
   }
 
   /**
+   * 设置广告进度标签文字，兼容前置广告和后置广告
+   *
+   * @param {*} adIndex 显示文本
+   * @param {*} clickUrl 点击链接
+   * 无参数时隐藏广告栏
+   */
+  setAdsLabel(adIndex, clickUrl, remainDuration, monitor, impression) {
+    // this.log('=:' + adIndex);
+
+    if (adIndex === undefined) {
+      this.getChild('adsOverLay').hide();
+      // this.getChild('skipADDisplay').hide();
+      this.changingToMainContent_ = true;
+
+    } else {
+      this.changingToMainContent_ = false;
+
+      this.getChild('adsOverLay').show();
+      this.getChild('adsOverLay').updateTextNode(adIndex, clickUrl, remainDuration, monitor, impression);
+    }
+  }
+
+  changingToMainContent() {
+    return this.changingToMainContent_;
+  }
+
+  /**
+   * 获取本地保存的视频记录时间，
+   * */
+  getSavedPosition(videoid) {
+    // this.log(store.get('h5vodLastPostion'));
+    // this.log('[player] getSavedPosition');
+    let position;
+    const storeObj = store.get('h5vodLastPostion');
+
+    const nowtimestamp = (new Date()).getTime() / 1000;
+
+    if (storeObj !== undefined && videoid === storeObj.videoid && storeObj.timestamp < nowtimestamp && storeObj.timestamp + 7 * 24 * 60 * 60 > nowtimestamp) {
+      if (storeObj.position !== undefined) {
+        position = storeObj.position;
+      }
+    }
+
+    return position;
+  }
+
+  /**
+   *
+   * */
+  saveVideoPosition(videoid) {
+    // 广告时不执行
+    if (this.ads && this.ads.isInAdMode() === true) {
+      return;
+    }
+
+    const position_ = this.currentTime();
+
+    // 5s内不保存,
+    if (position_ < 5) {
+      return;
+    }
+
+    // this.log('[player] saveVideoPosition position:' + this.currentTime() + ' duration:' + this.duration());
+
+    // 30s内不保存, 结尾30秒不保存,清除进度
+    if (position_ < 30 || (position_ + 30 > this.duration())) {
+
+      store.remove('h5vodLastPostion');
+    } else {
+      const timestamp_ = (new Date()).getTime() / 1000;
+
+      store.set('h5vodLastPostion', { videoid, timestamp: timestamp_, position: position_});
+      // this.log('[player] saveVideoPosition videoid:' + videoid + 'timestamp_:' + timestamp_ + 'position_' + position_);
+    }
+  }
+
+  /**
+   * 显示用户中心续播提示，
+   *
+   * @param {number} where
+   *        续播时间，单位秒
+   * */
+  showUserContinueHint(where) {
+    // this.log('[player] showUserContinueHint');
+    const userContinueTip = this.getChild('UserContinueTip');
+
+    userContinueTip.showOnce(where);
+  }
+
+  /**
    * Gets tag settings
    *
    * @param {Element} tag
@@ -5246,7 +6241,7 @@ class Player extends Component {
    * Values other than arrays are ignored.
    *
    * @fires Player#playbackrateschange
-   * @param {number[]} newRates
+   * @param {number[]} [newRates]
    *                   The new rates that the playback rates menu should update to.
    *                   An empty array will hide the menu
    * @return {number[]} When used as a getter will return the current playback rates
@@ -5391,7 +6386,10 @@ Player.prototype.options_ = {
   enableSourceset: true,
 
   // default inactivity timeout
-  inactivityTimeout: 2000,
+  inactivityTimeout: 1200,
+
+  // default 移出控制区消失时间
+  // inactivityDelay: 250,
 
   // default playback rates
   playbackRates: [],
@@ -5402,15 +6400,26 @@ Player.prototype.options_ = {
   // Included control sets
   children: [
     'mediaLoader',
+    'adsOverLay',
+    'pauseAdOverLay',
+    'bannerAdOverLay',
     'posterImage',
+    'VipSkipAdTip',
+    'UserContinueTip',
+    'barrageLayer',
+    'chooseVideoPanel',
     'titleBar',
-    'textTrackDisplay',
     'loadingSpinner',
+    'switchBezel',
+    'playToggleMini',
+
     'bigPlayButton',
     'liveTracker',
     'controlBar',
     'errorDisplay',
-    'textTrackSettings',
+    // 'textTrackSettings',
+    'contextMenuButton',
+    'PictureInPictureToggle',
     'resizeManager'
   ],
 
@@ -5437,6 +6446,8 @@ Player.prototype.options_ = {
   // Default smooth seeking to false
   enableSmoothSeeking: false
 };
+
+// Player.prototype.options_.children.splice(children.indexOf("barrageLayer"),1);
 
 TECH_EVENTS_RETRIGGER.forEach(function(event) {
   Player.prototype[`handleTech${toTitleCase(event)}_`] = function() {

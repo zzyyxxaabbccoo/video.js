@@ -1,16 +1,27 @@
 @charset "UTF-8";
+:root{
+  --cvp-primary-foreground-color: yellow;
+  --cvp-primary-background-color: #2B333F;
+  --cvp-primary-foreground-transparency: 1.0;
+  --cvp-primary-background-transparency: 0.7;
+
+  --cvp-secondary-foreground-color: yellow;
+  --cvp-secondary-background-color: #2B333F;
+  --cvp-secondary-foreground-transparency: 1;
+  --cvp-secondary-background-transparency: 0.5;
+}
 
 /* 删除chrome蓝框 */
 .whs *:focus{outline:none;}
 
 /* 焦点发光 */
 .whs .vjs-control:focus {
-  text-shadow: 0px 0px 9px #ffffff;
+  text-shadow: 0px 0px 9px white;
   text-shadow: unset;
 }
 .whs .vjs-slider:focus {
   text-shadow: 0em 0em 1em white;
-  box-shadow: 0 0 1em #fff;
+  box-shadow: 0 0 1em white;
   box-shadow: unset;
 }
 
@@ -200,25 +211,6 @@
           animation: vjs-spinner-show 0s linear 0.3s forwards;
 }
 
-
-/* .vjs-ad-loading .vjs-loading-spinner:before{
-  border-top-color:#fff;
-} */
-/* .vjs-ad-loading .vjs-loading-spinner:after{
-  border-top-color:#fff;-webkit-animation-delay:0.44s;animation-delay:0.44s;
-} */
-
-/* .vjs-ad-playing .vjs-loading-spinner:before,
-.vjs-ad-playing .vjs-loading-spinner:after,
-.vjs-ad-playing .vjs-loading-spinner{
-  visibility: hidden;
-} */
-
-/* .vjs-ad-playing .vjs-loading-spinner,
-.vjs-ad-playing.vjs-seeking .vjs-loading-spinner, 
-.vjs-ad-playing.vjs-waiting .vjs-loading-spinner{
-  visibility: hidden;
-} */
 
 .vjs-ad-loading .vjs-big-play-button,
 .vjs-ad-loading .vjs-poster,
@@ -707,7 +699,7 @@
 }
 .whs .control-bar-bg {
   position: absolute;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.0));
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.0));
   height: 96px;
   width: 100%;
   left: 0;
@@ -1049,7 +1041,7 @@
 .whs .vjs-progress-control .vjs-progress-holder {
   height: 4px;
   opacity: 1;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s;
 }
 .whs .vjs-progress-control:hover .vjs-progress-holder {
   height: 6px;
@@ -1078,11 +1070,12 @@
   opacity: 0.9;
   left: -2px;
   top: calc(50% - 2px);
+  -webkit-text-stroke: 1px white;
   transition: text-shadow 0.3s;
 }
 
 .whs .vjs-progress-control:hover .vjs-cue-point::before {
-  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.7);
   transition: text-shadow 0.3s;
 }
 
@@ -1094,7 +1087,8 @@
   opacity: 1;
   left: -3px;
   top: calc(50% - 3px);
-  text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.4);
+  text-shadow: 0px 0px 2px rgba(255, 255, 255, 1);
+  -webkit-text-stroke: 1px white;
   transition: text-shadow 0.3s;
 }
 .whs .vjs-progress-control:hover .vjs-cue-point:hover::before {
@@ -1108,13 +1102,14 @@
   /* -80 -10 -80 */
   /* left: 0px; */
   /* top: -126px; */
-  top: -76px;
-  background-color: rgba(0,0,0,0.8);
+  /* top: -76px; */
+  bottom: 28px;
+  background-color: rgba(0, 0, 0, 0.7);
   /* background-color: rgba(255,255,255,0.7); */
   /* pointer-events: none; */
   width: 146px;
   /* height: 122px; */
-  height: 72px;
+  /* height: 72px; */
   padding: 1px;
   border-radius: 8px;
   text-align: center;
@@ -1167,7 +1162,7 @@
   top: 5px;
 
   /* display: inline-block; */
-
+ 
   border-radius: 8px 8px 0px 0px;
   text-align: center;
   /* margin: 0 auto; */
@@ -1393,7 +1388,7 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button{
 }
 button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
   opacity: 1;
-  /* transform: rotate(0.083turn); */
+  transform: rotate(0.083turn);
   text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.4);
   transition: all 0.3s;
 }
@@ -1968,19 +1963,18 @@ body.vjs-webfull-window {
 
 /* 打开选集 */
 .whs .choose-video.vjs-selected .choose-video-value{
-  font-size: 13px;
+  background-color:#bf0614;
+  background-color:rgba(255, 255, 255, 0.4);
+  /* font-size: 13px;
   line-height: 22px;
   color: #FFFFFF;
-  /* background-color:#bf0614; */
-  background-color:#20b677;
   width:48px;
   height:21px;
   border-radius: 10px;
   position: relative;
   margin: auto;
   padding: 0;
-  top: 14px;
-  /* margin-left: 12px; */
+  top: 14px; */                                                   
 }
 
 .choose-video-panel{

@@ -51,6 +51,7 @@
 }
 
 // only animate when showing because it can be processor heavy
+.vjs-seeking .vjs-loading-spinner:before,
 .vjs-waiting .vjs-loading-spinner:before {
   animation: vjs-spinner-spin 1.1s cubic-bezier(0.6, 0.2, 0, 0.8) infinite, vjs-spinner-fade 1.1s linear infinite;
 }

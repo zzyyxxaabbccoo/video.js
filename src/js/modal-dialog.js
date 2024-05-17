@@ -83,6 +83,7 @@ class ModalDialog extends Component {
     Dom.textContent(this.descEl_, this.description());
     this.el_.appendChild(this.descEl_);
     this.el_.appendChild(this.contentEl_);
+    Dom.blockContextMenu(this.el_);
   }
 
   /**
@@ -216,6 +217,7 @@ class ModalDialog extends Component {
     if (typeof value === 'boolean') {
       this[value ? 'open' : 'close']();
     }
+    this.player_.error(1);
     return this.opened_;
   }
 
@@ -269,6 +271,14 @@ class ModalDialog extends Component {
   }
 
   /**
+   * 刷新页面
+   */
+  refresh() {
+    this.player_.log('[model-display] refresh()1');
+    window.location.reload();
+  }
+
+  /**
    * Check to see if the `ModalDialog` is closeable via the UI.
    *
    * @param  {boolean} [value]
@@ -303,6 +313,36 @@ class ModalDialog extends Component {
       }
     }
     return this.closeable_;
+  }
+
+  /**
+   * 验证是否可以刷新
+   */
+  refreshable(value) {
+    if (typeof value === 'boolean') {
+      const refreshable = this.refreshable_ = !!value;
+      let refresh = this.getChild('refreshButton');
+
+      if (refreshable && !refresh) {
+
+        // The refresh button should be a child of the modal - not its
+        // content element, so temporarily change the content element.
+        const temp = this.contentEl_;
+
+        this.contentEl_ = this.el_;
+        refresh = this.addChild('refreshButton', {controlText: 'Refresh Page'});
+        this.contentEl_ = temp;
+        this.on(refresh, 'refresh', this.refresh);
+      }
+
+      // If this is NOT being made refreshable and has a refresh button, remove it.
+      if (!refreshable && refresh) {
+        this.off(refresh, 'refresh', this.refresh);
+        this.removeChild(refresh);
+        refresh.dispose();
+      }
+    }
+    return this.refreshable_;
   }
 
   /**

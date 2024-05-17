@@ -71,6 +71,9 @@ class MenuItem extends ClickableComponent {
       tabIndex: -1
     }, props), attrs);
 
+    // this.player().log(this.options_.label);
+    // this.player().log(this.localize(this.options_.label));
+
     // swap icon with menu item text.
     const menuItemEl = createEl('span', {
       className: 'vjs-menu-item-text',
