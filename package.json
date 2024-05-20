@@ -82,7 +82,7 @@
     "prepublishOnly": "run-p build",
     "version": "is-prerelease || npm run changelog && git add CHANGELOG.md",
     "zip": "cd dist && cross-env bestzip \"./video-js-${npm_package_version}.zip\" * && cd ..",
-    "h5vod": "npm-run-all h5vod-c-v h5vod-c-v-min h5vod-c-lang h5vod-cleancss-v3 h5vod-cleancss-cvp-v3 h5vod-cleancss-cvp-v3-ipanda h5vod-cleancss-cvp-v3-std",
+    "h5vod": "npm-run-all h5vod-c-v h5vod-c-v-min h5vod-c-lang h5vod-cleancss-v3 h5vod-cleancss-cvp-v3",
     "h5vod-c-video": "shx cp dist/video.js /Library/WebServer/Documents/h5vod/video_novhs.js",
     "h5vod-c-video-min": "shx cp dist/video.min.js /Library/WebServer/Documents/h5vod/video_novhs.min.js",
     "h5vod-c-v": "shx cp dist/video.js /Library/WebServer/Documents/h5vod/v-novhs.\"${npm_package_playerversion}\".js",
