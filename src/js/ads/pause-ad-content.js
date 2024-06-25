@@ -12,7 +12,7 @@ import jsonpImg from '../utils/jsonpImg';
 // import SkipADDisplay from './skip-ad-display.js';
 // import './ads-mute-toggle.js';
 // import './ads-fullscreen-toggle.js';
-// import './pause-ad-close-button';
+import './ad-label.js';
 
 /**
  * Displays time information about the video
@@ -34,21 +34,7 @@ class PauseAdContent extends Component {
     // options.name = 'PauseAdContent';
     super(player, options);
 
-    // if (player.options().pauseAdClickUrl !== undefined) {
-    //   this.adLink = player.options().pauseAdClickUrl;
-    // }
-
-    // const imgEl = this.el().getElementsByTagName('img')[0];
-    // imgEl.on('click', this.handleClick);
     this.on('click', this.handleClick);
-
-    // this.name_ = 'PauseAdContent';
-
-    // this.hide();
-    // this.on(player, ['timeupdate', 'ended'], this.updateContent);
-
-    // const closeBtn = this.getChild('pauseAdCloseButton');
-    // this.on(closeBtn, 'click', this.hideAd);
   }
 
   setAdData(pauseAdData) {
@@ -73,17 +59,33 @@ class PauseAdContent extends Component {
 
     // this.player_.log(pauseAdData);
 
-    // this.el().innerHTML = `<img class="pause-ad-img" role="presentation" src="${this.imgUrl}" style="width:'${this.imgWidth}px'; height:'${this.imgHeight}px'" onload=''></img>`;
-
     const imgEl = this.el().getElementsByTagName('img')[0];
 
-    imgEl.src = this.imgUrl;
+    const fullScreen = Math.random();
 
-    imgEl.style.width = this.imgWidth + 'px';
-    imgEl.style.height = this.imgHeight + 'px';
+    if (fullScreen > 0.5) {
+      imgEl.src = this.imgUrl;
 
-    this.el().style.width = this.imgWidth + 'px';
-    this.el().style.height = this.imgHeight + 'px';
+      imgEl.style.width = this.imgWidth + 'px';
+      imgEl.style.height = this.imgHeight + 'px';
+
+      this.el().style.width = this.imgWidth + 'px';
+      this.el().style.height = this.imgHeight + 'px';
+      this.removeClass('pause-fullScreen');
+    } else {
+      imgEl.src = this.imgUrl;
+
+      imgEl.style.width = '100%';
+      imgEl.style.height = '100%';
+      imgEl.style.objectFit = 'contain';
+
+      this.el().style.width = '100%';
+      this.el().style.height = '100%';
+
+      this.addClass('pause-fullScreen');
+
+      imgEl.style.boxShadow = undefined;
+    }
 
     // 曝光
     if (this.impression && this.impression.length > 0) {
@@ -98,7 +100,6 @@ class PauseAdContent extends Component {
         jsonpImg(this.impression[i], opts);
       }
     }
-
   }
 
   /**
@@ -112,7 +113,6 @@ class PauseAdContent extends Component {
     // const imageUrl = this.player_.options().pauseAdImageUrl;
     const el = super.createEl('div', {
       className: `${className}pause-ad-content`,
-      // innerHTML: `<a href="javascript:void(0);" > <img class="pause-ad-img" role="presentation" src="${imageUrl}" ></img> </a>`
       innerHTML: '<img class="pause-ad-img" role="presentation" src="" onload=\'\'></img>'
     });
 
@@ -206,6 +206,7 @@ PauseAdContent.prototype.options_ = {
   children: [
     // 'adsMuteToggle',
     // 'adsFullscreenToggle'
+    'AdLabel',
     'PauseAdCloseButton'
   ]
 };

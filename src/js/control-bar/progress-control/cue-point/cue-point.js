@@ -87,9 +87,9 @@ class CuePoint extends Component {
 
   handleMouseOver(event) {
     // this.player_.log('[cue-point] mouseover' + this.getStart());
-    this.parentComponent_.parentComponent_.getChild('cuePointPreview').show();
-    this.parentComponent_.parentComponent_.getChild('cuePointPreview').updateCue(this.index_, this.guid_, this.title_, this.start_ / 1000);
-    this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').hide();
+    this.parentComponent_.parentComponent_.parentComponent_.getChild('cuePointPreview').show();
+    this.parentComponent_.parentComponent_.parentComponent_.getChild('cuePointPreview').updateCue(this.index_, this.guid_, this.title_, this.start_ / 1000);
+    this.parentComponent_.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').hide();
 
     // this.player_.log(this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').addClass('tooltip-preview'));
     // this.player_.log(''+this.parentComponent_.parentComponent_.getChild('cuePointPreview').show());
@@ -98,8 +98,8 @@ class CuePoint extends Component {
 
   handleMouseOut(event) {
     // this.player_.log('[cue-point] mouseout' + this.getStart());
-    this.parentComponent_.parentComponent_.getChild('cuePointPreview').hide();
-    this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').show();
+    this.parentComponent_.parentComponent_.parentComponent_.getChild('cuePointPreview').hide();
+    this.parentComponent_.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').show();
 
     // this.player_.log(this.parentComponent_.getChild('mouseTimeDisplay').getChild('timeTooltip').removeClass('tooltip-preview'));
     // this.player_.log(''+this.parentComponent_.parentComponent_.getChild('cuePointPreview').hide());

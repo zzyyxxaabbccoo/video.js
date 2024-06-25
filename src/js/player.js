@@ -5019,14 +5019,16 @@ class Player extends Component {
       type: 'initHLSP2P'
     });
 
-    if (this.options_.customDefaultQualityIndex > -1) {
-      const customDefaultQuality = this.options_.customQualityList[this.options_.customDefaultQualityIndex].label;
+    if (this.options_.customQualityList) {
+      if (this.options_.customDefaultQualityIndex > -1) {
+        const customDefaultQuality = this.options_.customQualityList[this.options_.customDefaultQualityIndex].label;
 
-      this.mainContentQuality_ = customDefaultQuality;
-    } else {
-      const customDefaultQuality = this.options_.customQualityList[this.qualityLevels().selectedIndex].label;
+        this.mainContentQuality_ = customDefaultQuality;
+      } else {
+        const customDefaultQuality = this.options_.customQualityList[this.qualityLevels().selectedIndex].label;
 
-      this.mainContentQuality_ = customDefaultQuality;
+        this.mainContentQuality_ = customDefaultQuality;
+      }
     }
   }
 

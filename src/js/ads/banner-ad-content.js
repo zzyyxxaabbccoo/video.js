@@ -76,8 +76,6 @@ class BannerAdContent extends Component {
 
     // this.player_.log(bannerAdData);
 
-    // this.el().innerHTML = `<img class="pause-ad-img" role="presentation" src="${this.imgUrl}" style="width:'${this.imgWidth}px'; height:'${this.imgHeight}px'" onload=''></img>`;
-
     // this.player_.log(this.imgUrl);
 
     const imgEl = this.el().getElementsByTagName('img')[0];
@@ -117,7 +115,6 @@ class BannerAdContent extends Component {
     // const imageUrl = this.player_.options().pauseAdImageUrl;
     const el = super.createEl('div', {
       className: `${className}banner-ad-content`,
-      // innerHTML: `<a href="javascript:void(0);" > <img class="pause-ad-img" role="presentation" src="${imageUrl}" ></img> </a>`
       innerHTML: '<img class="banner-ad-img" role="presentation" src="" ></img>'
     });
 

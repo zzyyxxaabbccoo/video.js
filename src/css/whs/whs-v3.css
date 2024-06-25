@@ -1113,8 +1113,9 @@
   transition: all 0.3s;
 }
 
-.whs .vjs-load-progress div{
-  background-color: rgba(255, 255, 255, 0.4);
+.whs .vjs-load-progress,
+.whs .vjs-load-progress div {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 .whs .vjs-slider{
   background:rgba(0,0,0,0.5);
@@ -1148,11 +1149,12 @@
   font-family: VideoJS;
   content: '\f116';
   font-size: 4px;
-  opacity: 0.9;
-  left: -2px;
-  top: calc(50% - 2px);
+  opacity: 0.6;
+  padding: 2px;
+  left: -4px;
+  top: calc(50% - 4px);
   -webkit-text-stroke: 1px white;
-  transition: text-shadow 0.3s;
+  transition: text-shadow 0.3s opacity 0.3s;
 }
 
 .whs .vjs-progress-control:hover .vjs-cue-point::before {
@@ -1165,12 +1167,13 @@
   font-family: VideoJS;
   content: '\f116';
   font-size: 6px;
-  opacity: 1;
-  left: -3px;
-  top: calc(50% - 3px);
+  opacity: 0.9;
+  padding: 2px;
+  left: -5px;
+  top: calc(50% - 5px);
   text-shadow: 0px 0px 2px rgba(255, 255, 255, 1);
   -webkit-text-stroke: 1px white;
-  transition: text-shadow 0.3s;
+  transition: text-shadow 0.3s opacity 0.3s;
 }
 .whs .vjs-progress-control:hover .vjs-cue-point:hover::before {
   text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.4);
@@ -1382,8 +1385,8 @@
   color: #4a9cfa;
   border:1px solid #4a9cfa;
   border-radius: 4px;
-  padding: 0 2px 0 2px;
-  margin-left: 6px;
+  padding: 0 0px 0 0px;
+  margin-left: 2px;
   margin-top: 7px;
   height: 17px;
   line-height: 17px;
