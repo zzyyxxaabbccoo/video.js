@@ -39,7 +39,7 @@
   --cvp-button-icon-color-glow: rgba(255, 255, 255, 0.4);
 
   /*  */
-  --cvp-primary-foreground-color: yellow;
+  /* --cvp-primary-foreground-color: yellow;
   --cvp-primary-background-color: #2B333F;
   --cvp-primary-foreground-transparency: 1.0;
   --cvp-primary-background-transparency: 0.7;
@@ -47,7 +47,7 @@
   --cvp-secondary-foreground-color: yellow;
   --cvp-secondary-background-color: #2B333F;
   --cvp-secondary-foreground-transparency: 1;
-  --cvp-secondary-background-transparency: 0.5;
+  --cvp-secondary-background-transparency: 0.5; */
 
 }
 
@@ -289,6 +289,14 @@
 
 .whs-ad-mode .vjs-poster{
   display: none;
+}
+
+/* 兼容旧版本 */
+.vjs-poster {
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  background-color: #000;
 }
 
 /* ads overlay */
@@ -1043,7 +1051,7 @@
   will-change: width;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.4);
-  z-index: 0;
+  /* z-index: 0; */
   opacity: 0;
 }
 .whs .vjs-progress-control:hover .vjs-mouse-display {
@@ -1145,6 +1153,7 @@
   width: 0px;
   height: 100%;
   position: absolute;
+  z-index: 1;
 }
 
 .whs .vjs-cue-point::before {
