@@ -1216,8 +1216,8 @@
   border-radius: 8px 8px 0px 0px;
 }
 .whs .cue-point-preview-noimage{
-  width: 144px;
-  height: 31px;
+  /* width: 144px;
+  height: 31px; */
   display: block;
 }
 
