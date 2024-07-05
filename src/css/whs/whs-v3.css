@@ -6,6 +6,8 @@
   /* ef1c1c */
   --cvp-progress-dot-color: #da1a19;
 
+  --cvp-dot-shadow: rgba(0, 0, 0, 0.7);
+
   /* E83E3A */
   --cvp-select-text-color: #E83E3A;
   
@@ -1035,11 +1037,11 @@
   top: -46px;
   border-radius: 8px;
   transition: opacity 0.3s;
-  z-index: 1;
+  z-index: 5;
 }
 .whs .vjs-progress-control:hover .vjs-mouse-display .vjs-time-tooltip {
   opacity: 1;
-  z-index: 1;
+  z-index: 5;
   transition: opacity 0.3s 0.2s;
 }
 
@@ -1052,6 +1054,7 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.4);
   /* z-index: 0; */
+  width: 0;
   opacity: 0;
 }
 .whs .vjs-progress-control:hover .vjs-mouse-display {
@@ -1100,28 +1103,36 @@
 .whs .vjs-play-progress {
   /* background-image: linear-gradient(270deg,#bf0614,#fd2400); */
   background-color: var(--cvp-progress-bar-color);
+  /* z-index: 2; */
 }
 .whs .vjs-progress-control .vjs-play-progress:before {
-  font-size: 0px;
-  line-height: unset;
-  top: 2px;
-  right: 0px;
-  /* content: ""; */
-  visibility: hidden;
-  opacity: 0.2;
-  transition: all 0.3s ease-in-out;
-  color: var(--cvp-progress-dot-color);
+  content: "";
 }
 .whs .vjs-progress-control:hover .vjs-play-progress:before {
-  font-size: 12px;
-  line-height: unset;
-  top: -3px;
-  right: -6px;
-  /* content: ""; */
-  visibility: visible;
-  opacity: 1;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s;
+  content: "";
+}
+
+.whs .play-progress-dot {
+  width: 0px;
+  height: 0px;
+  border-radius: 5px;
+  background-color: var(--cvp-progress-dot-color);
+  position: absolute;
+  margin-left: 0px;
+  margin-top: 2px;
+  box-shadow: 0px 0px 0px var(--cvp-dot-shadow);
+  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s, box-shadow 0.3s;
+}
+
+.whs .vjs-progress-control:hover .play-progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  position: absolute;
+  margin-left: -5px;
+  margin-top: -2px;
+  box-shadow: 0px 0px 2px var(--cvp-dot-shadow);
+  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s, box-shadow 0.3s;
 }
 
 .whs .vjs-load-progress,
@@ -1150,13 +1161,41 @@
 }
 
 .whs .vjs-cue-point {
-  width: 0px;
-  height: 100%;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
+  margin-left: -2px;
   z-index: 1;
+  transition: all 0.3s;
 }
 
-.whs .vjs-cue-point::before {
+.whs .vjs-progress-control:hover .vjs-cue-point {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  margin-left: -3px;
+  z-index: 1;
+  transition: all 0.3s;
+}
+
+.whs .vjs-cue-point:hover,
+.whs .vjs-progress-control:hover .vjs-cue-point:hover {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  margin-top: -1px;
+  margin-left: -4px;
+  z-index: 1;
+  transition: all 0.3s;
+}
+
+/* .whs .vjs-cue-point::before {
   position: absolute;
   font-family: VideoJS;
   content: '\f116';
@@ -1172,25 +1211,9 @@
 .whs .vjs-progress-control:hover .vjs-cue-point::before {
   text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.7);
   transition: text-shadow 0.3s;
-}
+} */
 
-.whs .vjs-cue-point:hover::before {
-  position: absolute;
-  font-family: VideoJS;
-  content: '\f116';
-  font-size: 6px;
-  opacity: 0.9;
-  padding: 2px;
-  left: -5px;
-  top: calc(50% - 5px);
-  text-shadow: 0px 0px 2px rgba(255, 255, 255, 1);
-  -webkit-text-stroke: 1px white;
-  transition: text-shadow 0.3s opacity 0.3s;
-}
-.whs .vjs-progress-control:hover .vjs-cue-point:hover::before {
-  text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.4);
-  transition: text-shadow 0.3s;
-}
+
 
 /* 提示点预览, 无图 top height减50 */
 .whs .cue-point-preview {
