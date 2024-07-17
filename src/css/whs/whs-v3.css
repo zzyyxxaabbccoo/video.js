@@ -713,6 +713,10 @@
   width: 40px;
   height: 40px;
 }
+.whs.vjs-has-started .vjs-picture-in-picture-control.vjs-disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 .whs.vjs-has-started .vjs-picture-in-picture-control {
   /* display: flex; */
   visibility: visible;
@@ -1115,24 +1119,24 @@
 .whs .play-progress-dot {
   width: 0px;
   height: 0px;
-  border-radius: 5px;
+  border-radius: 6px;
   background-color: var(--cvp-progress-dot-color);
   position: absolute;
   margin-left: 0px;
   margin-top: 2px;
   box-shadow: 0px 0px 0px var(--cvp-dot-shadow);
-  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s, box-shadow 0.3s;
+  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s;
 }
 
 .whs .vjs-progress-control:hover .play-progress-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
   position: absolute;
-  margin-left: -5px;
-  margin-top: -2px;
+  margin-left: -6px;
+  margin-top: -3px;
   box-shadow: 0px 0px 2px var(--cvp-dot-shadow);
-  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s, box-shadow 0.3s;
+  transition: width 0.3s, height 0.3s, margin-left 0.3s, margin-top  0.3s;
 }
 
 .whs .vjs-load-progress,
@@ -1192,7 +1196,7 @@
   margin-top: -1px;
   margin-left: -4px;
   z-index: 1;
-  transition: all 0.3s;
+  transition: none;
 }
 
 /* .whs .vjs-cue-point::before {
@@ -1623,35 +1627,32 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
 }
 
 /* 滑动条 滑块 */
-.whs .vjs-setup .vjs-menu .vjs-menu-item-selector .vjs-menu-item-selector-mask:before{
+.whs .vjs-setup .vjs-menu .vjs-menu-item-selector .vjs-menu-item-selector-mask .vjs-menu-item-selector-mask-dot{
   display: block;
-  font-family: VideoJS;
-  font-weight: normal;
-  font-style: normal;
-  content: "\f116";
-  color: white;
-  font-size: 18px;
-  line-height: 18px;
-  height: 18px;
   position: relative;
   top: -2px;
   left: -9px;
-  text-align: left;
-  /* opacity: 0.5; */
-  text-shadow: 0 0 2px rgba(0,0,0,.5);
+  background-color: white;
   transition: all 0.2s;
+  border-radius: 10px;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: -1px;
+  left: -9px;
+  transition: all .2s;
 }
 
-.whs .vjs-setup .vjs-menu .vjs-menu-item.selectorOff .vjs-menu-item-selector .vjs-menu-item-selector-mask:before{
+.whs .vjs-setup .vjs-menu .vjs-menu-item.selectorOff .vjs-menu-item-selector .vjs-menu-item-selector-mask .vjs-menu-item-selector-mask-dot{
   /* color: #FFFFFF; */
   /* opacity: 0.8; */
-  color: #bdbdbd;
+  background-color: #bdbdbd;
 }
 
-.whs .vjs-setup .vjs-menu .vjs-menu-item.selectorOn .vjs-menu-item-selector .vjs-menu-item-selector-mask:before{
+.whs .vjs-setup .vjs-menu .vjs-menu-item.selectorOn .vjs-menu-item-selector .vjs-menu-item-selector-mask .vjs-menu-item-selector-mask-dot{
   /* color: #FFFFFF; */
   /* opacity: 1; */
-  color: white;
+  background-color: white;
 }
 
 /* 静音按钮、音量控制按钮 */
@@ -2370,4 +2371,54 @@ body.vjs-webfull-window {
   line-height: 30px;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: none;
+}
+
+.cvp-bezel {
+	position:absolute;
+	left:50%;
+	top:50%;
+	width:52px;
+	height:52px;
+	z-index:19;
+	margin-left:-26px;
+	margin-top:-26px;
+	background:rgba(0,0,0,.5);
+	border-radius:26px;
+	-webkit-animation:cvp-bezel-fadeout .5s linear 1 normal forwards;
+    animation:cvp-bezel-fadeout .5s linear 1 normal forwards;
+    pointer-events:none
+}
+@-webkit-keyframes cvp-bezel-fadeout {
+	from {
+        opacity:1
+    }
+    to {
+        opacity:0;
+        -webkit-transform:scale(2);
+        transform:scale(2)
+        }
+    }
+@keyframes cvp-bezel-fadeout {
+    from {
+        opacity:1
+    }
+    to {
+        opacity:0;
+        -webkit-transform:scale(2);
+        transform:scale(2)
+    }
+}
+.cvp-bezel-icon {
+	width:40px;
+	height:40px;
+	margin:6px
+}
+.cvp-svg-shadow {
+	stroke:#000;
+	stroke-opacity:.15;
+	stroke-width:2px;
+	fill:none
+}
+.cvp-svg-fill {
+	fill:#fff
 }
