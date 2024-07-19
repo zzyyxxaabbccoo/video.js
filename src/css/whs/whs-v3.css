@@ -2422,3 +2422,11 @@ body.vjs-webfull-window {
 .cvp-svg-fill {
 	fill:#fff
 }
+.cvp-no-anim{
+  -webkit-animation:none;
+  animation:none;
+}
+
+.whs.vjs-layout-small .vjs-volume-control {
+  display: flex;
+}
