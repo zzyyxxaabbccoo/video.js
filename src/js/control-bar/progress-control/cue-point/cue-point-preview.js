@@ -8,7 +8,7 @@ import * as Fn from '../../../utils/fn.js';
 // import {isPlain} from '../../utils/obj';
 // import {throttle, bind, UPDATE_REFRESH_INTERVAL} from '../../utils/fn.js';
 // import './time-tooltip';
-import window from 'global/window';
+// import window from 'global/window';
 import XHR from '@videojs/xhr';
 import { isCrossOrigin } from '../../../utils/url.js';
 
@@ -59,8 +59,8 @@ class CuePointPreview extends Component {
     });
   }
 
-  updateCue(index, videoGuid, title, time) {
-    const videoUrl = 'https://115.182.216.175/api/getHttpVideoInfo.do?pid=63d59610bf874255ac7e47ffc15f4810';
+  updateCue(index, videoGuid, title, time, cuePoint) {
+    const videoUrl = 'https://vdn.apps.cntv.cn/api/getHttpVideoInfo.do?pid=' + videoGuid;
 
     const opts = {
       uri: videoUrl
@@ -72,8 +72,6 @@ class CuePointPreview extends Component {
       opts.cors = crossOrigin;
     }
 
-    // const timeStr = formatTime(time, this.player_.duration());
-
     const viewEl = this.el_;
 
     XHR(opts, function(err, response, responseBody) {
@@ -81,17 +79,33 @@ class CuePointPreview extends Component {
         // return this.player_.warn.error(err, response);
         return false;
       }
-      window.console.log('loaded this:');
-      window.console.log(this);
-      window.console.log(response, JSON.parse(responseBody));
+      // window.console.log('loaded this:');
+      // window.console.log(this);
+      // window.console.log(response, JSON.parse(responseBody));
       const imgurl = JSON.parse(responseBody).image;
-      // viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
 
-      viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div>`;
+      cuePoint.setImage(imgurl);
+
+      // viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
+      if (imgurl) {
+        viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imgurl}"/></div><div class="cue-point-preview-title">${title}</div>`;
+      } else {
+        viewEl.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div>`;
+      }
     });
 
-    // this.el_.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
-    this.el_.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div>`;
+    // viewEl.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div><div class="cue-point-preview-time" style="left:50px">${timeStr}</div>`;
+    viewEl.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div>`;
+  }
+
+  updateImage(imageUrl, title) {
+    const viewEl = this.el_;
+
+    if (imageUrl) {
+      viewEl.innerHTML = `<div class="cue-point-preview-image"><img src="${imageUrl}"/></div><div class="cue-point-preview-title">${title}</div>`;
+    } else {
+      viewEl.innerHTML = `<div class="cue-point-preview-image"><div class= "cue-point-preview-noimage"/></div><div class="cue-point-preview-title">${title}</div>`;
+    }
   }
 
   /**

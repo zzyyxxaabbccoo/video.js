@@ -167,8 +167,6 @@ class SkipADDisplay extends TimeDisplay {
     }
     // if (this.player_.ads) {
     event.stopPropagation();
-    // return;
-    // }
   }
 
   //

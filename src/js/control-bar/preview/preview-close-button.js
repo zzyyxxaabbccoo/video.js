@@ -1,5 +1,5 @@
 /**
- * @file pause-ad-close-button.js
+ * @file preview-close-button.js
  */
 import Button from '../../button';
 import Component from '../../component';

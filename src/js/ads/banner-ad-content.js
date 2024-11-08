@@ -10,7 +10,6 @@ import Component from '../component.js';
 // import SkipADDisplay from './skip-ad-display.js';
 // import './ads-mute-toggle.js';
 // import './ads-fullscreen-toggle.js';
-// import './pause-ad-close-button';
 import jsonpImg from '../utils/jsonpImg';
 
 /**

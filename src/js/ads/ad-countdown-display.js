@@ -96,14 +96,6 @@ class ADCountdownDisplay extends TimeDisplay {
       time = this.player_.remainingTimeDisplay();
     }
 
-    // 首月限时特惠
-    // this.player().log('[ADCountdownDisplay] time:' + time +' remainingTimeDisplay()' + this.player_.remainingTimeDisplay());
-    // + this.localize('Sec');
-    //  + ' | ' + this.localize('vipcanskipad');
-
-    // this.updateTextNode_(time);
-    // this.updateTextNodeNew_(time);
-
     // #解决会闪现当前视频时间的问题,单片广告不能超过60秒
     if (time > 60 || this.remainAdTime_ === '') {
       this.updateTextNodeNew_(' ');
@@ -112,7 +104,6 @@ class ADCountdownDisplay extends TimeDisplay {
 
       this.updateTextNodeNew_(adTime);
     }
-
   }
 
   updateRemainAdTime(time) {

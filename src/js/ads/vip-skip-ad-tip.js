@@ -37,9 +37,6 @@ class VipSkipAdTip extends TimeDisplay {
     } else {
       this.addClass('ad-vip-skip-hint-hide');
     }
-
-    // .ad-vip-skip-hint-hide
-
   }
 
   /**

@@ -9,6 +9,7 @@ import './pause-ad-close-button';
 import XHR from '@videojs/xhr';
 import { isCrossOrigin } from '../utils/url.js';
 import * as Fn from '../utils/fn.js';
+import * as Dom from '../../js/utils/dom.js';
 
 /**
  * Displays time information about the video
@@ -88,11 +89,22 @@ class PauseAdOverLay extends Component {
       // innerHTML: `<a href="javascript:void(0);" > <img class="" role="presentation" src="${imageUrl}" ></img> </a>`
     });
 
-    // this.textNode_ = 'ads';
+    const pl_ = this.player_;
 
-    // Dom.blockContextMenu(el);
-    // this.player_.log('this: ------------createEl'+ this.el_ );
-    // this.player_.log('ads-createEl');
+    el.oncontextmenu = function(event) {
+      if (event.target !== null) {
+        if (!Dom.hasClass(event.target, 'pause-ad-overlay') && !Dom.hasClass(event.target, 'pause-ad-content') && !Dom.hasClass(event.target, 'pause-ad-img')) {
+          // pl_.log(event.target);
+          return false;
+        }
+      }
+      if (event.ctrlKey === true && event.altKey) {
+        pl_.showContextMenu(event, true);
+      } else {
+        pl_.showContextMenu(event, false);
+      }
+      return false;
+    };
     return el;
   }
 
@@ -229,8 +241,12 @@ class PauseAdOverLay extends Component {
     const adContent = this.getChild('PauseAdContent');
 
     adContent.hideAd();
+
     // this.player_.log(e);
     e.stopPropagation();
+    if (this.player_) {
+      this.player_.focus();
+    }
   }
 
   onPause() {

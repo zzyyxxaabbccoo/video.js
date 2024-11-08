@@ -87,6 +87,7 @@
   /* line-height: 27px; */
   line-height: 33px;
   font-size: 14px;
+  text-transform: capitalize;
 }
 
 .whs .vjs-menu li.vjs-menu-title {
@@ -262,7 +263,7 @@
 .vjs-ad-playing.vjs-seeking .vjs-loading-spinner,
 .vjs-ad-playing.vjs-waiting .vjs-loading-spinner {
   -webkit-animation: vjs-spinner-hide 0s linear 0.3s forwards;
-          animation: vjs-spinner-hide 0s linear 0.3s forwards;
+  animation: vjs-spinner-hide 0s linear 0.3s forwards;
 }
 
 
@@ -272,7 +273,7 @@
   /* display: block; */
   visibility: visible;
   -webkit-animation: vjs-spinner-show 0s linear 0.3s forwards;
-          animation: vjs-spinner-show 0s linear 0.3s forwards;
+  animation: vjs-spinner-show 0s linear 0.3s forwards;
 }
 
 
@@ -2385,28 +2386,28 @@ body.vjs-webfull-window {
 	background:rgba(0,0,0,.5);
 	border-radius:26px;
 	-webkit-animation:cvp-bezel-fadeout .5s linear 1 normal forwards;
-    animation:cvp-bezel-fadeout .5s linear 1 normal forwards;
-    pointer-events:none
+  animation:cvp-bezel-fadeout .5s linear 1 normal forwards;
+  pointer-events:none
 }
 @-webkit-keyframes cvp-bezel-fadeout {
 	from {
-        opacity:1
-    }
-    to {
-        opacity:0;
-        -webkit-transform:scale(2);
-        transform:scale(2)
-        }
-    }
+    -webkit-transform:scale(1,1);
+    opacity:1;
+  }
+  to {
+    opacity:0;
+    -webkit-transform:scale(2,2);
+  }
+}
 @keyframes cvp-bezel-fadeout {
-    from {
-        opacity:1
-    }
-    to {
-        opacity:0;
-        -webkit-transform:scale(2);
-        transform:scale(2)
-    }
+  from {
+    transform:scale(1,1);
+    opacity:1;
+  }
+  to {
+    opacity:0;
+    transform:scale(2,2);
+  }
 }
 .cvp-bezel-icon {
 	width:40px;
@@ -2422,11 +2423,12 @@ body.vjs-webfull-window {
 .cvp-svg-fill {
 	fill:#fff
 }
-.cvp-no-anim{
+.cvp-no-anim {
   -webkit-animation:none;
   animation:none;
 }
 
+/* 处理small时音量条 */
 .whs.vjs-layout-small .vjs-volume-control {
   display: flex;
 }

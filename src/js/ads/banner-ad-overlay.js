@@ -4,7 +4,7 @@
 // import document from 'global/document';
 import window from 'global/window';
 import Component from '../component.js';
-// import * as Dom from '../utils/dom.js';
+import * as Dom from '../utils/dom.js';
 import './banner-ad-content.js';
 import './banner-ad-close-button';
 // import './ads-mute-toggle.js';
@@ -101,11 +101,23 @@ class BannerAdOverLay extends Component {
       // innerHTML: `<a href="javascript:void(0);" > <img class="" role="presentation" src="${imageUrl}" ></img> </a>`
     });
 
-    // this.textNode_ = 'ads';
+    // const pl_ = this.player_;
 
-    // Dom.blockContextMenu(el);
-    // this.player_.log('this: ------------createEl'+ this.el_ );
-    // this.player_.log('ads-createEl');
+    el.oncontextmenu = function(event) {
+      if (event.target !== null) {
+        if (!Dom.hasClass(event.target, 'banner-ad-overlay') && !Dom.hasClass(event.target, 'banner-ad-content') && !Dom.hasClass(event.target, 'banner-ad-img')) {
+          // pl_.log(event.target);
+          return false;
+        }
+      }
+      // if (event.ctrlKey === true && event.altKey) {
+      //   pl_.showContextMenu(event, true);
+      // } else {
+      //   pl_.showContextMenu(event, false);
+      // }
+      return false;
+    };
+
     return el;
   }
 
@@ -218,14 +230,16 @@ class BannerAdOverLay extends Component {
 
   hideAd(e) {
     clearTimeout(this.timer);
-    // this.player_.log('play');
     // this.isPlaying_ = true;
     this.hide();
     const adContent = this.getChild('BannerAdContent');
 
     adContent.hideAd();
-    // this.player_.log(e);
+
     e.stopPropagation();
+    if (this.player_) {
+      this.player_.focus();
+    }
   }
 
   timeUpdata() {
@@ -237,6 +251,7 @@ class BannerAdOverLay extends Component {
       // window.console.log('show ad 3m');
     } else if (!this.bannerAd1Showed && this.player_.mainContentDuration_ > 60 * 5 && this.player_.currentTime() >= 60 * 1 && this.player_.currentTime() < 60 * 3) {
       // 大于5分钟，进入1分钟
+
       this.bannerAd1Showed = true;
       this.getAdData();
       // window.console.log('show ad 1m');
@@ -250,6 +265,7 @@ class BannerAdOverLay extends Component {
 
   getAdData() {
     // window.console.log('[BannerAdOverLay] load banner ad');
+
     const _this = this;
 
     if ((!this.player_.ads || !this.player_.ads.isInAdMode()) && this.player_.options().bannerAd && this.player_.options().bannerAdUrl) {

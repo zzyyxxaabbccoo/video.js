@@ -12,7 +12,8 @@ import jsonpImg from '../utils/jsonpImg';
 // import SkipADDisplay from './skip-ad-display.js';
 // import './ads-mute-toggle.js';
 // import './ads-fullscreen-toggle.js';
-import './ad-label.js';
+// import './ad-label.js';
+// import * as Dom from '../../js/utils/dom.js';
 
 /**
  * Displays time information about the video
@@ -52,18 +53,20 @@ class PauseAdContent extends Component {
     this.imgUrl = pauseAdData.url;
     this.imgWidth = pauseAdData.width;
     this.imgHeight = pauseAdData.height;
+    this.fullScreen = pauseAdData.isfull === '1';
 
     // this.el().getElementsByTagName('img').url = this.imgUrl;
     this.monitor = pauseAdData.monitor;
     this.impression = pauseAdData.impression;
 
     // this.player_.log(pauseAdData);
+    // this.player_.log(this.fullScreen);
 
     const imgEl = this.el().getElementsByTagName('img')[0];
 
-    const fullScreen = Math.random();
+    // const fullScreen = Math.random();
 
-    if (fullScreen > 0.5) {
+    if (!this.fullScreen) {
       imgEl.src = this.imgUrl;
 
       imgEl.style.width = this.imgWidth + 'px';
@@ -78,6 +81,7 @@ class PauseAdContent extends Component {
       imgEl.style.width = '100%';
       imgEl.style.height = '100%';
       imgEl.style.objectFit = 'contain';
+      imgEl.style.background = 'black';
 
       this.el().style.width = '100%';
       this.el().style.height = '100%';
@@ -85,6 +89,12 @@ class PauseAdContent extends Component {
       this.addClass('pause-fullScreen');
 
       imgEl.style.boxShadow = undefined;
+    }
+
+    if (!this.adLink) {
+      imgEl.style.cursor = 'default';
+    } else {
+      imgEl.style.cursor = 'pointer';
     }
 
     // 曝光
@@ -116,13 +126,6 @@ class PauseAdContent extends Component {
       innerHTML: '<img class="pause-ad-img" role="presentation" src="" onload=\'\'></img>'
     });
 
-    // console.log('111')
-
-    // this.textNode_ = 'ads';
-    // Dom.blockContextMenu(el);
-    // this.player_.log('this: ------------createEl'+ this.el_ );
-    // this.player_.log('ads-createEl');
-
     return el;
   }
 
@@ -151,7 +154,7 @@ class PauseAdContent extends Component {
   handleClick(e) {
     // this.player_.log(e);
     // this.player_.log('handleClick11');
-    if (window !== undefined && this.adLink !== undefined) {
+    if (window && this.adLink) {
       window.open(this.adLink, '_blank');
 
       // this.eventExposure = pauseAdData.eventExposure;
@@ -206,7 +209,7 @@ PauseAdContent.prototype.options_ = {
   children: [
     // 'adsMuteToggle',
     // 'adsFullscreenToggle'
-    'AdLabel',
+    // 'AdLabel',
     'PauseAdCloseButton'
   ]
 };

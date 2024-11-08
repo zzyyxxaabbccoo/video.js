@@ -1,5 +1,5 @@
 /**
- * @file playback-quality-menu-button.js
+ * @file choose-video-button.js
  */
 import MenuButton from '../../menu/menu-button.js';
 import Menu from '../../menu/menu.js';

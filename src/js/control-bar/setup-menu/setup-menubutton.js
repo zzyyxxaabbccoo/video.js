@@ -46,7 +46,6 @@ class SetupMenuButton extends MenuButton {
     this.labelEl_ = Dom.createEl('div', {
       className: 'vjs-setup-value',
       innerHTML: ''
-      // innerHTML: '倍速1x'
     });
 
     el.appendChild(this.labelEl_);
