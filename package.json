@@ -89,6 +89,7 @@
     "h5vod-c-v-min": "shx cp dist/video.min.js /Library/WebServer/Documents/h5vod/v-novhs.\"${npm_package_playerversion}\".min.js",
     "h5vod-c-lang": "shx cp dist/lang/zh-CN.js /Library/WebServer/Documents/h5vod/zh-CN.js",
     "h5vod-cleancss-v3": "cleancss dist/video-js.css src/css/whs/whs-v3.css -o /Library/WebServer/Documents/h5vod/css/vodh5player-v3.min.css",
+    "h5vod-cleancss-v3-cvp": "cleancss dist/video-js.css src/css/whs/whs-v3-cvp.css -o /Library/WebServer/Documents/h5vod/css/cvp-v3.min.css",
     "h5vod-cleancss-cvp-v3-cctv": "cleancss dist/video-js.css src/css/whs/whs-v3.css -o /Library/WebServer/Documents/h5vod/css/cvp-v3-cctv.min.css",
     "h5vod-cleancss-cvp-v3-std": "cleancss dist/video-js.css src/css/whs/whs-v3-std.css -o /Library/WebServer/Documents/h5vod/css/cvp-v3-std.min.css",
     "h5vod-ftp": "exec /Library/WebServer/Documents/h5vod/cmd/putvjs.sh",
