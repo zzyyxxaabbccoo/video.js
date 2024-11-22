@@ -672,36 +672,38 @@
 
 /* 大播放按钮 */
 .whs .vjs-big-play-button .vjs-icon-placeholder:before {
-  content: "";
+  content: "\f101";
 }
 .whs .vjs-big-play-button {
   position: absolute;
   top: auto;
-  bottom: 10px;
-  left: 70px;
-
-  /* font-size: 0; */
+  bottom: 35px;
+  left: 35px;
+  /* top: calc(50% - 35px);
+  left: calc(50% - 35px); */
+  margin: 0;
   height: 70px;
   width: 70px;
+  line-height: 70px;
   padding: 0;
   cursor: pointer;
-  opacity: 1;
+  opacity: 0.9;
   border: 0;
-  background-color: unset;
-  transition: all 0.0s;
-
-  background-image: var(--cvp-bigplay-icon-url);
-  /* background-image: url(../img/replay.svg); */
+  border-radius: 35px;
+  background-color: rgba(0, 0, 0, 0.2);
   
-  /* background-repeat: no-repeat; */
-  background-position: 70px 0px;
-  /* background-size: 100%; */
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.4s ease-in-out, text-shadow 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 .whs:hover .vjs-big-play-button,
 .whs .vjs-big-play-button:focus {
-  background-position: 0px 0px;
-  background-color: rgba(43, 51, 63, 0);
-  transition: all 0s;
+  content: "\f101";
+  opacity: 1;
+  border-radius: 35px;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  text-shadow: 0 0 4px var(--cvp-button-icon-color-glow);
+  transition: opacity 0.3s ease-out, text-shadow 0.3s ease-out, background-color 0.3s ease-out;
 }
 
 
@@ -824,34 +826,48 @@
   width: 48px;
 }
 .whs .vjs-icon-play:before, .whs .vjs-play-control .vjs-icon-placeholder:before{
-  content: "";
-  /* 解决太靠左 */
-  /* margin-left: 3px; */
-  /* width: 48px;
-  height: 48px; */
-  background-image: var(--cvp-play-pause-icon-url);
-  /* background-repeat: no-repeat; */
-  background-position: 0px 0px;
+  content: "\f101";
+  font-family: VideoJS;
+  line-height: 48px;
+  font-size: 26px;
+  opacity: 0.9;
+  width: 48px;
+  height: 48px;
+  transition: all 0.4s ease-in-out;
 }
 .whs .vjs-play-control:focus .vjs-icon-placeholder:before,
 .whs .vjs-play-control:hover .vjs-icon-placeholder:before {
-  /* content: ""; */
-  background-position: 144px 0px;
+  opacity: 1;
+  color: var(--cvp-button-icon-color-hover);
+  text-shadow: 0 0 3px var(--cvp-button-icon-color-glow);
+  transition: all 0.3s;
 }
 /* 重播 */
 .vjs-icon-replay:before, .video-js .vjs-play-control.vjs-ended .vjs-icon-placeholder:before {
-  content: '';
+  content: "\f101";
+  opacity: 0.9;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease-in-out;
 }
 
 /* 暂停按钮 */
 .whs .vjs-icon-pause:before, .whs .vjs-play-control.vjs-playing .vjs-icon-placeholder:before {
-  content: "";
-  background-position: 96px 0px;
+  content: "\f103";
+  font-family: VideoJS;
+  line-height: 48px;
+  font-size: 26px;
+  opacity: 0.9;
+  width: 48px;
+  height: 48px;
+  transition: all 0.4s ease-in-out;
 }
 .whs .vjs-play-control.vjs-playing:focus .vjs-icon-placeholder:before,
 .whs .vjs-play-control.vjs-playing:hover .vjs-icon-placeholder:before {
-  content: "";
-  background-position: 48px 0px;
+  content: "\f103";
+  opacity: 1;
+  color: var(--cvp-button-icon-color-hover);
+  text-shadow: 0 0 3px var(--cvp-button-icon-color-glow);
+  transition: all 0.3s;
 }
 
 /* mini play */
@@ -872,7 +888,7 @@
   display: none;
 }
 .whs.mini-controls .vjs-play-control-mini .vjs-icon-placeholder:before{
-  content: "";
+  content: "\f101";
   background-image: var(--cvp-play-pause-icon-url);
   /* background-repeat: no-repeat; */
   background-position: 0px 0px;
