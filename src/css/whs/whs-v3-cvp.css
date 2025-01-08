@@ -690,7 +690,7 @@
   opacity: 0.9;
   border: 0;
   border-radius: 35px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(1, 1, 1, 0.2);
   
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   transition: opacity 0.4s ease-in-out, text-shadow 0.4s ease-in-out, background-color 0.4s ease-in-out;
@@ -700,7 +700,7 @@
   content: "\f101";
   opacity: 1;
   border-radius: 35px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(1, 1, 1, 0.3);
 
   text-shadow: 0 0 4px var(--cvp-button-icon-color-glow);
   transition: opacity 0.3s ease-out, text-shadow 0.3s ease-out, background-color 0.3s ease-out;
