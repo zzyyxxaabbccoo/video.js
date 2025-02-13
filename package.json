@@ -37,7 +37,7 @@
     "copy:fonts": "shx cp -R node_modules/videojs-font/fonts dist/font",
     "copy:examples": "shx cp -R docs/examples dist/",
     "build:js": "rollup -c",
-    "prebuild:css": "shx cp -R /Users/wh/git/vjs-font/font/scss/_icons.scss  src/css/_icons2.scss",
+    "prebuild:css": "shx cp -R /Users/hw/git/vjs-font/font/scss/_icons.scss  src/css/_icons2.scss",
     "build:css": "npm-run-all build:css:*",
     "build:css:cdn": "sass --load-path='./' --load-path='./node_modules/' --no-source-map src/css/vjs-cdn.scss dist/alt/video-js-cdn.css",
     "build:types": "tsc",
