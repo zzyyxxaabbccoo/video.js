@@ -12,6 +12,8 @@
 
   --cvp-pause-icon-svg-url: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSItMTUgLTE1IDgwIDgwIj48ZGVmcz48c3R5bGU+LmNscy0xe29wYWNpdHk6MC42O2ZpbGw6dXJsKCPmnKrlkb3lkI3nmoTmuJDlj5hfMTkpO30uY2xzLTEsLmNscy0ye2lzb2xhdGlvbjppc29sYXRlO30uY2xzLTJ7b3BhY2l0eTowLjg7ZmlsbDp1cmwoI+acquWRveWQjeeahOa4kOWPmF8xOS0yKTt9LmNscy0ze2ZpbGw6I2ZmZjt9PC9zdHlsZT4KPGxpbmVhckdyYWRpZW50IGlkPSLmnKrlkb3lkI3nmoTmuJDlj5hfMTkiIHgxPSItMzI1NS4xNCIgeTE9IjM4My4zOCIgeDI9Ii0zMjU0LjE0IiB5Mj0iMzgzLjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDQ5Ljk5LCAwLCAwLCAtNDkuODgsIDE2MjczOS41MiwgMTkxNDcuOTcpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmYwNjE0Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmQyNDAwIi8+PC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSLmnKrlkb3lkI3nmoTmuJDlj5hfMTktMiIgeDE9Ii0zMjUxLjQ0IiB5MT0iMzgzLjQiIHgyPSItMzI1MC40NCIgeTI9IjM4My40IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDQ2LjU4LCAwLCAwLCAtNDcuMzksIDE1MTQ0Ni42OCwgMTgxOTQuMTQpIiB4bGluazpocmVmPSIj5pyq5ZG95ZCN55qE5riQ5Y+YXzE5Ii8+PC9kZWZzPgo8ZyBpZD0i5Zu+5bGCXzIiIGRhdGEtbmFtZT0i5Zu+5bGCIDIiPgoJPGcgaWQ9IuWbvuWxgl8xLTIiIGRhdGEtbmFtZT0i5Zu+5bGCIDEiPgoJCTxnIGlkPSJfMS7mkq3mlL7nqpflj6Nf6YeN5paw6KeC55yLIiBkYXRhLW5hbWU9IiAxLuaSreaUvueql+WPoyDph43mlrDop4LnnIsiPgoJCQk8cGF0aCBpZD0i5aSa6L655b2iXzEtMTMiIGRhdGEtbmFtZT0i5aSa6L655b2iIDEtMTMiIGNsYXNzPSJjbHMtMSIgZD0iTTI5LjY5LDQ3LjEzUS02LjQ5LDU4Ljc5LDEuNDIsMjEuOVQzNy42LDEwLjI1UTY1Ljg2LDM1LjQ4LDI5LjY5LDQ3LjEzWiIvPgoJCQk8cGF0aCBpZD0i5aSa6L655b2iXzFf5ou36LSdLTEzIiBkYXRhLW5hbWU9IuWkmui+ueW9oiAxIOaLt+i0nS0xMyIgY2xhc3M9ImNscy0yIiBkPSJNMzMuNDIsNDQuMDVRMi4zNyw2MS44MywyLjM3LDI2LjI4VDMzLjQyLDguNTFRNjQuNDcsMjYuMjgsMzMuNDIsNDQuMDVaIi8+CgkJCTxyZWN0IHg9IjE0IiB5PSIxNCIgcng9IjEiIHJ5PSIxIiB3aWR0aD0iNC4yIiBoZWlnaHQ9IjIyIiBmaWxsPSJ3aGl0ZSIvPgoJCQk8cmVjdCB4PSIyOCIgeT0iMTQiIHJ4PSIxIiByeT0iMSIgd2lkdGg9IjQuMiIgaGVpZ2h0PSIyMiIgZmlsbD0id2hpdGUiLz4KCQk8L2c+Cgk8L2c+CjwvZz4KPC9zdmc+');
 
+  --cvp-icon-svg-blur-color: rgba(255, 4, 4, 0.9);
+
   --cvp-loading-color1: #bf0614;
 
   --cvp-loading-color2: #ffc8be;
@@ -190,6 +192,7 @@
   width: 36px;
   height: 36px;
 }
+
 .svg-fill{
   fill: #ffe400;
 }
@@ -204,15 +207,6 @@
     visibility: hidden;
   }
 }
-
-/* ads */
-/* .vjs-ad-playing.vjs-ad-playing .vjs-progress-control{
-  pointer-events:none;
-}
-.vjs-ad-playing.vjs-ad-playing .vjs-play-progress{
-  background-color:#ffe400;
-} */
-/* .vjs-ad-loading .vjs-loading-spinner{display:block;visibility:visible} */
 
 @keyframes vjs-spinner-fade {
   0% {
@@ -246,6 +240,7 @@
   animation:vjs-spinner-spin 1.1s cubic-bezier(0.6, 0.2, 0, 0.8) infinite,vjs-spinner-fade 1.1s linear infinite;
   border-top-color:#fff;
 }
+
 .vjs-ad-loading .vjs-loading-spinner:after{
   display: block;
   -webkit-animation:vjs-spinner-spin 1.1s cubic-bezier(0.6, 0.2, 0, 0.8) infinite,vjs-spinner-fade 1.1s linear infinite;
@@ -261,7 +256,6 @@
   animation: vjs-spinner-hide 0s linear 0.3s forwards;
 }
 
-
 /* 兼容edge 移除vjs-spinner-show */
 .vjs-seeking .vjs-loading-spinner,
 .vjs-waiting .vjs-loading-spinner {
@@ -270,7 +264,6 @@
   -webkit-animation: vjs-spinner-show 0s linear 0.3s forwards;
   animation: vjs-spinner-show 0s linear 0.3s forwards;
 }
-
 
 .vjs-ad-loading .vjs-big-play-button,
 .vjs-ad-loading .vjs-poster,
@@ -391,6 +384,7 @@
 
   pointer-events: none;
 }
+
 /* 2021.1.4 */
 .ad-vip-skip-hint.vjs-time-control.vjs-control.ad-vip-skip-hint-close{
   opacity: 0;
@@ -510,6 +504,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .whs.mini-controls .pause-ad-overlay{
   visibility: hidden;
 }
@@ -542,9 +537,11 @@
   width: 100%;
   height: auto;
 }
+
 .pause-ad-img:hover{
   /* border: 1px solid rgba(255, 255, 255, 0.8); */
 }
+
 /* 关闭暂停广告 */
 .whs .pause-ad-content .pause-ad-close {
   position: absolute;
@@ -563,11 +560,12 @@
   background-color: rgba(0, 0, 0, 0.5);
   /* border-radius: 20px; */
 }
+
 .whs .pause-ad-close:hover {
   color: rgba(255,255,255,0.9);
   border: 0px solid rgba(255, 255, 255, 0.9);
-
 }
+
 .pause-ad-close .vjs-icon-placeholder::before {
   /* font-family: VideoJS;
   font-size: 20px;
@@ -576,6 +574,7 @@
   transform: rotate(0);
   transition: all 0.3s; */
 }
+
 .pause-ad-close:hover .vjs-icon-placeholder::before {
   /* transform: rotate(0.25turn);
   transition: all 0.3s; */
@@ -596,8 +595,8 @@
 
   align-items: flex-end;
   justify-content: center;
-
 }
+
 .whs.mini-controls .banner-ad-overlay{
   visibility: hidden;
 }
@@ -610,6 +609,7 @@
   bottom: 60px;
   position: relative;
 }
+
 .banner-ad-img{
   pointer-events: auto;
   cursor: pointer;
@@ -618,6 +618,7 @@
   height: auto;
   box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.3);
 }
+
 /* 关闭banner广告 */
 .whs .banner-ad-content .banner-ad-close {
   position: absolute;
@@ -635,6 +636,7 @@
   pointer-events: auto;
   /* border-radius: 20px; */
 }
+
 .whs .banner-ad-close:hover {
   color: rgba(255,255,255,0.9);
   border: 0px solid rgba(255, 255, 255, 0.9);
@@ -648,11 +650,11 @@
   transform: rotate(0);
   transition: all 0.3s;
 }
+
 .banner-ad-close:hover .vjs-icon-placeholder::before {
   transform: rotate(90deg);
   transition: all 0.3s;
 }
-
 
 /* hint text */
 /* .whs .vjs-control-text {
@@ -669,6 +671,7 @@
 .whs .vjs-big-play-button .vjs-icon-placeholder:before {
   content: "";
 }
+
 .whs .vjs-big-play-button {
   position: absolute;
   top: auto;
@@ -693,16 +696,16 @@
   /* background-size: 100%; */
   transition: filter 0.4s, opacity 0.4s;
 }
+
 .whs:hover .vjs-big-play-button,
 .whs .vjs-big-play-button:focus {
   /* background-position: 0px 0px; */
   opacity: 1;
   background-color: rgba(43, 51, 63, 0);
   background-size: 80px 80px;
-  filter: drop-shadow(0 0 15px rgba(255, 4, 4, 0.8));
+  filter: drop-shadow(0 0 12px var(--cvp-icon-svg-blur-color));
   transition: filter 0.3s, opacity 0.3s;
 }
-
 
 /* 画中画 */
 .whs .vjs-picture-in-picture-control {
@@ -713,10 +716,12 @@
   width: 40px;
   height: 40px;
 }
+
 .whs.vjs-has-started .vjs-picture-in-picture-control.vjs-disabled {
   opacity: 0.5;
   cursor: default;
 }
+
 .whs.vjs-has-started .vjs-picture-in-picture-control {
   /* display: flex; */
   visibility: visible;
@@ -725,6 +730,7 @@
 
   transition: all 0.3s;
 }
+
 .whs.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-picture-in-picture-control {
   visibility: visible;
   opacity: 0;
@@ -732,10 +738,12 @@
 
   transition: all 0.4s ease-in-out;
 }
+
 .whs.vjs-audio.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-picture-in-picture-control {
   opacity: 1;
   visibility: visible;
 }
+
 .vjs-controls-disabled .vjs-picture-in-picture-control,
 .vjs-ad-playing.whs .vjs-picture-in-picture-control,
 .vjs-ad-loading.whs .vjs-picture-in-picture-control {
@@ -775,7 +783,6 @@
   transition: all 0.3s;
 }
 
-
 /* 控制栏 */
 .whs .vjs-control-bar {
   width: 100%;
@@ -791,6 +798,7 @@
   -ms-user-select:none;
   user-select:none;
 }
+
 .whs .control-bar-bg {
   position: absolute;
   background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.0));
@@ -809,6 +817,7 @@
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
+
 .whs.vjs-has-started .vjs-control-bar {
   /* transition: visibility 0.2s, opacity 0.2s; */
   -webkit-transition: all 0.2s;
@@ -822,6 +831,7 @@
 .whs .vjs-play-control{
   width: 48px;
 }
+
 .whs .vjs-icon-play:before, .whs .vjs-play-control .vjs-icon-placeholder:before{
   content: "";
   /* 解决太靠左 */
@@ -834,14 +844,16 @@
   transition: filter 0.4s, opacity 0.4s;
   /* background-position: 0px 0px; */
 }
+
 .whs .vjs-play-control:focus .vjs-icon-placeholder:before,
 .whs .vjs-play-control:hover .vjs-icon-placeholder:before {
   /* content: ""; */
   text-shadow: 0 0 10px #fff;
-  filter: drop-shadow(0 0 6px rgba(255, 4, 4, 0.9));
+  filter: drop-shadow(0 0 6px var(--cvp-icon-svg-blur-color));
   transition: filter 0.3s, opacity 0.3s;
   /* background-position: 144px 0px; */
 }
+
 /* 重播 */
 .vjs-icon-replay:before, .video-js .vjs-play-control.vjs-ended .vjs-icon-placeholder:before {
   content: '';
@@ -854,11 +866,12 @@
   background-size: 48px 48px;
   transition: filter 0.4s, opacity 0.4s;
 }
+
 .whs .vjs-play-control.vjs-playing:focus .vjs-icon-placeholder:before,
 .whs .vjs-play-control.vjs-playing:hover .vjs-icon-placeholder:before {
   content: "";
   text-shadow: 0 0 10px #fff;
-  filter: drop-shadow(0 0 6px rgba(255, 4, 4, 0.9));
+  filter: drop-shadow(0 0 6px var(--cvp-icon-svg-blur-color));
   transition: filter 0.3s, opacity 0.3s;
 }
 
@@ -876,9 +889,11 @@
   width: 48px;
   height: 48px;
 }
+
 .whs .vjs-play-control-mini{
   display: none;
 }
+
 .whs.mini-controls .vjs-play-control-mini .vjs-icon-placeholder:before{
   content: "";
   background-image: var(--cvp-play-icon-svg-url);
@@ -886,11 +901,13 @@
   /* background-repeat: no-repeat; */
   /* background-position: 0px 0px; */
 }
+
 .whs.mini-controls .vjs-play-control-mini:hover .vjs-icon-placeholder:before {
   /* background-position: 144px 0px; */
-  filter: drop-shadow(0 0 6px rgba(255, 4, 4, 0.9));
+  filter: drop-shadow(0 0 6px var(--cvp-icon-svg-blur-color));
   transition: filter 0.3s, opacity 0.3s;
 }
+
 /* mini pause */
 .whs.mini-controls .vjs-play-control-mini.vjs-playing .vjs-icon-placeholder:before {
   content: "";
@@ -900,7 +917,7 @@
 }
 .whs.mini-controls .vjs-play-control-mini.vjs-playing:hover .vjs-icon-placeholder:before {
   content: "";
-  filter: drop-shadow(0 0 6px rgba(255, 4, 4, 0.9));
+  filter: drop-shadow(0 0 6px var(--cvp-icon-svg-blur-color));
   transition: filter 0.3s, opacity 0.3s;
   /* background-position: 48px 0px; */
 }
@@ -912,6 +929,7 @@
   /* width: 36px; */
   width: 40px;
 }
+
 .whs .vjs-next-control .vjs-icon-placeholder:before {
   font-family: VideoJS;
   line-height: 48px;
@@ -923,6 +941,7 @@
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
   transition: all 0.4s ease-in-out;
 }
+
 .whs .vjs-next-control .vjs-icon-placeholder:hover:before {
   opacity: 1;
   color: var(--cvp-button-icon-color-hover);
@@ -971,6 +990,7 @@
   width: 128px;
   height: 72px;
 }
+
 .next-image img{
   width:128px;
   height:72px;
@@ -997,7 +1017,6 @@
   -webkit-box-orient: vertical;
 }
 
-
 /* 时间栏 */
 .whs .vjs-time-control {
   /* flex: none; */
@@ -1011,11 +1030,13 @@
   color: rgba(255, 255, 255, 0.9);
   transition: all 0.4s ease-in-out;
 }
+
 /* 时间栏 */
 .whs .vjs-time-control:hover {
   color: rgba(255, 255, 255, 1);
   transition: all 0.3s;
 }
+
 /* 当前时间 */
 /* .vjs-no-flex .vjs-current-time */
 .whs .vjs-current-time {
@@ -1023,11 +1044,13 @@
   /* 解决对齐前面图片空白 */
   /* margin-left: 6px; */
 }
+
 /* 总时间 */
 /* .vjs-no-flex .vjs-duration  */
 .whs .vjs-duration{
   display: unset;
 }
+
 /* 时间分割 */
 .whs .vjs-time-divider {
   display: unset;
@@ -1042,9 +1065,11 @@
 .whs .vjs-progress-control .vjs-play-progress .vjs-time-tooltip {
   display: none;
 }
+
 .whs .vjs-progress-control:hover .vjs-play-progress .vjs-time-tooltip {
   display: none;
 }
+
 .whs .vjs-progress-control .vjs-mouse-display .vjs-time-tooltip{
   font-size: 10px;
   color: white;
@@ -1056,12 +1081,12 @@
   transition: opacity 0.3s;
   z-index: 5;
 }
+
 .whs .vjs-progress-control:hover .vjs-mouse-display .vjs-time-tooltip {
   opacity: 1;
   z-index: 5;
   transition: opacity 0.3s 0.2s;
 }
-
 
 /* 鼠标时间点提示 */
 .whs .vjs-progress-control .vjs-mouse-display{
@@ -1074,6 +1099,7 @@
   width: 0;
   opacity: 0;
 }
+
 .whs .vjs-progress-control:hover .vjs-mouse-display {
   display: block;
   opacity: 1;
@@ -1101,7 +1127,6 @@
   opacity: 0;
 }
 
-
 /* 进度条 */
 .whs .vjs-progress-holder.vjs-slider {
   background-color: rgba(255, 255, 255, 0.2);
@@ -1117,14 +1142,17 @@
   bottom: calc(48px - 14px * 0.5);
   height: 14px;
 }
+
 .whs .vjs-play-progress {
   /* background-image: linear-gradient(270deg,#bf0614,#fd2400); */
   background-color: var(--cvp-progress-bar-color);
   /* z-index: 2; */
 }
+
 .whs .vjs-progress-control .vjs-play-progress:before {
   content: "";
 }
+
 .whs .vjs-progress-control:hover .vjs-play-progress:before {
   content: "";
 }
@@ -1156,20 +1184,22 @@
 .whs .vjs-load-progress div {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 .whs .vjs-slider{
   background:rgba(0,0,0,0.5);
 }
+
 .whs .vjs-progress-control .vjs-progress-holder {
   height: 4px;
   opacity: 1;
   transition: all 0.3s;
 }
+
 .whs .vjs-progress-control:hover .vjs-progress-holder {
   height: 6px;
   opacity: 1;
   transition: all 0.3s;
 }
-
 
 /* 提示点 */
 .whs .cue-point-holder {
@@ -1230,8 +1260,6 @@
   transition: text-shadow 0.3s;
 } */
 
-
-
 /* 提示点预览, 无图 top height减50 */
 .whs .cue-point-preview {
   position: absolute;
@@ -1250,11 +1278,13 @@
   border-radius: 9px;
   text-align: center;
 }
+
 .whs .cue-point-preview-image img{
   width: 144px;
   height: 81px;
   border-radius: 8px 8px 0px 0px;
 }
+
 .whs .cue-point-preview-noimage{
   /* width: 144px;
   height: 31px; */
@@ -1373,23 +1403,6 @@
   width: 100%;
   font-size: 0px;
 }
-
-
-/* rate */
-/* .whs .vjs-playback-rate > .vjs-menu-button,
-.whs .vjs-playback-rate .vjs-playback-rate-value {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.whs .vjs-playback-rate .vjs-playback-rate-value {
-  font-size: 14px;
-  line-height: 48px;
-} */
-
-
 
 /* 声音模式面板 */
 .whs .vjs-audio-button .vjs-menu {
@@ -1516,7 +1529,6 @@ button.vjs-playback-quality.vjs-menu-button.vjs-menu-button-popup.vjs-button{
   content: "";
 }
 
-
 /* 设置 */
 div.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-control.vjs-button{
   /* width: 48px; */
@@ -1625,6 +1637,7 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
+
 /* 滑动条遮罩, 偏移6px，对齐滑块 */
 .whs .vjs-setup .vjs-menu .vjs-menu-item.selectorOn .vjs-menu-item-selector .vjs-menu-item-selector-mask{
   width: calc(0px + 7px);
@@ -1713,7 +1726,6 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
   transition: all 0.3s;
 }
 
-
 /* 音量 */
 /* 外框尺寸，关闭时间 */
 .whs.video-js .vjs-volume-panel .vjs-volume-control.vjs-volume-vertical {
@@ -1742,7 +1754,6 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
 
   transition: all 0.3s;
 }
-
 
 /* 外框尺寸，拖动长度 */
 .whs .vjs-volume-bar.vjs-slider-vertical {
@@ -1782,7 +1793,6 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
   font-size: 14px; */
 }
 
-
 /* 预留 */
 /* .video-js.vjs-no-flex .vjs-volume-control.vjs-volume-vertical,
 .video-js.vjs-no-flex .vjs-volume-panel .vjs-volume-control.vjs-volume-vertical {
@@ -1790,7 +1800,6 @@ button.vjs-setup.vjs-menu-button.vjs-menu-button-popup.vjs-button:hover{
   bottom: 3em;
   left: 0.5em;
 } */
-
 
 /* 网页全屏按钮 */
 body.vjs-webfull-window {
@@ -1858,7 +1867,6 @@ body.vjs-webfull-window {
   transition: all 0.3s;
 }
 
-
 /* 全屏按钮 */
 .video-js .vjs-fullscreen-control {
   /* cursor: pointer; */
@@ -1908,24 +1916,12 @@ body.vjs-webfull-window {
   font-size: 16px;
 }
 
-
 /*  */
 .video-js .vjs-modal-dialog {
   background: rgba(0, 0, 0, 0.7);
   /*background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0));*/
   overflow: auto;
 }
-
-/* .whs .vjs-modal-dialog-description.vjs-control-text {
-  border: 0;
-  clip: unset;
-  height: 1px;
-  overflow: unset;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-} */
-
 
 /*  */
 .vjs-error .vjs-error-display .vjs-modal-dialog-content {
@@ -1982,7 +1978,6 @@ body.vjs-webfull-window {
   left:0;
   right:0;
 }
-
 
 .video-js .vjs-control.vjs-close-button {
   /* cursor: pointer; */
@@ -2057,6 +2052,7 @@ body.vjs-webfull-window {
   padding: 0;
   overflow:hidden;
 }
+
 /* 弹幕 */
 .barrage-display {
   pointer-events: all;
@@ -2263,9 +2259,6 @@ body.vjs-webfull-window {
   overflow: hidden;
   text-align: left;
   text-overflow:ellipsis;
-
-  
-
   /* 　display: -webkit-box;
 　　-webkit-box-orient: vertical;
 　　-webkit-line-clamp: 3;
@@ -2343,7 +2336,6 @@ body.vjs-webfull-window {
   font-size: 14px;
   color: white;
 }
-
 
 /* 2021.12.28 */
 .ad-countdown-time.vjs-time-control.vjs-control{
