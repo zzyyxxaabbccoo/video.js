@@ -1,0 +1,13 @@
+@charset "UTF-8";
+.whs.video-js{
+  /* de1a1a */
+  --cvp-progress-bar-color: #245324;
+
+  /* ef1c1c */
+  --cvp-progress-dot-color: #43cc66;
+
+  --cvp-dot-shadow: rgba(0, 0, 0, 0.7);
+
+  /* E83E3A */
+  --cvp-select-text-color: #2388cc;
+}
